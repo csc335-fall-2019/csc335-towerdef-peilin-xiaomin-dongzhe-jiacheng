@@ -19,6 +19,13 @@ public class Point {
 	public boolean isRoad() {
 		return road;
 	}
+	
+	public void setRoad() {
+		this.road = true;
+	}
+	public boolean canSetTower() {
+		return !road && tower == null;
+		}
 	public void setTower(Tower tower) {
 		this.tower = tower;
 	}
@@ -43,7 +50,14 @@ public class Point {
 		for(Monster monster:monsters) {
 			if(monster.dead()) {
 				monsters.remove(monster);
-				monster = null;
+			}
+		}
+	}
+	public void clearMonster(Monster monster) {
+		for(Monster monsterIn:monsters) {
+			if(monster.getHealth() == monsterIn.getHealth()) {
+				monsters.remove(monsterIn);
+				break;
 			}
 		}
 	}
