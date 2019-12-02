@@ -7,6 +7,9 @@ import javafx.scene.image.Image;
 public class Tower {
 	protected int cost;
 	protected Point point;
+	private int sellPrice;
+	protected int xPos;
+	protected int yPos;
 	protected int range;
 	protected Bullets bullet;
 	private int energy = 0;
@@ -39,6 +42,11 @@ public class Tower {
 	public int getCost() {
 		return cost;
 	}
+	
+	public int getSellPrice() {
+		return sellPrice;
+	}
+	
 	public int getAbilityPower() {
 		return this.bullet.magicATK;
 	}
@@ -59,6 +67,9 @@ public class Tower {
 	}
 	public void setCost(int cost) {
 		this.cost = cost;
+	}
+	public void setSellPrice(int sellPrice) {
+		this.sellPrice = sellPrice;
 	}
 	public void setRange(int range) {
 		this.range = range;

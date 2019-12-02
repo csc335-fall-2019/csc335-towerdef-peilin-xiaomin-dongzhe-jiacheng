@@ -34,9 +34,11 @@ public class Point {
 	public ArrayList<Monster> getMonster() {
 		return monsters;
 	}
-	public void clearTower() {
-		if(tower != null) tower = null;
+
+	public void sellTower() {
+		this.tower = null;
 	}
+
 	public void clearMonster() {
 		for(Monster monster:monsters) {
 			if(monster.dead()) {

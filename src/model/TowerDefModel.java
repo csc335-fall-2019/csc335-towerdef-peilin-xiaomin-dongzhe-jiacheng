@@ -21,5 +21,36 @@ public class TowerDefModel extends Observable {
 	
 	public void autoUpdateMoney() {
 		this.map.getPlayer().autoMoney();
+		
+		setChanged();
+        notifyObservers();
+	}
+	
+	public void updateMoney(int earned) {
+		this.map.getPlayer().earnMoney(earned);
+		
+		setChanged();
+        notifyObservers();
+	}
+	
+	public void buyTower(Tower tower, int xPos, int yPos) {
+		this.map.getGraph()[xPos][yPos].setTower(tower);
+		
+		setChanged();
+        notifyObservers();
+	}
+	
+	public void sellTower(int xPos, int yPos) {
+		this.map.getGraph()[xPos][yPos].sellTower();
+		
+		setChanged();
+        notifyObservers();
+	}
+	
+	public void monsterDie(int xPos, int yPos) {
+		this.map.getGraph()[xPos][yPos].clearMonster();
+		
+		setChanged();
+        notifyObservers();
 	}
 }
