@@ -25,6 +25,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Tower;
+import model.TowerDefMoveMessage;
+import model.TowerMessage;
 
 public class View extends Application implements Observer{
 	
@@ -37,6 +40,17 @@ public class View extends Application implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
+		TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
+		if (msg instanceof TowerMessage) {
+			Tower tower;
+			if ((Tower) msg.getObj() != null) {
+				tower = (Tower) msg.getObj();
+			}
+			// update on stage;
+		}
+		else { 
+			
+		}
 		
 	}
 
