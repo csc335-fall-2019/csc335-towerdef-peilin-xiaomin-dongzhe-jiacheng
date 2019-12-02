@@ -44,23 +44,29 @@ public class View extends Application implements Observer{
 		grid.setPrefSize(600, 400);
 		window.setCenter(grid);
 		
-//		BackgroundSize bsize = new BackgroundSize(600,400, false, false, true, false);
-//		Image image = new Image("start.jpg",600,400,false,true,true);
-//		Background background = new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bsize));
+		
+		Image image = new Image("https://img.pcpjrj.com/uploads/allimg/150606/co150606191G1-0.jpg");
+		
+		grid.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 		
 		
-		ImageView img = new ImageView();
-		Image image = new Image("start.jpg");
-		img.setImage(image);
 		
-		window.getChildren().add(img);
 		
-		Circle circle = new Circle();
-		circle.setRadius(20);
-		grid.getChildren().add(circle);
+		
+
+		Image image2 = new Image("http://pic.616pic.com/ys_img/00/29/84/RG6pxCBkZs.jpg");
+		ImageView img2 = new ImageView(image2);
+		img2.setFitHeight(30);
+		img2.setFitWidth(30);
+		
+//		Circle circle = new Circle();
+//		circle.setRadius(20);
+		grid.getChildren().add(img2);
+		
 		TranslateTransition trans = new TranslateTransition();
 		trans.setDuration(Duration.millis(2000));
-		trans.setNode(circle);
+		trans.setNode(img2);
 		trans.setByX(200);
 		trans.setCycleCount(5);
 		trans.setAutoReverse(false);
@@ -74,9 +80,7 @@ public class View extends Application implements Observer{
 		
 		
 		
-		
-		
-//		window.setBackground(background);
+	
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
 		stage.show();
