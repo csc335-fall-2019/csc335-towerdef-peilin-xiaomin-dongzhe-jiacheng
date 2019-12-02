@@ -7,8 +7,6 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
@@ -38,12 +36,7 @@ public class View extends Application implements Observer{
 		grid = new GridPane();
 		grid.setPrefSize(600, 400);
 		window.setCenter(grid);
-	
-		ImageView img = new ImageView();
-		Image image = new Image("start.jpg");
-		img.setImage(image);
-		
-		window.getChildren().add(img);
+
 		
 		Circle circle = new Circle();
 		circle.setRadius(20);
@@ -58,17 +51,11 @@ public class View extends Application implements Observer{
 		
 		grid.setAlignment(Pos.CENTER);
 		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
 		stage.show();
 		
 	}
 }
+
