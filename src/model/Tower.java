@@ -6,8 +6,7 @@ import javafx.scene.image.Image;
 
 public class Tower {
 	protected int cost;
-	protected int xPos;
-	protected int yPos;
+	protected Point point;
 	protected int range;
 	protected Bullets bullet;
 	private int energy = 0;
@@ -67,15 +66,11 @@ public class Tower {
 	public int getRange() {
 		return range;
 	}
-	public int getX() {
-		return xPos;
+	public Point getPoint() {
+		return point;
 	}
-	public int getY() {
-		return yPos;
-	}
-	public void setPos(int x,int y) {
-		xPos = x;
-		yPos = y;
+	public void setPos(Point point) {
+		this.point = point;
 	}
 	public void addRange(Map map) {
 		

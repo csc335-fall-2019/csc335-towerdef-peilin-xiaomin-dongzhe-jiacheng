@@ -19,5 +19,18 @@ public class Map {
 	public Point[][] getGraph(){
 		return graph;
 	}
+	public void update(int x, int y,Point point) {
+		graph[x][y] = point;
+	}
+	public String toString() {
+		String str = "";
+		for(int i =0;i<graph.length;i++) {
+			for(int j = 0;j<graph[i].length;j++) {
+				str += graph[i][j];
+			}
+			str+="\n";
+		}
+		return str;
+	}
 	
 }

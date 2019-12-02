@@ -7,6 +7,8 @@ public class Monster {
 	protected int magicResist;
 	protected int health;
 	protected int energy;
+	private int xPos;
+
 	//protected boolean dead = false;
 	public Monster() {
 		

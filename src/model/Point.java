@@ -41,6 +41,7 @@ public class Point {
 		for(Monster monster:monsters) {
 			if(monster.dead()) {
 				monsters.remove(monster);
+				monster = null;
 			}
 		}
 	}
@@ -55,5 +56,11 @@ public class Point {
 	}
 	public boolean getEnd() {
 		return end;
+	}
+	public String toString() {
+		if(start) return "s";
+		if(end) return "e";
+		if (road) return "-";
+		return "0";
 	}
 }
