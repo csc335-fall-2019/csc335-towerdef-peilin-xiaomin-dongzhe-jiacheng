@@ -7,7 +7,7 @@ public class Monster {
 	protected int magicResist;
 	protected int health;
 	protected int energy;
-	private int xPos;
+	private Point point;
 
 	//protected boolean dead = false;
 	public Monster() {
@@ -40,7 +40,7 @@ public class Monster {
 	public int getEnergy() {
 		return energy;
 	}
-	public void newHealth(int health) {
+	public void setHealth(int health) {
 		this.health = health;
 	}
 	public boolean dead() {
@@ -48,5 +48,21 @@ public class Monster {
 	}
 	public void newSpeed(int speed) {
 		this.speed = speed;
+	}
+	public void setGold(int gold) {
+		this.gold = gold;
+		
+	}
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
+	public void setEnergy(int energy) {
+		this.energy = energy;
+	}
+	public void setPoint(Point point) {
+		this.point = point;
 	}
 }

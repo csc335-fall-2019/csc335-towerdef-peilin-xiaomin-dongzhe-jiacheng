@@ -39,17 +39,11 @@ public class Tower {
 	public int getCost() {
 		return cost;
 	}
-	public int getAbilityPower() {
-		return this.bullet.magicATK;
-	}
 	public int getAttack() {
-		return this.bullet.physicalATK;
+		return this.bullet.getphysATK();
 	}
 	public int getattackSpeed() {
 		return this.bullet.getSpeed();
-	}
-	public void setAbilityPower(int newPower) {
-		this.bullet.setMagicATK(newPower);
 	}
 	public void setAttack(int attack) {
 		this.bullet.setPhysATK(attack);
