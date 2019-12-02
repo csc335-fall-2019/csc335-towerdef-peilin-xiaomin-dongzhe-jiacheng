@@ -6,6 +6,7 @@ public class BasicTower extends Tower {
 	private int abilityPower = 0;
 	private int range =10;
 	private int attackSpeed = 1;
+	private int health = 50;
 	public BasicTower() {
 		super.setCost(cost);
 		super.setAttack(attack);

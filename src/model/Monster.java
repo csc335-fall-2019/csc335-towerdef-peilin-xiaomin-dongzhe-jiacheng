@@ -6,13 +6,15 @@ public class Monster {
 	protected int armor;
 	protected int magicResist;
 	protected int health;
+	protected int energy;
 	//protected boolean dead = false;
-	public Monster(int gold,int speed,int armor,int magicResist,int health) {
+	public Monster(int gold,int speed,int armor,int magicResist,int health, int energy) {
 		this.gold =gold;
 		this.speed = speed;
 		this.armor = armor;
 		this.magicResist = magicResist;
 		this.health = health;
+		this.energy = energy;
 	}
 	
 	public int getGold() {
@@ -29,6 +31,9 @@ public class Monster {
 	}
 	public int getHealth() {
 		return health;
+	}
+	public int getEnergy() {
+		return energy;
 	}
 	public void newHealth(int health) {
 		this.health = health;

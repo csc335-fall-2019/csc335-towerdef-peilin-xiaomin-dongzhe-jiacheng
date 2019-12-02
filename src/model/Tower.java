@@ -8,10 +8,32 @@ public class Tower {
 	protected int yPos;
 	protected int range;
 	private Bullets bullet;
+	private int energy = 0;
 	
 	public Tower() {
 		
 	}
+	
+	public int getEnergy() {
+		return this.energy;
+	}
+	
+	public void EnergyUP(int amount) {
+		this.energy += amount;
+		
+	}
+	
+	public boolean checkUltimate() {
+		if(this.energy >= 100) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void EnergyClear() {
+		this.energy = 0;
+	}
+	
 	
 	public int getCost() {
 		return cost;
