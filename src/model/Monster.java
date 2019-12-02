@@ -7,7 +7,12 @@ public class Monster {
 	protected int magicResist;
 	protected int health;
 	protected int energy;
+	private int xPos;
+
 	//protected boolean dead = false;
+	public Monster() {
+		
+	}
 	public Monster(int gold,int speed,int armor,int magicResist,int health, int energy) {
 		this.gold =gold;
 		this.speed = speed;
@@ -40,5 +45,8 @@ public class Monster {
 	}
 	public boolean dead() {
 		return health == 0;
+	}
+	public void newSpeed(int speed) {
+		this.speed = speed;
 	}
 }

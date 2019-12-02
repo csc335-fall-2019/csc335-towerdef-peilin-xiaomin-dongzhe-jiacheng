@@ -1,15 +1,19 @@
 package model;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 
 public class Tower {
 	protected int cost;
+	protected Point point;
+	private int sellPrice;
 	protected int xPos;
 	protected int yPos;
 	protected int range;
-	private Bullets bullet;
+	protected Bullets bullet;
 	private int energy = 0;
-	
+	private	ArrayList <Point> rangePoint = new ArrayList<>();
 	public Tower() {
 		
 	}
@@ -38,6 +42,11 @@ public class Tower {
 	public int getCost() {
 		return cost;
 	}
+	
+	public int getSellPrice() {
+		return sellPrice;
+	}
+	
 	public int getAbilityPower() {
 		return this.bullet.magicATK;
 	}
@@ -59,20 +68,25 @@ public class Tower {
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
+	public void setSellPrice(int sellPrice) {
+		this.sellPrice = sellPrice;
+	}
 	public void setRange(int range) {
 		this.range = range;
 	}
 	public int getRange() {
 		return range;
 	}
-	public int getX() {
-		return xPos;
+	public Point getPoint() {
+		return point;
 	}
-	public int getY() {
-		return yPos;
+	public void setPos(Point point) {
+		this.point = point;
 	}
-	public void setPos(int x,int y) {
-		xPos = x;
-		yPos = y;
+	public void addRange(Map map) {
+		
+	}
+	public ArrayList <Point> getRangePoint(){
+		return rangePoint;
 	}
 }
