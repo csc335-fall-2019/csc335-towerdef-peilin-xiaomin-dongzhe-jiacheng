@@ -19,6 +19,10 @@ public class TowerDefModel extends Observable {
 		return this.availTowers;
 	}
 	
+	public void setMap(Map map) {
+		this.map = map;
+	}
+	
 	public void autoUpdateMoney() {
 		this.map.getPlayer().autoMoney();
 		
@@ -52,5 +56,9 @@ public class TowerDefModel extends Observable {
 		
 		setChanged();
         notifyObservers();
+	}
+	
+	public void monsterMove(int xPos, int yPos, int preX, int preY) {
+		
 	}
 }
