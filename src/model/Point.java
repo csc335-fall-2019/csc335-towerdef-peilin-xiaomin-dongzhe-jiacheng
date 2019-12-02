@@ -30,6 +30,11 @@ public class Point {
 	public Monster getMonster() {
 		return monster;
 	}
+	
+	public void sellTower() {
+		this.tower = null;
+	}
+	
 	public void clear() {
 		if(tower != null) tower = null;
 		if(monster != null) monster = null;
