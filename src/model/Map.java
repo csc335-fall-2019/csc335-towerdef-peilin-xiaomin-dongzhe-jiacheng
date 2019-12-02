@@ -9,7 +9,7 @@ public class Map {
 	
 	public Map(Player player,int x,int y) {
 		graph = new Point[x][y];
-		player = player;
+		this.player = player;
 	}
 	
 	public Player getPlayer() {
