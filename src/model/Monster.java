@@ -44,4 +44,7 @@ public class Monster {
 	public boolean dead() {
 		return health == 0;
 	}
+	public void newSpeed(int speed) {
+		this.speed = speed;
+	}
 }
