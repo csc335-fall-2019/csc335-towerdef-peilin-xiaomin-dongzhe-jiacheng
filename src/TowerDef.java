@@ -1,5 +1,7 @@
 import controller.TowerDefController;
 import javafx.application.Application;
+import model.BasicTower;
+import model.Tower;
 import model.TowerDefModel;
 import view.View;
 
@@ -10,7 +12,6 @@ public class TowerDef {
 		
 		TowerDefModel model = new TowerDefModel();
 		TowerDefController controller = new TowerDefController(model);
-		
 		controller.buildBasicStage();
 		System.out.println(controller.getModel().getMap().toString());
 	}

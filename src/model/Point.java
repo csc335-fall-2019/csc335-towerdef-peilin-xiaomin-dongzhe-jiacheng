@@ -23,6 +23,9 @@ public class Point {
 	public void setRoad() {
 		this.road = true;
 	}
+	public boolean canSetTower() {
+		return !road && tower == null;
+		}
 	public void setTower(Tower tower) {
 		this.tower = tower;
 	}

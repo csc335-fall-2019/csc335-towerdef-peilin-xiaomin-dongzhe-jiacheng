@@ -6,7 +6,7 @@ public class Player {
 
 	public Player(int health) {
 		this.health = health;
-		this.money = 0;
+		this.money = 20;
 	}
 	
 	public int getHealth() {
@@ -24,10 +24,10 @@ public class Player {
 	public void earnMoney(int earned) {
 		this.money += earned;
 	}
-	public boolean buyTower(int cost) {
-		if(money < cost)return false;
-		money -= cost;
-		return true;
+	public boolean canBuyTower(int cost) {
+		return money>= cost;
 	}
-	
+	public void buy(int cost) {
+		money -= cost;
+	}
 }
