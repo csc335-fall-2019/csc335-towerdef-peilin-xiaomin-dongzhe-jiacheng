@@ -2,18 +2,22 @@ package model;
 
 public class Map {
 	private Player player;
+	private Point[][] graph;
 //	private int health;
 	
 	
 	
-	public Map() {
-		
+	public Map(Player player,int x,int y) {
+		graph = new Point[x][y];
+		player = player;
 	}
 	
-	
-	public void setPlayer(int health) {
-		player = new Player(health);
+	public Player getPlayer() {
+		return player;
 	}
 	
+	public Point[][] getGraph(){
+		return graph;
+	}
 	
 }

@@ -8,6 +8,9 @@ public class Monster {
 	protected int health;
 	protected int energy;
 	//protected boolean dead = false;
+	public Monster() {
+		
+	}
 	public Monster(int gold,int speed,int armor,int magicResist,int health, int energy) {
 		this.gold =gold;
 		this.speed = speed;

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 
 public class Tower {
@@ -7,9 +9,9 @@ public class Tower {
 	protected int xPos;
 	protected int yPos;
 	protected int range;
-	private Bullets bullet;
+	protected Bullets bullet;
 	private int energy = 0;
-	
+	private	ArrayList <Point> rangePoint = new ArrayList<>();
 	public Tower() {
 		
 	}
@@ -74,5 +76,11 @@ public class Tower {
 	public void setPos(int x,int y) {
 		xPos = x;
 		yPos = y;
+	}
+	public void addRange(Map map) {
+		
+	}
+	public ArrayList <Point> getRangePoint(){
+		return rangePoint;
 	}
 }
