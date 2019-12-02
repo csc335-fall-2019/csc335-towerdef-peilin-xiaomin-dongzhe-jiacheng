@@ -7,9 +7,13 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
@@ -40,6 +44,17 @@ public class View extends Application implements Observer{
 		grid.setPrefSize(600, 400);
 		window.setCenter(grid);
 		
+//		BackgroundSize bsize = new BackgroundSize(600,400, false, false, true, false);
+//		Image image = new Image("start.jpg",600,400,false,true,true);
+//		Background background = new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bsize));
+		
+		
+		ImageView img = new ImageView();
+		Image image = new Image("start.jpg");
+		img.setImage(image);
+		
+		window.getChildren().add(img);
+		
 		Circle circle = new Circle();
 		circle.setRadius(20);
 		grid.getChildren().add(circle);
@@ -61,8 +76,7 @@ public class View extends Application implements Observer{
 		
 		
 		
-		
-		
+//		window.setBackground(background);
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
 		stage.show();
