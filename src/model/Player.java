@@ -24,4 +24,10 @@ public class Player {
 	public void earnMoney(int earned) {
 		this.money += earned;
 	}
+	public boolean buyTower(int cost) {
+		if(money < cost)return false;
+		money -= cost;
+		return true;
+	}
+	
 }
