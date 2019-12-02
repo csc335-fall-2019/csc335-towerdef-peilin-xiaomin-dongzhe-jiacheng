@@ -7,8 +7,8 @@ public class Map {
 	
 
 	
-	public Map(Player player,int x,int y) {
-		graph = new Point[x][y];
+	public Map(Player player,int height,int width) {
+		graph = new Point[height][width];
 		this.player = player;
 	}
 	
