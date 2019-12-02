@@ -7,8 +7,8 @@ public class TowerDefModel extends Observable {
 	private Map map;
 	private ArrayList<Tower> availTowers;
 	
-	public TowerDefModel(Map map) {
-		this.map = map;
+	public TowerDefModel() {
+		
 	}
 	
 	public Map getMap() {
@@ -17,6 +17,10 @@ public class TowerDefModel extends Observable {
 	
 	public ArrayList<Tower> getAvailTowers() {
 		return this.availTowers;
+	}
+	
+	public void setMap(Map map) {
+		this.map = map;
 	}
 	
 	public void autoUpdateMoney() {
@@ -52,5 +56,9 @@ public class TowerDefModel extends Observable {
 		
 		setChanged();
         notifyObservers();
+	}
+	
+	public void monsterMove(int xPos, int yPos, int preX, int preY) {
+		
 	}
 }

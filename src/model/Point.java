@@ -19,6 +19,10 @@ public class Point {
 	public boolean isRoad() {
 		return road;
 	}
+	
+	public void setRoad() {
+		this.road = true;
+	}
 	public void setTower(Tower tower) {
 		this.tower = tower;
 	}
