@@ -15,7 +15,6 @@ public class Bullets {
 		return this.physicalATK;
 	}
 	
-	
 	public int getmagicATK() {
 		return this.magicATK;
 	}
