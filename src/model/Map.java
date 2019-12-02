@@ -5,7 +5,7 @@ public class Map {
 	private Point[][] graph;
 //	private int health;
 	
-	
+
 	
 	public Map(Player player,int x,int y) {
 		graph = new Point[x][y];

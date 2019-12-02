@@ -3,6 +3,7 @@ package view;
 import java.util.Observable;
 import java.util.Observer;
 
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -67,9 +68,6 @@ public class View extends Application implements Observer{
 		trans.play();
 		
 		grid.setAlignment(Pos.CENTER);
-		
-		
-		
 		
 		
 		
