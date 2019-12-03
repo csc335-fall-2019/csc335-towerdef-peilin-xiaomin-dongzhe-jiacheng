@@ -21,13 +21,10 @@ public class Player {
 		this.money++;
 	}
 	
-	public void earnMoney(int earned) {
-		this.money += earned;
+	public void changeMoney(int money) {
+		this.money += money;
 	}
 	public boolean canBuyTower(int cost) {
 		return money>= cost;
-	}
-	public void buy(int cost) {
-		money -= cost;
 	}
 }
