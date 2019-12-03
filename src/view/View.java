@@ -45,7 +45,6 @@ import model.TowerMessage;
 public class View extends Application implements Observer{
 	
 	private GridPane grid;
-	private TowerDefController controller;
 
 	
 	private Rectangle[][] rectangles;
