@@ -14,6 +14,7 @@ public class Tower {
 	protected Bullets bullet;
 	private int energy = 0;
 	private	ArrayList <Point> rangePoint = new ArrayList<>();
+	
 	public Tower() {
 		
 	}
@@ -51,13 +52,13 @@ public class Tower {
 	public int getAttack() {
 		return this.bullet.getphysATK();
 	}
-	public int getattackSpeed() {
+	public double getattackSpeed() {
 		return this.bullet.getSpeed();
 	}
 	public void setAttack(int attack) {
 		this.bullet.setPhysATK(attack);
 	}
-	public void setAttackSpeed(int attackSpeed) {
+	public void setAttackSpeed(double attackSpeed) {
 		this.bullet.setSpeedATK(attackSpeed);
 	}
 	public void setCost(int cost) {

@@ -259,6 +259,7 @@ public class View extends Application implements Observer{
 				// TODO Auto-generated method stub
 				image.setFitHeight(65);
 				image.setFitWidth(65);
+				//if (controller.canBuyTower(tower))
 				
 			}
 			
