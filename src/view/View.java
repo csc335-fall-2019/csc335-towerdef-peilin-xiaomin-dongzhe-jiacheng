@@ -65,11 +65,14 @@ public class View extends Application implements Observer{
 		// TODO Auto-generated method stub
 		TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
 		if (msg instanceof TowerMessage) {
-			Tower tower;
-			if ((Tower) msg.getObj() != null) {
-				tower = (Tower) msg.getObj();
+			Tower tower = (Tower) msg.getObj();;
+			if(msg.getMoney()> 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(Color.GREEN);
+			}else if(msg.getMoney()< 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			}
-			rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
+			model.getMap().getPlayer().changeMoney(msg.getMoney());
+			//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
 		else { 
