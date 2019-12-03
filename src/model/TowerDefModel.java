@@ -48,7 +48,7 @@ public class TowerDefModel extends Observable {
 	public void sellTower(int row, int col) {
 		Tower tower = this.map.getGraph()[row][col].getTower();
 		this.map.getGraph()[row][col].sellTower();
-		TowerDefMoveMessage msg = new TowerMessage(row, col, tower);
+		TowerDefMoveMessage msg = new TowerMessage(row, col, null);
 		
 		setChanged();
         notifyObservers(msg);

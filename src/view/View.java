@@ -65,9 +65,8 @@ public class View extends Application implements Observer{
 			Tower tower;
 			if ((Tower) msg.getObj() != null) {
 				tower = (Tower) msg.getObj();
+				
 			}
-			rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
-			// update on stage;
 		}
 		else { 
 			
