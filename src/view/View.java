@@ -45,11 +45,14 @@ import model.TowerMessage;
 public class View extends Application implements Observer{
 	
 	private GridPane grid;
+
+	private ImageView current;
 	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
 	
+
 	public View() {
 		this.rectangles = new Rectangle[10][20];
 		this.model = new TowerDefModel();
@@ -186,6 +189,7 @@ public class View extends Application implements Observer{
 		
 		
 		doImg(img3);
+		
 		window.setTop(grid);
 		window.setBottom(grid2);
 		
@@ -211,7 +215,11 @@ public class View extends Application implements Observer{
 				Rectangle rectangle = new Rectangle();
 				rectangle.setWidth(30.0f);
 				rectangle.setHeight(30.0f);
-				rectangle.setFill(Color.WHITE);
+				if(model.getMap().getGraph()[i][j].isRoad()) {
+					rectangle.setFill(Color.WHITE);
+				}else {
+					rectangle.setFill(Color.GREEN);
+				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
 			}
@@ -243,6 +251,18 @@ public class View extends Application implements Observer{
 			}
 			
 		});
+		
+		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				current = image;
+				System.out.println("current changed");
+			}
+			
+		});
+		
 		
 		
 	}
