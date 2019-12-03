@@ -17,10 +17,6 @@ public class Player {
 		return this.money;
 	}
 	
-	public void autoMoney() {
-		this.money++;
-	}
-	
 	public void changeMoney(int money) {
 		this.money += money;
 	}

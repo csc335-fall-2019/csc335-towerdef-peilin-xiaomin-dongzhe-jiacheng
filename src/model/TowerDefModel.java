@@ -23,19 +23,6 @@ public class TowerDefModel extends Observable {
 		this.map = map;
 	}
 	
-	public void autoUpdateMoney() {
-		this.map.getPlayer().autoMoney();
-		
-		setChanged();
-        notifyObservers();
-	}
-	
-	public void updateMoney(int earned) {
-		this.map.getPlayer().changeMoney(earned);
-		
-		setChanged();
-        notifyObservers();
-	}
 	
 	public void setTower(Tower tower, int row, int col) {
 		this.map.getGraph()[row][col].setTower(tower);
