@@ -71,7 +71,7 @@ public class View extends Application implements Observer{
 			if(msg.getMoney()> 0) {
 				rectangles[msg.getRow()][msg.getColumn()].setFill(Color.GREEN);
 			}else if(msg.getMoney()< 0) {
-				rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
 			}
 
 			model.getMap().getPlayer().changeMoney(msg.getMoney());
