@@ -189,6 +189,8 @@ public class View extends Application implements Observer{
 		grid2.setPrefSize(800, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
+		
+		
 		Image first = new Image("/img/TOWER.png");
 		ImageView firstImg = new ImageView(first);
 		

@@ -16,7 +16,7 @@ public class Tower {
 	private	ArrayList <Point> rangePoint = new ArrayList<>();
 	
 	public Tower() {
-		
+		this.bullet = new Bullets();
 	}
 	
 	public int getEnergy() {
