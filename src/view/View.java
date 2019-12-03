@@ -7,6 +7,8 @@ import java.util.Observer;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -170,7 +173,13 @@ public class View extends Application implements Observer{
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ImageView img3 = new ImageView(image);
+		img3.setFitHeight(60);
+		img3.setFitWidth(60);
 		grid2.getChildren().add(img3);
+		
+		
+		
+		doImg(img3);
 		window.setTop(grid);
 		window.setBottom(grid2);
 		
@@ -181,6 +190,7 @@ public class View extends Application implements Observer{
 		
 		
 	}
+	
 	
 	/**
 	 * this class is used to draw circles
@@ -201,4 +211,34 @@ public class View extends Application implements Observer{
 			}
 		}
 	}
+
+	private void doImg(ImageView image) {
+		
+		image.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				image.setFitHeight(85);
+				image.setFitWidth(85);
+				
+			}
+			
+		});
+		
+		image.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				image.setFitHeight(60);
+				image.setFitWidth(60);
+				
+			}
+			
+		});
+		
+		
+	}
+	
 }
