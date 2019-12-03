@@ -8,7 +8,7 @@ public class TowerDefModel extends Observable {
 	private ArrayList<Tower> availTowers;
 	
 	public TowerDefModel() {
-		
+		this.availTowers = new ArrayList<Tower>();
 	}
 	
 	public Map getMap() {
@@ -17,6 +17,10 @@ public class TowerDefModel extends Observable {
 	
 	public ArrayList<Tower> getAvailTowers() {
 		return this.availTowers;
+	}
+	
+	public void addTowers(Tower tower) {
+		this.availTowers.add(tower);
 	}
 	
 	public void setMap(Map map) {

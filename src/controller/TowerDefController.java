@@ -1,10 +1,12 @@
 package controller;
 
+import model.BasicTower;
 import model.Map;
 import model.Player;
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
+import model.Turret;
 
 public class TowerDefController {
 	private TowerDefModel model;
@@ -43,6 +45,8 @@ public class TowerDefController {
 			}
 		}
 		model.setMap(newMap);
+		model.addTowers(new BasicTower());
+		model.addTowers(new Turret());
 //		this.map = model.getMap();
 //		this.player = this.map.getPlayer();
 	}
