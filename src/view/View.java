@@ -306,7 +306,7 @@ public class View extends Application implements Observer{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				if ((image == sellImg && currTower == null)
+				if (image == sellImg && currTower == null 
 					|| controller.canBuyTower(currTower)) {
 					current = image;
 					currentTower = currTower;
@@ -341,12 +341,14 @@ public class View extends Application implements Observer{
 				if(current == sellImg) {
 					if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 						controller.sellTower(x, y);
+						current = null;
 					}
 					//ret.setFill(Color.GREEN);
 				}
 				else if (controller.canSetTower(x,y) && currentTower != null) {
 					controller.buildTower(x, y, currentTower);
-					
+					current = null;
+					currentTower = null;
 					//ret.setFill(new ImagePattern(current.getImage()));
 				}
 			}
