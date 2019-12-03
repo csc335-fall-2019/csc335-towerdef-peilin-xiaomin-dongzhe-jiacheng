@@ -214,7 +214,11 @@ public class View extends Application implements Observer{
 				Rectangle rectangle = new Rectangle();
 				rectangle.setWidth(30.0f);
 				rectangle.setHeight(30.0f);
-				rectangle.setFill(Color.WHITE);
+				if(model.getMap().getGraph()[i][j].isRoad()) {
+					rectangle.setFill(Color.WHITE);
+				}else {
+					rectangle.setFill(Color.GREEN);
+				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
 			}
