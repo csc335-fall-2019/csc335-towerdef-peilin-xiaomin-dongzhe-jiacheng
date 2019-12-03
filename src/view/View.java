@@ -38,6 +38,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Tower;
+import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
 
@@ -48,10 +49,15 @@ public class View extends Application implements Observer{
 
 	
 	private Rectangle[][] rectangles;
+	private TowerDefModel model;
+	private TowerDefController controller;
 	
 
 	public View() {
-		
+		this.rectangles = new Rectangle[10][20];
+		this.model = new TowerDefModel();
+		this.controller = new TowerDefController(model);
+		controller.buildBasicStage();
 	}
 
 	@Override
@@ -166,7 +172,7 @@ public class View extends Application implements Observer{
 		
 		BorderPane window = new BorderPane();
 		
-		this.rectangles = new Rectangle[10][20];
+		
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
