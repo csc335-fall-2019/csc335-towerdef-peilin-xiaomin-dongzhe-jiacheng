@@ -8,7 +8,8 @@ public class TowerDefModel extends Observable {
 	private ArrayList<Tower> availTowers;
 	
 	public TowerDefModel() {
-		
+		//this.map = new Map();
+		this.availTowers = new ArrayList<Tower>();
 	}
 	
 	public Map getMap() {
@@ -19,27 +20,18 @@ public class TowerDefModel extends Observable {
 		return this.availTowers;
 	}
 	
+	public void addTowers(Tower tower) {
+		this.availTowers.add(tower);
+	}
+	
 	public void setMap(Map map) {
 		this.map = map;
 	}
 	
-	public void autoUpdateMoney() {
-		this.map.getPlayer().autoMoney();
-		
-		setChanged();
-        notifyObservers();
-	}
-	
-	public void updateMoney(int earned) {
-		this.map.getPlayer().earnMoney(earned);
-		
-		setChanged();
-        notifyObservers();
-	}
 	
 	public void setTower(Tower tower, int row, int col) {
 		this.map.getGraph()[row][col].setTower(tower);
-		TowerDefMoveMessage msg = new TowerMessage(row, col, tower);
+		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,-tower.getCost());
 		
 		setChanged();
         notifyObservers(msg);
@@ -48,7 +40,7 @@ public class TowerDefModel extends Observable {
 	public void sellTower(int row, int col) {
 		Tower tower = this.map.getGraph()[row][col].getTower();
 		this.map.getGraph()[row][col].sellTower();
-		TowerDefMoveMessage msg = new TowerMessage(row, col, tower);
+		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,tower.getCost());
 		
 		setChanged();
         notifyObservers(msg);
