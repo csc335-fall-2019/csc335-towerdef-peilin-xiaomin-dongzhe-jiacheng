@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.util.Observable;
 import java.util.Observer;
 
+import controller.TowerDefController;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -39,7 +40,7 @@ import model.TowerMessage;
 public class View extends Application implements Observer{
 	
 	private GridPane grid;
-	
+	private TowerDefController controller;
 	public View() {
 		
 	}
