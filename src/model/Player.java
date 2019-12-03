@@ -21,6 +21,6 @@ public class Player {
 		this.money += money;
 	}
 	public boolean canBuyTower(int cost) {
-		return money>= cost;
+		return money >= cost;
 	}
 }

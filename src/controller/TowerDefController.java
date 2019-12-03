@@ -62,7 +62,7 @@ public class TowerDefController {
 	}
 	
 	public void sellTower(int x, int y) {
-		
+		model.sellTower(x, y);
 	}
 	
 }

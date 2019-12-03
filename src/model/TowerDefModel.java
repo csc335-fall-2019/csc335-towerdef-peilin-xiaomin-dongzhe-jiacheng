@@ -8,6 +8,7 @@ public class TowerDefModel extends Observable {
 	private ArrayList<Tower> availTowers;
 	
 	public TowerDefModel() {
+		//this.map = new Map();
 		this.availTowers = new ArrayList<Tower>();
 	}
 	
