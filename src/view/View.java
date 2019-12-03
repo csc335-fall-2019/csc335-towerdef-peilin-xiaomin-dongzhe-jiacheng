@@ -46,6 +46,7 @@ public class View extends Application implements Observer{
 	
 	private GridPane grid;
 
+	private ImageView current;
 	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
@@ -189,6 +190,7 @@ public class View extends Application implements Observer{
 		
 		
 		doImg(img3);
+		
 		window.setTop(grid);
 		window.setBottom(grid2);
 		
@@ -246,6 +248,18 @@ public class View extends Application implements Observer{
 			}
 			
 		});
+		
+		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				current = image;
+				System.out.println("current changed");
+			}
+			
+		});
+		
 		
 		
 	}

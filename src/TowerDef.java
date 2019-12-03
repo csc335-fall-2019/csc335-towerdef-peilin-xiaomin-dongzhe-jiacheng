@@ -9,7 +9,7 @@ public class TowerDef {
 
 	public static void main(String[] args) {
 
-		 Application.launch(View.class, args);
+		Application.launch(View.class, args);
 
 		
 //		TowerDefModel model = new TowerDefModel();
