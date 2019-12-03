@@ -48,6 +48,7 @@ public class View extends Application implements Observer{
 	private GridPane grid;
 
 	private ImageView current;
+	private ImageView sellImg;
 	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
@@ -194,6 +195,12 @@ public class View extends Application implements Observer{
 		Image second = new Image("/img/tower2.png");
 		ImageView secondImg = new ImageView(second);
 		
+		Image sell = new Image("/img/sell.png");
+		sellImg = new ImageView(sell);
+		
+		
+		
+		
 		
 		
 		
@@ -206,11 +213,19 @@ public class View extends Application implements Observer{
 		
 		secondImg.setFitHeight(50);
 		secondImg.setFitWidth(50);
-		hb.getChildren().addAll(firstImg, secondImg);
+		
+		
+		sellImg.setFitHeight(50);
+		sellImg.setFitWidth(50);
+		
+		
+		hb.getChildren().addAll(firstImg, secondImg, sellImg);
+		
 		grid2.getChildren().add(hb);
 		
 		doImg(firstImg);
 		doImg(secondImg);
+		doImg(sellImg);
 		
 		window.setTop(grid);
 		window.setBottom(grid2);
@@ -295,7 +310,12 @@ public class View extends Application implements Observer{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				ret.setFill(new ImagePattern(current.getImage()));
+				if(current == sellImg) {
+					ret.setFill(Color.GREEN);
+				}
+				else {
+					ret.setFill(new ImagePattern(current.getImage()));
+				}
 			}
 			
 		});
