@@ -31,6 +31,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -161,12 +162,12 @@ public class View extends Application implements Observer{
 	private void mouseClick(Button label, Stage stage, Image image) {
 		label.setOnMouseClicked((event) -> {
 			stage.close();
-			createNewGame(image);
+			createNewGame();
 		});
 	}
 	
 	
-	private void createNewGame(Image image) {
+	private void createNewGame() {
 		Stage stage = new Stage();
 		stage.setTitle("Tower Defense");
 		
@@ -179,17 +180,32 @@ public class View extends Application implements Observer{
 		this.setGridPane(grid);
 		
 		GridPane grid2 = new GridPane();
-		grid2.setPrefSize(800, 50);
+		grid2.setPrefSize(800, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
-		ImageView img3 = new ImageView(image);
-		img3.setFitHeight(60);
-		img3.setFitWidth(60);
-		grid2.getChildren().add(img3);
+		Image first = new Image("/img/TOWER.png");
+		ImageView firstImg = new ImageView(first);
+		
+		Image second = new Image("/img/tower2.png");
+		ImageView secondImg = new ImageView(second);
 		
 		
 		
-		doImg(img3);
+		
+		
+		HBox hb = new HBox();
+		
+		firstImg.setFitHeight(50);
+		firstImg.setFitWidth(50);
+		
+		
+		secondImg.setFitHeight(50);
+		secondImg.setFitWidth(50);
+		hb.getChildren().addAll(firstImg, secondImg);
+		grid2.getChildren().add(hb);
+		
+		doImg(firstImg);
+		doImg(secondImg);
 		
 		window.setTop(grid);
 		window.setBottom(grid2);
@@ -216,10 +232,12 @@ public class View extends Application implements Observer{
 				Rectangle rectangle = new Rectangle();
 				rectangle.setWidth(30.0f);
 				rectangle.setHeight(30.0f);
+				
 				if(model.getMap().getGraph()[i][j].isRoad()) {
 					rectangle.setFill(Color.WHITE);
 				}else {
 					rectangle.setFill(Color.GREEN);
+					doRectangle(rectangle);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
@@ -234,8 +252,8 @@ public class View extends Application implements Observer{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				image.setFitHeight(85);
-				image.setFitWidth(85);
+				image.setFitHeight(65);
+				image.setFitWidth(65);
 				
 			}
 			
@@ -246,8 +264,8 @@ public class View extends Application implements Observer{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				image.setFitHeight(60);
-				image.setFitWidth(60);
+				image.setFitHeight(50);
+				image.setFitWidth(50);
 				
 			}
 			
@@ -264,8 +282,20 @@ public class View extends Application implements Observer{
 			
 		});
 		
-		
-		
 	}
+	
+	private void doRectangle(Rectangle ret) {
+		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				ret.setFill(new ImagePattern(current.getImage()));
+			}
+			
+		});
+	}
+	
+	
 	
 }
