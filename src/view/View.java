@@ -8,6 +8,8 @@ import controller.TowerDefController;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -29,6 +32,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -41,6 +45,11 @@ public class View extends Application implements Observer{
 	
 	private GridPane grid;
 	private TowerDefController controller;
+
+	
+	private Rectangle[][] rectangles;
+	
+
 	public View() {
 		
 	}
@@ -54,6 +63,7 @@ public class View extends Application implements Observer{
 			if ((Tower) msg.getObj() != null) {
 				tower = (Tower) msg.getObj();
 			}
+			rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
 		else { 
@@ -156,16 +166,24 @@ public class View extends Application implements Observer{
 		
 		BorderPane window = new BorderPane();
 		
+		this.rectangles = new Rectangle[10][20];
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
+		this.setGridPane(grid);
 		
 		GridPane grid2 = new GridPane();
-		grid2.setPrefSize(800, 100);
+		grid2.setPrefSize(800, 50);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ImageView img3 = new ImageView(image);
+		img3.setFitHeight(60);
+		img3.setFitWidth(60);
 		grid2.getChildren().add(img3);
+		
+		
+		
+		doImg(img3);
 		window.setTop(grid);
 		window.setBottom(grid2);
 		
@@ -176,4 +194,55 @@ public class View extends Application implements Observer{
 		
 		
 	}
+	
+	
+	/**
+	 * this class is used to draw circles
+	 * @param pane is the gridpane object.
+	 */
+	public void setGridPane(GridPane grid) {
+		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+		grid.setHgap(1);
+		grid.setVgap(1);
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 20; j++) {
+				Rectangle rectangle = new Rectangle();
+				rectangle.setWidth(30.0f);
+				rectangle.setHeight(30.0f);
+				rectangle.setFill(Color.WHITE);
+				this.rectangles[i][j] = rectangle;
+				grid.add(rectangle, j, i);
+			}
+		}
+	}
+
+	private void doImg(ImageView image) {
+		
+		image.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				image.setFitHeight(85);
+				image.setFitWidth(85);
+				
+			}
+			
+		});
+		
+		image.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				image.setFitHeight(60);
+				image.setFitWidth(60);
+				
+			}
+			
+		});
+		
+		
+	}
+	
 }
