@@ -180,7 +180,7 @@ public class View extends Application implements Observer{
 		
 		GridPane grid2 = new GridPane();
 		grid2.setPrefSize(800, 50);
-		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		grid2.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		
 		ImageView img3 = new ImageView(image);
 		img3.setFitHeight(60);
@@ -235,6 +235,7 @@ public class View extends Application implements Observer{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+				
 				image.setFitHeight(85);
 				image.setFitWidth(85);
 				
