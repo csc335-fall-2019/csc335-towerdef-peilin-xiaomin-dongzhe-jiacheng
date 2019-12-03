@@ -28,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -39,6 +40,8 @@ import model.TowerMessage;
 public class View extends Application implements Observer{
 	
 	private GridPane grid;
+	
+	private Rectangle[][] rectangles;
 	
 	public View() {
 		
@@ -53,6 +56,7 @@ public class View extends Application implements Observer{
 			if ((Tower) msg.getObj() != null) {
 				tower = (Tower) msg.getObj();
 			}
+			rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
 		else { 
@@ -155,12 +159,14 @@ public class View extends Application implements Observer{
 		
 		BorderPane window = new BorderPane();
 		
+		this.rectangles = new Rectangle[10][20];
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
+		this.setGridPane(grid);
 		
 		GridPane grid2 = new GridPane();
-		grid2.setPrefSize(800, 100);
+		grid2.setPrefSize(800, 50);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ImageView img3 = new ImageView(image);
@@ -174,5 +180,25 @@ public class View extends Application implements Observer{
 		stage.show();
 		
 		
+	}
+	
+	/**
+	 * this class is used to draw circles
+	 * @param pane is the gridpane object.
+	 */
+	public void setGridPane(GridPane grid) {
+		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+		grid.setHgap(1);
+		grid.setVgap(1);
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 20; j++) {
+				Rectangle rectangle = new Rectangle();
+				rectangle.setWidth(30.0f);
+				rectangle.setHeight(30.0f);
+				rectangle.setFill(Color.WHITE);
+				this.rectangles[i][j] = rectangle;
+				grid.add(rectangle, j, i);
+			}
+		}
 	}
 }
