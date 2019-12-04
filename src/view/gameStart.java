@@ -134,6 +134,10 @@ public class gameStart implements Observer {
 		doImg(secondImg, availTowers.get(1));
 		doImg(sellImg, null);
 		
+//		enemyWave() {
+//			
+//		}
+		
 		window.setTop(grid3);
 		window.setCenter(grid);
 		window.setBottom(grid2);
@@ -163,8 +167,8 @@ public class gameStart implements Observer {
 	public void setGridPane(GridPane grid) {
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 
-		grid.setHgap(1);
-		grid.setVgap(1);
+//		grid.setHgap(1);
+//		grid.setVgap(1);
 		Point point;
 		Image image = new Image("/img/enemy.png");
 
