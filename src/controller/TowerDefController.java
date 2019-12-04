@@ -9,6 +9,10 @@ import model.TowerDefModel;
 import model.Turret;
 
 public class TowerDefController {
+	
+	public final int WIDTH = 10;
+	public final int HEIGHT = 6;
+	
 	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
@@ -23,22 +27,20 @@ public class TowerDefController {
 	
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
-		int width = 20;
-		int height = 10;
-		Map newMap = new Map(newPlayer, height, width);
+		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
 		
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
 				Point point = new Point(row, col, false);
-				if ((row == 2 && col <= 15) 
-					|| (row == 8 && col <=15) 
-					|| (col == 15 && row >= 2 && row <= 8)) {
+				if ((row == 1 && col <= 7) 
+					|| (row == 4 && col <= 7) 
+					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
 				}
-				if (row == 2 && col == 0) {
+				if (row == 1 && col == 0) {
 					point.setStart();
 				}
-				if (row == 8 && col == 0) {
+				if (row == 4 && col == 0) {
 					point.setEnd();
 				}
 				newMap.update(row, col, point);

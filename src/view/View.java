@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -251,11 +250,11 @@ public class View extends Application implements Observer{
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 		grid.setHgap(1);
 		grid.setVgap(1);
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 20; j++) {
+		for (int i = 0; i < controller.HEIGHT; i++) {
+			for (int j = 0; j < controller.WIDTH; j++) {
 				Rectangle rectangle = new Rectangle();
-				rectangle.setWidth(30.0f);
-				rectangle.setHeight(30.0f);
+				rectangle.setWidth(50.0f);
+				rectangle.setHeight(50.0f);
 				
 				if(model.getMap().getGraph()[i][j].isRoad()) {
 					rectangle.setFill(Color.WHITE);
@@ -330,8 +329,8 @@ public class View extends Application implements Observer{
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				int x = 0, y = 0;
-				for (int i = 0; i < 10; i++) {
-					for (int j = 0; j < 20; j++) {
+				for (int i = 0; i < controller.HEIGHT; i++) {
+					for (int j = 0; j < controller.WIDTH; j++) {
 						if (rectangles[i][j].equals(ret)) {
 							x = i;
 							y = j;
