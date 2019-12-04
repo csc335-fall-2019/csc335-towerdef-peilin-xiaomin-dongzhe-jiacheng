@@ -24,12 +24,8 @@ public class TowerDefController {
 	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
-	
 
-	/**
-	 * Controller constructor.
-	 * @param model
-	 */
+	public Point point;
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
@@ -50,11 +46,12 @@ public class TowerDefController {
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
-				Point point = new Point(row, col, false);
+				point = new Point(row, col, false);
 				if ((row == 1 && col <= 7) 
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
+					newMap.addRoad(point);
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
