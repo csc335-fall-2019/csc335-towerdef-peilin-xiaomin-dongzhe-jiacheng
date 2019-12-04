@@ -34,20 +34,18 @@ public class gameStart implements Observer {
 	private Tower currentTower;
 	private ImageView sellImg;
 	
-	
-	private ImageView[][] images;
-	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
+	// private ImageView[][] images;
 	
 	public gameStart() {
-		//this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
-		//this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
 		controller.getModel().addObserver(this);
+		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
+		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
 	}
 	
 	
@@ -155,6 +153,19 @@ public class gameStart implements Observer {
 		grid.setVgap(1);
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
+				Rectangle rectangle = new Rectangle();
+				rectangle.setWidth(70.0f);
+				rectangle.setHeight(70.0f);
+				Point currentPoint = model.getMap().getGraph()[i][j];
+				if(currentPoint.isRoad()) {
+					rectangle.setFill(Color.WHITE);
+				}else {
+					rectangle.setFill(Color.GREEN);
+					doRectangle(rectangle);
+				}
+				this.rectangles[i][j] = rectangle;
+				grid.add(rectangle, j, i);
+				
 //				ImageView currImage = new ImageView();
 //				Point currentPoint = model.getMap().getGraph()[i][j];
 //				if (currentPoint.isRoad()) {
@@ -177,19 +188,6 @@ public class gameStart implements Observer {
 //				currImage.setFitWidth(70.0f);
 //				this.images[i][j] = currImage;
 //				grid.add(currImage, j, i);
-				
-				Rectangle rectangle = new Rectangle();
-				rectangle.setWidth(70.0f);
-				rectangle.setHeight(70.0f);
-				Point currentPoint = model.getMap().getGraph()[i][j];
-				if(currentPoint.isRoad()) {
-					rectangle.setFill(Color.WHITE);
-				}else {
-					rectangle.setFill(Color.GREEN);
-					doRectangle(rectangle);
-				}
-				this.rectangles[i][j] = rectangle;
-				grid.add(rectangle, j, i);
 			}
 		}
 	}
