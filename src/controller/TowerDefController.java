@@ -1,5 +1,6 @@
 package controller;
 
+import model.BasicMonster;
 import model.BasicTower;
 import model.Map;
 import model.Player;
@@ -49,7 +50,7 @@ public class TowerDefController {
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
-//		this.map = model.getMap();
+		model.addMonsters(new BasicMonster());
 //		this.player = this.map.getPlayer();
 	}
 	
