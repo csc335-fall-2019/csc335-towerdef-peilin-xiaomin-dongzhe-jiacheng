@@ -42,8 +42,8 @@ public class gameStart implements Observer {
 	private TowerDefController controller;
 	
 	public gameStart() {
-		this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
-		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
+		//this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
+		//this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
