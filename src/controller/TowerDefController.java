@@ -50,6 +50,7 @@ public class TowerDefController {
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
+					newMap.addRoad(point);
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
