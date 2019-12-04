@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Point;
 import model.Tower;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
@@ -32,12 +33,16 @@ public class gameStart implements Observer {
 	private Tower currentTower;
 	private ImageView sellImg;
 	
+	
+	private ImageView[][] images;
+	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
 	
 	public gameStart() {
-		this.rectangles = new Rectangle[10][20];
+		this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
+		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
@@ -149,11 +154,34 @@ public class gameStart implements Observer {
 		grid.setVgap(1);
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
+//				ImageView currImage = new ImageView();
+//				Point currentPoint = model.getMap().getGraph()[i][j];
+//				if (currentPoint.isRoad()) {
+//					Image road = new Image();
+//					currImage.setImage(road);
+//				}
+//				else if (currentPoint.isStart()) {
+//					Image start = new Image();
+//					currImage.setImage(start);
+//				}
+//				else if (currentPoint.isEnd()) {
+//					Image end = new Image();
+//					currImage.setImage(start);
+//				}
+//				else {
+//					Image land = new Image();
+//					currImage.setImage(land);
+//				}
+//				currImage.setFitHeight(70.0f);
+//				currImage.setFitWidth(70.0f);
+//				this.images[i][j] = currImage;
+//				grid.add(currImage, j, i);
+				
 				Rectangle rectangle = new Rectangle();
 				rectangle.setWidth(70.0f);
 				rectangle.setHeight(70.0f);
-				
-				if(model.getMap().getGraph()[i][j].isRoad()) {
+				Point currentPoint = model.getMap().getGraph()[i][j];
+				if(currentPoint.isRoad()) {
 					rectangle.setFill(Color.WHITE);
 				}else {
 					rectangle.setFill(Color.GREEN);
