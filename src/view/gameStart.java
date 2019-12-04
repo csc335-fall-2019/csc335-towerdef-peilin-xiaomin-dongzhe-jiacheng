@@ -171,14 +171,14 @@ public class gameStart implements Observer {
 //				if (currentPoint.isRoad()) {
 //					Image road = new Image();
 //					currImage.setImage(road);
-//				}
-//				else if (currentPoint.isStart()) {
-//					Image start = new Image();
-//					currImage.setImage(start);
-//				}
-//				else if (currentPoint.isEnd()) {
-//					Image end = new Image();
-//					currImage.setImage(start);
+//					if (currentPoint.isStart()) {
+//						Image start = new Image();
+//						currImage.setImage(start);
+//					}
+//					if (currentPoint.isEnd()) {
+//						Image end = new Image();
+//						currImage.setImage(start);
+//					}
 //				}
 //				else {
 //					Image land = new Image();
