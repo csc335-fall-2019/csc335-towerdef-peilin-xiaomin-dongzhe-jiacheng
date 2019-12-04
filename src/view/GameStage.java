@@ -223,14 +223,13 @@ public class GameStage implements Observer {
 		Monster monster = new BasicMonster();
 		monster.setPoint(road.get(getRoad));
 		
-		
 		this.monsterMove(monster);
 		
 //		Image monster = new Image("/img/monster1.JPG");
 //		ImageView monsterImg = new ImageView(monster);
 //		monsterImg.setFitHeight((int) RECTSIZE / 2);
 //		monsterImg.setFitWidth((int) RECTSIZE / 2);
-		//this.enemyWave(monsterImg);
+//		this.enemyWave(monsterImg);
 		
 		
 
@@ -275,6 +274,7 @@ public class GameStage implements Observer {
 				ImageView monsterImg = new ImageView(mImg);
 				monsterImg.setFitHeight((int) RECTSIZE / 2);
 				monsterImg.setFitWidth((int) RECTSIZE / 2);
+				
 				while (monster.getHealth() > 0 
 						|| (monster.getPoint().getX() == 0 
 							&& monster.getPoint().getY() == 4)) {
