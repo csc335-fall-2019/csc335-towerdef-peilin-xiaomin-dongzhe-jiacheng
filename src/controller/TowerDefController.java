@@ -1,3 +1,7 @@
+/**
+ * This is a controller class.
+ * @author xiaominzhao, JiachengHe,PeilinFeng, DongzheChen
+ */
 package controller;
 
 import model.BasicTower;
@@ -9,18 +13,29 @@ import model.TowerDefModel;
 import model.Turret;
 
 public class TowerDefController {
-	private TowerDefModel model;
+	private TowerDefModel model; // field for controller
 //	private Player player;
 //	private Map map;
 	
+	 /**
+	  * Controller constructor.
+	  * @param model
+	  */
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
 	
+	/**
+	 * A get method, return the model
+	 * @return
+	 */
 	public TowerDefModel getModel() {
 		return model;
 	}
 	
+	 /**
+	  * This method is used to build the map
+	  */
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
 		int width = 20;

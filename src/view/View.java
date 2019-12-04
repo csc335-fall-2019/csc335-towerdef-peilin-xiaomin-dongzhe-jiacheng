@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -192,12 +193,8 @@ public class View extends Application implements Observer{
 		this.setGridPane(grid);
 		
 		GridPane grid2 = new GridPane();
-//<<<<<<< HEAD
-//		grid2.setPrefSize(800, 50);
-//		grid2.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
-//=======
 		grid2.setPrefSize(800, 75);
-		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		grid2.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
@@ -282,7 +279,6 @@ public class View extends Application implements Observer{
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
 				image.setFitHeight(85);
 				image.setFitWidth(85);
 				// TODO Auto-generated method stub 
@@ -290,13 +286,14 @@ public class View extends Application implements Observer{
 					|| controller.canBuyTower(currTower)) {
 					image.setFitHeight(65);
 					image.setFitWidth(65);
-				}
-				else {
-					
-				}
-				
+					if(image == sellImg) {
+						Tooltip.install(image, new Tooltip("Sell Tower: -20% of original price"));
+					}
+					else {
+						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));
+					}
+				}	
 			}
-			
 		});
 		
 		image.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
