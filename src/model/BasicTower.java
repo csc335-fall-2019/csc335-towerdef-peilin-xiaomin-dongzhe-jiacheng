@@ -1,7 +1,7 @@
 package model;
 
 public class BasicTower extends Tower {
-	private int cost =1;
+	private int cost =10;
 	private int attack = 2;
 	private int range =10;
 	private double attackSpeed = 1;

@@ -67,10 +67,10 @@ public class Point {
 	public void setEnd() {
 		end = true;
 	}
-	public boolean getStart() {
+	public boolean isStart() {
 		return start;
 	}
-	public boolean getEnd() {
+	public boolean isEnd() {
 		return end;
 	}
 	public String toString() {

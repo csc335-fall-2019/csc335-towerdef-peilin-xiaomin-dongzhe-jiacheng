@@ -5,6 +5,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.TowerDefController;
+
+import javafx.animation.TranslateTransition;
+
+import javafx.animation.Timeline;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Tooltip;
@@ -20,6 +25,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import model.Point;
 import model.Tower;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
@@ -27,6 +34,7 @@ import model.TowerMessage;
 
 public class gameStart implements Observer {
 	
+	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 
 	private ImageView current;
@@ -36,13 +44,16 @@ public class gameStart implements Observer {
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
+	// private ImageView[][] images;
+	
 	
 	public gameStart() {
-		this.rectangles = new Rectangle[10][20];
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
 		controller.getModel().addObserver(this);
+		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
+		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
 	}
 	
 	
@@ -78,7 +89,6 @@ public class gameStart implements Observer {
 		
 		BorderPane window = new BorderPane();
 		
-		
 		GridPane grid = new GridPane();
 		grid.setPrefSize(520, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
@@ -103,15 +113,11 @@ public class gameStart implements Observer {
 		Image sell = new Image("/img/sell.png");
 		sellImg = new ImageView(sell);
 		
-
-		
-		
 		HBox hb = new HBox();
 		
 		firstImg.setFitHeight(50);
 		firstImg.setFitWidth(50);
-		
-		
+			
 		secondImg.setFitHeight(50);
 		secondImg.setFitWidth(50);
 		
@@ -140,28 +146,77 @@ public class gameStart implements Observer {
 		
 	}
 	
+	public void enemyWave() {
+		TranslateTransition translateTransition = new TranslateTransition();
+		translateTransition.setDuration(Duration.millis(2000));
+		//translateTransition.setNode(//);
+		translateTransition.setByX(400);
+		translateTransition.setCycleCount(5);
+		translateTransition.setAutoReverse(true);
+		translateTransition.play(); 
+	}
+	
 	/**
 	 * this class is used to draw circles
 	 * @param pane is the gridpane object.
 	 */
 	public void setGridPane(GridPane grid) {
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+
 		grid.setHgap(1);
 		grid.setVgap(1);
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 20; j++) {
+		Point point;
+		Image image = new Image("/img/enemy.png");
+
+		for (int i = 0; i < controller.HEIGHT; i++) {
+			for (int j = 0; j < controller.WIDTH; j++) {
 				Rectangle rectangle = new Rectangle();
-				rectangle.setWidth(30.0f);
-				rectangle.setHeight(30.0f);
 				
-				if(model.getMap().getGraph()[i][j].isRoad()) {
+				rectangle.setWidth(RECTSIZE);
+				rectangle.setHeight(RECTSIZE);
+
+				Point currentPoint = model.getMap().getGraph()[i][j];
+				if(currentPoint.isRoad()) {
+
 					rectangle.setFill(Color.WHITE);
+					point = model.getMap().getGraph()[i][j];
+					if(point.isEnd()) {
+						System.out.println("end");
+						setHome(rectangle);
+					}
+					if (point.isStart()) {
+						rectangle.setFill(new ImagePattern(image));
+					}
 				}else {
 					rectangle.setFill(Color.GREEN);
 					doRectangle(rectangle);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
+				
+				
+//				ImageView currImage = new ImageView();
+//				Point currentPoint = model.getMap().getGraph()[i][j];
+//				if (currentPoint.isRoad()) {
+//					Image road = new Image();
+//					currImage.setImage(road);
+//					//if (currentPoint.isStart()) {
+//					//	Image start = new Image();
+//					//	currImage.setImage(start);
+//					//}
+//					if (currentPoint.isEnd()) {
+//						Image end = new Image("/img/end.png");
+//						currImage.setImage(start);
+//					}
+//				}
+//				else {
+//					Image land = new Image();
+//					currImage.setImage(land);
+//				}
+//				currImage.setFitHeight(70.0f);
+//				currImage.setFitWidth(70.0f);
+//				this.images[i][j] = currImage;
+//				grid.add(currImage, j, i);
 			}
 		}
 	}
@@ -230,8 +285,8 @@ public class gameStart implements Observer {
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				int x = 0, y = 0;
-				for (int i = 0; i < 10; i++) {
-					for (int j = 0; j < 20; j++) {
+				for (int i = 0; i < controller.HEIGHT; i++) {
+					for (int j = 0; j < controller.WIDTH; j++) {
 						if (rectangles[i][j].equals(ret)) {
 							x = i;
 							y = j;
@@ -254,5 +309,11 @@ public class gameStart implements Observer {
 			}
 			
 		});
+	}
+	
+	
+	private void setHome(Rectangle ret) {
+		Image image = new Image("/img/home.png");
+		ret.setFill(new ImagePattern(image));
 	}
 }

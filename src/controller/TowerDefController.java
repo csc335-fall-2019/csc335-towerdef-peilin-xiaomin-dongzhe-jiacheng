@@ -4,6 +4,9 @@
  */
 package controller;
 
+import java.util.ArrayList;
+
+import model.BasicMonster;
 import model.BasicTower;
 import model.Map;
 import model.Player;
@@ -13,14 +16,16 @@ import model.TowerDefModel;
 import model.Turret;
 
 public class TowerDefController {
-	private TowerDefModel model; // field for controller
+
+	
+	public final int WIDTH = 10;
+	public final int HEIGHT = 6;
+	
+	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
-	
-	 /**
-	  * Controller constructor.
-	  * @param model
-	  */
+
+	public Point point;
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
@@ -38,22 +43,20 @@ public class TowerDefController {
 	  */
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
-		int width = 20;
-		int height = 10;
-		Map newMap = new Map(newPlayer, height, width);
-		
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				Point point = new Point(row, col, false);
-				if ((row == 2 && col <= 15) 
-					|| (row == 8 && col <=15) 
-					|| (col == 15 && row >= 2 && row <= 8)) {
+		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				point = new Point(row, col, false);
+				if ((row == 1 && col <= 7) 
+					|| (row == 4 && col <= 7) 
+					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
+					newMap.addRoad(point);
 				}
-				if (row == 2 && col == 0) {
+				if (row == 1 && col == 0) {
 					point.setStart();
 				}
-				if (row == 8 && col == 0) {
+				if (row == 4 && col == 0) {
 					point.setEnd();
 				}
 				newMap.update(row, col, point);
@@ -62,9 +65,10 @@ public class TowerDefController {
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
-//		this.map = model.getMap();
+		model.addMonsters(new BasicMonster());
 //		this.player = this.map.getPlayer();
 	}
+	
 	
 	public boolean canBuyTower(Tower tower) {
 		return model.getMap().getPlayer().canBuyTower(tower.getCost());
