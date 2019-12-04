@@ -1,6 +1,5 @@
 package view;
 
-
 import javafx.application.Application;
 
 import javafx.scene.Scene;
@@ -11,10 +10,8 @@ import javafx.stage.Stage;
 public class View extends Application{
 
 	public View() {
-
-
+		
 	}
-
 
 
 	@Override
