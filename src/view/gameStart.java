@@ -5,7 +5,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.TowerDefController;
+
+import javafx.animation.TranslateTransition;
+
 import javafx.animation.Timeline;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,6 +29,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
@@ -33,6 +38,7 @@ import model.TowerMessage;
 
 public class gameStart implements Observer {
 	
+	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
@@ -109,7 +115,6 @@ public class gameStart implements Observer {
 		
 		BorderPane window = new BorderPane();
 		
-		
 		GridPane grid = new GridPane();
 		grid.setPrefSize(520, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
@@ -166,11 +171,12 @@ public class gameStart implements Observer {
 		
 		hb = new HBox();
 		hb2 = new HBox();
+		HBox hb = new HBox();
+
 		
 		firstImg.setFitHeight(50);
 		firstImg.setFitWidth(50);
-		
-		
+			
 		secondImg.setFitHeight(50);
 		secondImg.setFitWidth(50);
 		
@@ -208,21 +214,34 @@ public class gameStart implements Observer {
 		
 	}
 	
+	public void enemyWave() {
+		TranslateTransition translateTransition = new TranslateTransition();
+		translateTransition.setDuration(Duration.millis(2000));
+		//translateTransition.setNode(//);
+		translateTransition.setByX(400);
+		translateTransition.setCycleCount(5);
+		translateTransition.setAutoReverse(true);
+		translateTransition.play(); 
+	}
+	
 	/**
 	 * this class is used to draw circles
 	 * @param pane is the gridpane object.
 	 */
 	public void setGridPane(GridPane grid) {
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+
 		grid.setHgap(1);
 		grid.setVgap(1);
 		Point point;
 		Image image = new Image("/img/enemy.png");
+
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
 				Rectangle rectangle = new Rectangle();
-				rectangle.setWidth(70.0f);
-				rectangle.setHeight(70.0f);
+				
+				rectangle.setWidth(RECTSIZE);
+				rectangle.setHeight(RECTSIZE);
 
 				Point currentPoint = model.getMap().getGraph()[i][j];
 				if(currentPoint.isRoad()) {
@@ -241,20 +260,20 @@ public class gameStart implements Observer {
 					doRectangle(rectangle);
 				}
 				this.rectangles[i][j] = rectangle;
-				
 				grid.add(rectangle, j, i);
+				
 				
 //				ImageView currImage = new ImageView();
 //				Point currentPoint = model.getMap().getGraph()[i][j];
 //				if (currentPoint.isRoad()) {
 //					Image road = new Image();
 //					currImage.setImage(road);
-//					if (currentPoint.isStart()) {
-//						Image start = new Image();
-//						currImage.setImage(start);
-//					}
+//					//if (currentPoint.isStart()) {
+//					//	Image start = new Image();
+//					//	currImage.setImage(start);
+//					//}
 //					if (currentPoint.isEnd()) {
-//						Image end = new Image();
+//						Image end = new Image("/img/end.png");
 //						currImage.setImage(start);
 //					}
 //				}

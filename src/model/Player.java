@@ -15,6 +15,7 @@ public class Player {
 	
 	public int getMoney() {
 		return this.money;
+		
 	}
 	
 	public void changeMoney(int money) {

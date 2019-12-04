@@ -4,6 +4,8 @@
  */
 package controller;
 
+import java.util.ArrayList;
+
 import model.BasicMonster;
 import model.BasicTower;
 import model.Map;
@@ -42,7 +44,6 @@ public class TowerDefController {
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
-		
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
@@ -50,6 +51,7 @@ public class TowerDefController {
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
+					newMap.addRoad(point);
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
@@ -66,6 +68,7 @@ public class TowerDefController {
 		model.addMonsters(new BasicMonster());
 //		this.player = this.map.getPlayer();
 	}
+	
 	
 	public boolean canBuyTower(Tower tower) {
 		return model.getMap().getPlayer().canBuyTower(tower.getCost());
