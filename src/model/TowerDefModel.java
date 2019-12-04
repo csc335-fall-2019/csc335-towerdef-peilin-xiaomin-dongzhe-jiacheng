@@ -42,7 +42,9 @@ public class TowerDefModel extends Observable {
 		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,-tower.getCost());
 		
 		setChanged();
+		
         notifyObservers(msg);
+        System.out.println("Check"+map.getPlayer().getMoney());
 	}
 	
 	public void sellTower(int row, int col) {

@@ -12,6 +12,8 @@ import javafx.animation.Timeline;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +26,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Point;
@@ -36,7 +40,6 @@ public class gameStart implements Observer {
 	
 	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
-
 	private ImageView current;
 	private Tower currentTower;
 	private ImageView sellImg;
@@ -44,6 +47,24 @@ public class gameStart implements Observer {
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
+	private int totalGold;
+	private Label goldL;
+	private HBox hb;
+	private HBox hb2;
+	private Image first;
+	private Image second;
+	private ImageView firstImg;
+	private ImageView secondImg;
+	private Image sell;
+	private Image health;
+	private ImageView healthImg;
+	private Label number;
+	private Label healL;
+	private int heal;
+	private Image gold;
+	private ImageView goldImg;
+	private Label number2;
+	
 	// private ImageView[][] images;
 	
 	
@@ -73,7 +94,12 @@ public class gameStart implements Observer {
 			System.out.println(model.getMap().getPlayer().getMoney());
 			System.out.println();
 			model.getMap().getPlayer().changeMoney(msg.getMoney());
-			System.out.println(model.getMap().getPlayer().getMoney());
+			totalGold = model.getMap().getPlayer().getMoney();
+			System.out.println(totalGold);
+			
+			goldL = new Label(String.valueOf(totalGold));
+			goldL.setTextFill(Color.ORANGE);
+			goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 			//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
@@ -98,22 +124,55 @@ public class gameStart implements Observer {
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
+		
+		
 		GridPane grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
-		Image first = new Image("/img/TOWER.png");
-		ImageView firstImg = new ImageView(first);
+		first = new Image("/img/TOWER.png");
+		firstImg = new ImageView(first);
 		
-		Image second = new Image("/img/tower2.png");
-		ImageView secondImg = new ImageView(second);
+		second = new Image("/img/tower2.png");
+		secondImg = new ImageView(second);
 		
-		Image sell = new Image("/img/sell.png");
+		sell = new Image("/img/sell.png");
 		sellImg = new ImageView(sell);
 		
+		health = new Image("/img/health.png");
+		healthImg = new ImageView(health);
+		
+		number = new Label("X");
+		number.setTextFill(Color.ORANGE);
+		number.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
+		
+		heal = model.getMap().getPlayer().getHealth();
+		healL = new Label(String.valueOf(heal));
+		healL.setTextFill(Color.ORANGE);
+		healL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
+		gold = new Image("/img/gold.png");
+		goldImg = new ImageView(gold);
+		
+		
+		number2 = new Label("X");
+		number2.setTextFill(Color.ORANGE);
+		number2.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
+		
+		totalGold = model.getMap().getPlayer().getMoney();
+		goldL = new Label(String.valueOf(totalGold));
+		goldL.setTextFill(Color.ORANGE);
+		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+			
+		
+		hb = new HBox();
+		hb2 = new HBox();
 		HBox hb = new HBox();
+
 		
 		firstImg.setFitHeight(50);
 		firstImg.setFitWidth(50);
@@ -125,6 +184,12 @@ public class gameStart implements Observer {
 		sellImg.setFitHeight(50);
 		sellImg.setFitWidth(50);
 		
+		healthImg.setFitHeight(50);
+		healthImg.setFitWidth(50);
+		
+		goldImg.setFitHeight(50);
+		goldImg.setFitWidth(50);
+		
 		
 		hb.getChildren().addAll(firstImg, secondImg, sellImg);
 		
@@ -134,6 +199,9 @@ public class gameStart implements Observer {
 		doImg(secondImg, availTowers.get(1));
 		doImg(sellImg, null);
 		
+		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
+		
+		grid3.getChildren().add(hb2);
 		window.setTop(grid3);
 		window.setCenter(grid);
 		window.setBottom(grid2);
