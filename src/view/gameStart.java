@@ -246,6 +246,7 @@ public class gameStart implements Observer {
 		pathTransition.setNode(monsterImg);
 		pathTransition.setPath(path);
 		pathTransition.play();
+		System.out.println(path.getTranslateX());
 	}
 //	
 //	private class AnimationHandler implements EventHandler<ActionEvent> {
