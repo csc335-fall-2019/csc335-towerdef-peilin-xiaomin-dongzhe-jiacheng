@@ -7,6 +7,7 @@ import java.util.Observer;
 import controller.TowerDefController;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -177,10 +178,14 @@ public class gameStart implements Observer {
 					|| controller.canBuyTower(currTower)) {
 					image.setFitHeight(65);
 					image.setFitWidth(65);
+					if(image == sellImg) {
+						Tooltip.install(image, new Tooltip("Sell tower: -20% of original price"));
+					}
+					else {
+						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));
+					}
 				}
-				else {
-					
-				}
+
 				
 			}
 			
