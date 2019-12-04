@@ -22,10 +22,11 @@ public class TowerDefController {
 //	private Player player;
 //	private Map map;
 	
-	 /**
-	  * Controller constructor.
-	  * @param model
-	  */
+
+	/**
+	 * Controller constructor.
+	 * @param model
+	 */
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
