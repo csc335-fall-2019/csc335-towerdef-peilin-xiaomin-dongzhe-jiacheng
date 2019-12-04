@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.TowerDefController;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -19,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Point;
 import model.Tower;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
@@ -35,6 +37,7 @@ public class gameStart implements Observer {
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
+	
 	
 	public gameStart() {
 		this.rectangles = new Rectangle[10][20];
@@ -147,19 +150,31 @@ public class gameStart implements Observer {
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 		grid.setHgap(1);
 		grid.setVgap(1);
+		Point point;
+		Image image = new Image("/img/enemy.png");
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
 				Rectangle rectangle = new Rectangle();
 				rectangle.setWidth(70.0f);
 				rectangle.setHeight(70.0f);
 				
-				if(model.getMap().getGraph()[i][j].isRoad()) {
+				point = model.getMap().getGraph()[i][j];
+				if(point.isRoad()) {
 					rectangle.setFill(Color.WHITE);
+					point = model.getMap().getGraph()[i][j];
+					if(point.getEnd()) {
+						System.out.println("end");
+						setHome(rectangle);
+					}
+					if (point.getStart()) {
+						rectangle.setFill(new ImagePattern(image));
+					}
 				}else {
 					rectangle.setFill(Color.GREEN);
 					doRectangle(rectangle);
 				}
 				this.rectangles[i][j] = rectangle;
+				
 				grid.add(rectangle, j, i);
 			}
 		}
@@ -249,5 +264,11 @@ public class gameStart implements Observer {
 			}
 			
 		});
+	}
+	
+	
+	private void setHome(Rectangle ret) {
+		Image image = new Image("/img/home.png");
+		ret.setFill(new ImagePattern(image));
 	}
 }
