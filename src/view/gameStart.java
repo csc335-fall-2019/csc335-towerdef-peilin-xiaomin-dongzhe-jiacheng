@@ -178,7 +178,6 @@ public class gameStart implements Observer {
 					doRectangle(rectangle);
 				}
 				this.rectangles[i][j] = rectangle;
-				
 				grid.add(rectangle, j, i);
 				
 //				ImageView currImage = new ImageView();
