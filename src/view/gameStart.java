@@ -64,6 +64,9 @@ public class gameStart implements Observer {
 	private Image gold;
 	private ImageView goldImg;
 	private Label number2;
+	private GridPane grid2;
+	private GridPane grid3;
+	
 	
 	// private ImageView[][] images;
 	
@@ -100,6 +103,9 @@ public class gameStart implements Observer {
 			goldL = new Label(String.valueOf(totalGold));
 			goldL.setTextFill(Color.ORANGE);
 			goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+			
+			hb2.getChildren().clear();
+			hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
 			//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
@@ -115,18 +121,18 @@ public class gameStart implements Observer {
 		
 		BorderPane window = new BorderPane();
 		
-		GridPane grid = new GridPane();
+		grid = new GridPane();
 		grid.setPrefSize(520, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
 		setGridPane(grid);
 		
-		GridPane grid2 = new GridPane();
+		grid2 = new GridPane();
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		
 		
-		GridPane grid3 = new GridPane();
+		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
@@ -171,7 +177,6 @@ public class gameStart implements Observer {
 		
 		hb = new HBox();
 		hb2 = new HBox();
-		HBox hb = new HBox();
 
 		
 		firstImg.setFitHeight(50);
