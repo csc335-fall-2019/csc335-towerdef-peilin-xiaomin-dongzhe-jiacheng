@@ -24,7 +24,9 @@ public class TowerDefController {
 	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
+	private Point start;
 
+	
 	public Point point;
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
@@ -44,6 +46,7 @@ public class TowerDefController {
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
+		int numRoad = 0;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
@@ -51,10 +54,12 @@ public class TowerDefController {
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
+					numRoad++;
 					newMap.addRoad(point);
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
+					start = point;
 				}
 				if (row == 4 && col == 0) {
 					point.setEnd();
@@ -62,6 +67,7 @@ public class TowerDefController {
 				newMap.update(row, col, point);
 			}
 		}
+		//this.buildRoad(newMap, numRoad);
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
@@ -69,6 +75,16 @@ public class TowerDefController {
 //		this.player = this.map.getPlayer();
 	}
 	
+	public void buildRoad(Map newMap, int numRoad) {
+		int x = start.getX();
+		int y = start.getY();
+		start.pass();
+		for (int i = 0; i < numRoad; i++) {
+			//
+			
+		}
+		model.getMap().addRoad(point);
+	}
 	
 	public boolean canBuyTower(Tower tower) {
 		return model.getMap().getPlayer().canBuyTower(tower.getCost());

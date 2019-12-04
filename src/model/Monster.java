@@ -40,6 +40,9 @@ public class Monster {
 	public int getEnergy() {
 		return energy;
 	}
+	public Point getPoint() {
+		return point;
+	}
 	public void setHealth(int health) {
 		this.health = health;
 	}

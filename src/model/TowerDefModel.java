@@ -36,7 +36,6 @@ public class TowerDefModel extends Observable {
 		this.map = map;
 	}
 	
-	
 	public void setTower(Tower tower, int row, int col) {
 		this.map.getGraph()[row][col].setTower(tower);
 		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,-tower.getCost());
@@ -58,6 +57,13 @@ public class TowerDefModel extends Observable {
 	
 	public void monsterDie(int xPos, int yPos) {
 		this.map.getGraph()[xPos][yPos].clearMonster();
+		
+		setChanged();
+        notifyObservers();
+	}
+	
+	public void lossHealth() {
+		this.map.getPlayer().lossHealth(1);
 		
 		setChanged();
         notifyObservers();
