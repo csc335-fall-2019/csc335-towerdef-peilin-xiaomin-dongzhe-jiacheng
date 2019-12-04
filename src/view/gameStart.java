@@ -7,7 +7,7 @@ import java.util.Observer;
 import controller.TowerDefController;
 
 import javafx.animation.TranslateTransition;
-
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 
 import javafx.event.EventHandler;
@@ -25,6 +25,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -204,9 +207,15 @@ public class gameStart implements Observer {
 		
 		grid3.getChildren().add(hb2);
 
-//		enemyWave() {
-//			
-//		}
+		
+		Image monster = new Image("/img/monster1.JPG");
+		ImageView monsterImg = new ImageView(monster);
+		monsterImg.setFitHeight((int) RECTSIZE / 2);
+		monsterImg.setFitWidth((int) RECTSIZE / 2);
+		this.enemyWave(monsterImg);
+
+		// this.enemyWave(monsterImg);
+		grid.getChildren().add(monsterImg);
 		
 
 		window.setTop(grid3);
@@ -221,15 +230,33 @@ public class gameStart implements Observer {
 		
 	}
 	
-	public void enemyWave() {
-		TranslateTransition translateTransition = new TranslateTransition();
-		translateTransition.setDuration(Duration.millis(2000));
-		//translateTransition.setNode(//);
-		translateTransition.setByX(400);
-		translateTransition.setCycleCount(5);
-		translateTransition.setAutoReverse(true);
-		translateTransition.play(); 
+	public void enemyWave(ImageView monsterImg) {
+		Path path = new Path();
+		path.getElements().add(new MoveTo(0, RECTSIZE + (int) RECTSIZE / 4));
+		path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, RECTSIZE + (int) RECTSIZE / 4));
+		path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, 4 * RECTSIZE + (int) RECTSIZE / 4));
+		path.getElements().add(new LineTo(0, 4 * RECTSIZE + (int) RECTSIZE / 4));
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(10000));
+		pathTransition.setNode(monsterImg);
+		pathTransition.setPath(path);
+		pathTransition.play();
 	}
+//	
+//	private class AnimationHandler implements EventHandler<ActionEvent> {
+//		int tick = 0; // This handle method gets called every 100 ms
+//		@Override
+//		public void handle(ActionEvent event) {
+//			tick++; gc.drawImage(backGround, 0, 0);
+//			x += 1.5;
+//			y -= 0.08;
+//			gc.drawImage(ship, x, y);
+//			if (tick > 200) {
+//				timeline.stop();
+//			}	
+//		}
+//	}
+
 	
 	/**
 	 * this class is used to draw circles
