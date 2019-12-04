@@ -5,11 +5,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.TowerDefController;
-<<<<<<< HEAD
+
 import javafx.animation.TranslateTransition;
-=======
+
 import javafx.animation.Timeline;
->>>>>>> refs/heads/master
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Tooltip;
@@ -162,26 +162,19 @@ public class gameStart implements Observer {
 	 */
 	public void setGridPane(GridPane grid) {
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-<<<<<<< HEAD
-//		grid.setHgap(1);
-//		grid.setVgap(1);
-=======
+
 		grid.setHgap(1);
 		grid.setVgap(1);
 		Point point;
 		Image image = new Image("/img/enemy.png");
->>>>>>> refs/heads/master
+
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
 				Rectangle rectangle = new Rectangle();
-<<<<<<< HEAD
+				
 				rectangle.setWidth(RECTSIZE);
 				rectangle.setHeight(RECTSIZE);
-=======
-				rectangle.setWidth(70.0f);
-				rectangle.setHeight(70.0f);
 
->>>>>>> refs/heads/master
 				Point currentPoint = model.getMap().getGraph()[i][j];
 				if(currentPoint.isRoad()) {
 
