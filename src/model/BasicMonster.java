@@ -1,7 +1,7 @@
 package model;
 
 public class BasicMonster extends Monster {
-	private int gold = 1;
+	private int gold = 10;
 	private int speed = 1;
 	private int armor = 1;
 	private int health = 10;

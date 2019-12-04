@@ -1,5 +1,10 @@
+/**
+ * This is a controller class.
+ * @author xiaominzhao, JiachengHe,PeilinFeng, DongzheChen
+ */
 package controller;
 
+import model.BasicMonster;
 import model.BasicTower;
 import model.Map;
 import model.Player;
@@ -9,6 +14,7 @@ import model.TowerDefModel;
 import model.Turret;
 
 public class TowerDefController {
+
 	
 	public final int WIDTH = 10;
 	public final int HEIGHT = 6;
@@ -16,15 +22,23 @@ public class TowerDefController {
 	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
+
 	public Point point;
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
 	
+	/**
+	 * A get method, return the model
+	 * @return
+	 */
 	public TowerDefModel getModel() {
 		return model;
 	}
 	
+	 /**
+	  * This method is used to build the map
+	  */
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
@@ -49,7 +63,7 @@ public class TowerDefController {
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
-//		this.map = model.getMap();
+		model.addMonsters(new BasicMonster());
 //		this.player = this.map.getPlayer();
 	}
 	

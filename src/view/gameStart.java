@@ -8,6 +8,7 @@ import controller.TowerDefController;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -37,14 +38,16 @@ public class gameStart implements Observer {
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
+	// private ImageView[][] images;
 	
 	
 	public gameStart() {
-		this.rectangles = new Rectangle[10][20];
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
 		controller.getModel().addObserver(this);
+		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
+		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
 	}
 	
 	
@@ -157,16 +160,17 @@ public class gameStart implements Observer {
 				Rectangle rectangle = new Rectangle();
 				rectangle.setWidth(70.0f);
 				rectangle.setHeight(70.0f);
-				
-				point = model.getMap().getGraph()[i][j];
-				if(point.isRoad()) {
+
+				Point currentPoint = model.getMap().getGraph()[i][j];
+				if(currentPoint.isRoad()) {
+
 					rectangle.setFill(Color.WHITE);
 					point = model.getMap().getGraph()[i][j];
-					if(point.getEnd()) {
+					if(point.isEnd()) {
 						System.out.println("end");
 						setHome(rectangle);
 					}
-					if (point.getStart()) {
+					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
 					}
 				}else {
@@ -176,6 +180,29 @@ public class gameStart implements Observer {
 				this.rectangles[i][j] = rectangle;
 				
 				grid.add(rectangle, j, i);
+				
+//				ImageView currImage = new ImageView();
+//				Point currentPoint = model.getMap().getGraph()[i][j];
+//				if (currentPoint.isRoad()) {
+//					Image road = new Image();
+//					currImage.setImage(road);
+//					if (currentPoint.isStart()) {
+//						Image start = new Image();
+//						currImage.setImage(start);
+//					}
+//					if (currentPoint.isEnd()) {
+//						Image end = new Image();
+//						currImage.setImage(start);
+//					}
+//				}
+//				else {
+//					Image land = new Image();
+//					currImage.setImage(land);
+//				}
+//				currImage.setFitHeight(70.0f);
+//				currImage.setFitWidth(70.0f);
+//				this.images[i][j] = currImage;
+//				grid.add(currImage, j, i);
 			}
 		}
 	}
@@ -192,10 +219,14 @@ public class gameStart implements Observer {
 					|| controller.canBuyTower(currTower)) {
 					image.setFitHeight(65);
 					image.setFitWidth(65);
+					if(image == sellImg) {
+						Tooltip.install(image, new Tooltip("Sell tower: -20% of original price"));
+					}
+					else {
+						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));
+					}
 				}
-				else {
-					
-				}
+
 				
 			}
 			

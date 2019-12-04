@@ -6,16 +6,24 @@ import java.util.Observable;
 public class TowerDefModel extends Observable {
 	private Map map;
 	private ArrayList<Tower> availTowers;
+	private ArrayList<Monster> monsters;
 	
 	public TowerDefModel() {
 		//this.map = new Map();
 		this.availTowers = new ArrayList<Tower>();
+		this.monsters = new ArrayList<Monster>();
 	}
 	
 	public Map getMap() {
 		return this.map;
 	}
 	
+	public ArrayList<Monster> getMonsters() {
+		return this.monsters;
+	}
+	public void addMonsters(Monster monster) {
+		 monsters.add(monster);
+	}
 	public ArrayList<Tower> getAvailTowers() {
 		return this.availTowers;
 	}
@@ -40,7 +48,7 @@ public class TowerDefModel extends Observable {
 	public void sellTower(int row, int col) {
 		Tower tower = this.map.getGraph()[row][col].getTower();
 		this.map.getGraph()[row][col].sellTower();
-		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,tower.getCost());
+		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,(int)Math.floor(tower.getCost()*0.8));
 		
 		setChanged();
         notifyObservers(msg);
