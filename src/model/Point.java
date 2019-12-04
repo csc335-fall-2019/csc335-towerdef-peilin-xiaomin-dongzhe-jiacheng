@@ -6,19 +6,36 @@ public class Point {
 	private int x;
 	private int y;
 	private boolean road;
+	private boolean isPass = false;
 	private Tower tower;
-	private ArrayList<Monster> monsters = new ArrayList<>();
+	private ArrayList<Monster> monsters = new ArrayList<Monster>();
 	private boolean start = false;
 	private boolean end = false;
+	private ArrayList<Point> adjacentPoints = new ArrayList<Point>();
+	
 	public Point(int x,int y,boolean isRoad) {
 		this.x = x;
 		this.y = y;
 		this.road = isRoad;
 	}
+	public void pass() {
+		isPass = true;
+	}
+	public boolean getPass() {
+		return isPass;
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
 	
 	public boolean isRoad() {
 		return road;
 	}
+	
+	//public ArrayList<Point> getAdjacentPoints
 	
 	public void setRoad() {
 		this.road = true;

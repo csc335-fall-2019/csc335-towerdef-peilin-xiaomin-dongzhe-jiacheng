@@ -7,9 +7,10 @@ import java.util.Observer;
 import controller.TowerDefController;
 
 import javafx.animation.TranslateTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -33,19 +34,24 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.BasicMonster;
+import model.Monster;
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
 
-public class gameStart implements Observer {
+public class GameStage implements Observer {
 	
 	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
 	private ImageView sellImg;
+	
+	private Thread gameThread;
+	private Thread monsterThread;
 	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
@@ -69,18 +75,21 @@ public class gameStart implements Observer {
 	private Label number2;
 	private GridPane grid2;
 	private GridPane grid3;
+	private int getRoad = 0;
+	private ArrayList<Point> road;
 	
 	
 	// private ImageView[][] images;
 	
 	
-	public gameStart() {
+	public GameStage() {
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
 		controller.getModel().addObserver(this);
 		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
+		road = controller.getModel().getMap().getRoads();
 	}
 	
 	
@@ -211,16 +220,27 @@ public class gameStart implements Observer {
 		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
 		
 		grid3.getChildren().add(hb2);
-
+		Monster monster = new BasicMonster();
+		monster.setPoint(road.get(getRoad));
 		
-		Image monster = new Image("/img/monster1.JPG");
-		ImageView monsterImg = new ImageView(monster);
-		monsterImg.setFitHeight((int) RECTSIZE / 2);
-		monsterImg.setFitWidth((int) RECTSIZE / 2);
-		this.enemyWave(monsterImg);
+		
+		this.monsterMove(monster);
+		
+//		Image monster = new Image("/img/monster1.JPG");
+//		ImageView monsterImg = new ImageView(monster);
+//		monsterImg.setFitHeight((int) RECTSIZE / 2);
+//		monsterImg.setFitWidth((int) RECTSIZE / 2);
+		//this.enemyWave(monsterImg);
+		
+		
 
 		// this.enemyWave(monsterImg);
-		grid.getChildren().add(monsterImg);
+		//grid.getChildren().add(monsterImg);
+		
+		
+//		Timeline timeline = new Timeline(
+//				new KeyFrame(Duration.millis(100),
+//				new AnimationHandler()));
 		
 
 		window.setTop(grid3);
@@ -235,31 +255,96 @@ public class gameStart implements Observer {
 		
 	}
 	
-	public void enemyWave(ImageView monsterImg) {
+	
+	public void startGame() {
+		gameThread = new Thread() {
+			@Override
+			public void run() {
+//				while (controller.getModel()) {
+//					
+//				}
+			}
+		};
+	}
+	
+	public void monsterMove(Monster monster) {
+		monsterThread = new Thread(){
+			@Override
+			public void run() {
+				Image mImg = new Image("/img/monster1.JPG");
+				ImageView monsterImg = new ImageView(mImg);
+				monsterImg.setFitHeight((int) RECTSIZE / 2);
+				monsterImg.setFitWidth((int) RECTSIZE / 2);
+				while (monster.getHealth() > 0 
+						|| (monster.getPoint().getX() == 0 
+							&& monster.getPoint().getY() == 4)) {
+					Point point = road.get(getRoad);
+					System.out.println(getRoad);
+					if (getRoad == 0) {
+						
+					}
+					
+					point.clearMonster(monster);
+					rectangles[point.getX()][point.getY()].setFill(Color.WHITE);
+
+					getRoad++;
+					point = road.get(getRoad);
+					
+					
+					monster.setPoint(point);
+					point.setMonster(monster);
+					rectangles[point.getX()][point.getY()].setFill(new ImagePattern(monsterImg.getImage()));
+					
+					
+					
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						
+					}
+					
+				}
+			}
+	
+		};
+		monsterThread.start();
+		
+	}
+	
+	public void enemyWave(ImageView monsterImg, int x, int y) {
 		Path path = new Path();
 		path.getElements().add(new MoveTo(0, RECTSIZE + (int) RECTSIZE / 4));
 		path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, RECTSIZE + (int) RECTSIZE / 4));
-		path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, 4 * RECTSIZE + (int) RECTSIZE / 4));
-		path.getElements().add(new LineTo(0, 4 * RECTSIZE + (int) RECTSIZE / 4));
+		// path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, 4 * RECTSIZE + (int) RECTSIZE / 4));
+		// path.getElements().add(new LineTo(RECTSIZE, 4 * RECTSIZE + (int) RECTSIZE / 4));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(10000));
 		pathTransition.setNode(monsterImg);
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}
-//	
+	
+
 //	private class AnimationHandler implements EventHandler<ActionEvent> {
 //		int tick = 0; // This handle method gets called every 100 ms
+//		GridPane grid;
+//		
+//		public AnimationHandler(GridPane gird) {
+//			this.grid = grid;
+//		}
+//		
 //		@Override
 //		public void handle(ActionEvent event) {
-//			tick++; gc.drawImage(backGround, 0, 0);
+//			tick++; 
+//			grid.drawImage(backGround, 0, 0);
 //			x += 1.5;
 //			y -= 0.08;
-//			gc.drawImage(ship, x, y);
+//			grid.drawImage(ship, x, y);
 //			if (tick > 200) {
 //				timeline.stop();
 //			}	
 //		}
+//		
 //	}
 
 	

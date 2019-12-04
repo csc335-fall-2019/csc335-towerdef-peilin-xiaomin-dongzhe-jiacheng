@@ -15,7 +15,10 @@ public class Player {
 	
 	public int getMoney() {
 		return this.money;
-		
+	}
+	
+	public void lossHealth(int loss) {
+		this.health -= loss;
 	}
 	
 	public void changeMoney(int money) {

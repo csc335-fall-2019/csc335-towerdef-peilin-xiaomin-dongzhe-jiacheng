@@ -22,11 +22,11 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class gameMenu{
+public class GameMenu{
 
 	
-	private gameStart newGame = new gameStart();
-	public gameMenu(Stage stage, BorderPane window) {
+	private GameStage newGame = new GameStage();
+	public GameMenu(Stage stage, BorderPane window) {
 		basicStage(stage, window,"English");
 		
 	}
