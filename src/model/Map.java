@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Map {
 	private Player player;
 	private Point[][] graph;
-	private ArrayList<Point>road;
+	private ArrayList<Point> road;
 //	private int health;
 	
 

@@ -5,6 +5,9 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import model.BasicMonster;
 import model.BasicTower;
@@ -24,7 +27,7 @@ public class TowerDefController {
 	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
-	private Point start;
+	//private Point start;
 
 	
 	public Point point;
@@ -46,7 +49,7 @@ public class TowerDefController {
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
-		int numRoad = 0;
+		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
@@ -54,8 +57,7 @@ public class TowerDefController {
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
 					point.setRoad();
-					numRoad++;
-					newMap.addRoad(point);
+//					newMap.addRoad(point);
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
@@ -67,7 +69,8 @@ public class TowerDefController {
 				newMap.update(row, col, point);
 			}
 		}
-		//this.buildRoad(newMap, numRoad);
+		this.buildRoad(newMap, start);
+		System.out.println(newMap.getRoads());
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
@@ -75,15 +78,54 @@ public class TowerDefController {
 //		this.player = this.map.getPlayer();
 	}
 	
-	public void buildRoad(Map newMap, int numRoad) {
+	public void buildRoad(Map newMap, Point start) {
 		int x = start.getX();
 		int y = start.getY();
-		start.pass();
-		for (int i = 0; i < numRoad; i++) {
-			//
-			
+		
+		boolean[][] visited = new boolean[HEIGHT][WIDTH];
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				if (newMap.getGraph()[row][col].isRoad()) {
+					visited[row][col] = false;
+				} else {
+					visited[row][col] = true;
+				}
+			}
 		}
-		model.getMap().addRoad(point);
+		
+		Queue<Point> availRoad = new LinkedList<>();
+		availRoad.add(start);
+		visited[x][y] = true;
+		
+		while (!availRoad.isEmpty()) {
+			Point p = availRoad.poll();
+			newMap.addRoad(p);
+			
+			if (p.isEnd()) {			
+				return;
+			}
+			if (p.getX() - 1 >= 0 && visited[p.getX() - 1][p.getY()] == false) {
+				availRoad.add(newMap.getGraph()[p.getX() - 1][p.getY()]);
+				visited[p.getX() - 1][p.getY()] = true;
+				continue;
+			}
+			if (p.getX() + 1 < HEIGHT && visited[p.getX() + 1][p.getY()] == false) {
+				availRoad.add(newMap.getGraph()[p.getX() + 1][p.getY()]);
+				visited[p.getX() + 1][p.getY()] = true;
+				continue;
+			}
+			if (p.getY() - 1 >=0 && visited[p.getX()][p.getY() - 1] == false) {
+				availRoad.add(newMap.getGraph()[p.getX()][p.getY() - 1]);
+				visited[p.getX()][p.getY() - 1] = true;
+				continue;
+			}
+			if (p.getY() + 1 < WIDTH && visited[p.getX()][p.getY() + 1] == false) {
+				availRoad.add(newMap.getGraph()[p.getX()][p.getY() + 1]);
+				visited[p.getX()][p.getY() + 1] = true;
+				continue;
+			}
+		}
+		
 	}
 	
 	public boolean canBuyTower(Tower tower) {

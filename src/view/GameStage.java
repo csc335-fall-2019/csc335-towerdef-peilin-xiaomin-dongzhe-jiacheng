@@ -233,14 +233,18 @@ public class GameStage implements Observer {
 		Monster monster = new BasicMonster();
 		monster.setPoint(road.get(getRoad));
 		
-		
-		this.monsterMove(monster);
+		Image mImg = new Image("/img/monster1.JPG");
+		ImageView monsterImg = new ImageView(mImg);
+		//monsterImg.set
+		monsterImg.setFitHeight((int) RECTSIZE / 2);
+		monsterImg.setFitWidth((int) RECTSIZE / 2);
+
 		
 //		Image monster = new Image("/img/monster1.JPG");
 //		ImageView monsterImg = new ImageView(monster);
 //		monsterImg.setFitHeight((int) RECTSIZE / 2);
 //		monsterImg.setFitWidth((int) RECTSIZE / 2);
-		//this.enemyWave(monsterImg);
+//		this.enemyWave(monsterImg);
 		
 		
 
@@ -266,73 +270,9 @@ public class GameStage implements Observer {
 	}
 	
 	
-	public void startGame() {
-		gameThread = new Thread() {
-			@Override
-			public void run() {
-//				while (controller.getModel()) {
-//					
-//				}
-			}
-		};
-	}
-	
-	public void monsterMove(Monster monster) {
-		monsterThread = new Thread(){
-			@Override
-			public void run() {
-				Image mImg = new Image("/img/monster1.JPG");
-				ImageView monsterImg = new ImageView(mImg);
-				monsterImg.setFitHeight((int) RECTSIZE / 2);
-				monsterImg.setFitWidth((int) RECTSIZE / 2);
-				while (monster.getHealth() > 0 
-						|| (monster.getPoint().getX() == 0 
-							&& monster.getPoint().getY() == 4)) {
-					Point point = road.get(getRoad);
-					System.out.println(getRoad);
-					if (getRoad == 0) {
-						
-					}
-					
-					point.clearMonster(monster);
-					rectangles[point.getX()][point.getY()].setFill(Color.WHITE);
 
-					getRoad++;
-					point = road.get(getRoad);
-					
-					
-					monster.setPoint(point);
-					point.setMonster(monster);
-					rectangles[point.getX()][point.getY()].setFill(new ImagePattern(monsterImg.getImage()));
-					
-					
-					
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						
-					}
-					
-				}
-			}
 	
-		};
-		monsterThread.start();
-		
-	}
-	
-	public void enemyWave(ImageView monsterImg, int x, int y) {
-		Path path = new Path();
-		path.getElements().add(new MoveTo(0, RECTSIZE + (int) RECTSIZE / 4));
-		path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, RECTSIZE + (int) RECTSIZE / 4));
-		// path.getElements().add(new LineTo(7 * RECTSIZE + (int) RECTSIZE / 2, 4 * RECTSIZE + (int) RECTSIZE / 4));
-		// path.getElements().add(new LineTo(RECTSIZE, 4 * RECTSIZE + (int) RECTSIZE / 4));
-		PathTransition pathTransition = new PathTransition();
-		pathTransition.setDuration(Duration.millis(10000));
-		pathTransition.setNode(monsterImg);
-		pathTransition.setPath(path);
-		pathTransition.play();
-	}
+
 	
 
 //	private class AnimationHandler implements EventHandler<ActionEvent> {
