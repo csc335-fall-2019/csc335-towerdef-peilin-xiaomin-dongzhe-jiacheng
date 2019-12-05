@@ -7,9 +7,10 @@ import java.util.Observer;
 import controller.TowerDefController;
 
 import javafx.animation.TranslateTransition;
-
+import javafx.animation.KeyFrame;
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,24 +26,32 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.BasicMonster;
+import model.Monster;
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
 
-public class gameStart implements Observer {
+public class GameStage implements Observer {
 	
 	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
 	private ImageView sellImg;
+	
+	private Thread gameThread;
+	private Thread monsterThread;
 	
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
@@ -64,17 +73,23 @@ public class gameStart implements Observer {
 	private Image gold;
 	private ImageView goldImg;
 	private Label number2;
+	private GridPane grid2;
+	private GridPane grid3;
+	private int getRoad = 0;
+	private ArrayList<Point> road;
+	
 	
 	// private ImageView[][] images;
 	
 	
-	public gameStart() {
+	public GameStage() {
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		controller.buildBasicStage();
 		controller.getModel().addObserver(this);
 		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
+		road = controller.getModel().getMap().getRoads();
 	}
 	
 	
@@ -100,6 +115,9 @@ public class gameStart implements Observer {
 			goldL = new Label(String.valueOf(totalGold));
 			goldL.setTextFill(Color.ORANGE);
 			goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+			
+			hb2.getChildren().clear();
+			hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
 			//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
@@ -115,18 +133,18 @@ public class gameStart implements Observer {
 		
 		BorderPane window = new BorderPane();
 		
-		GridPane grid = new GridPane();
+		grid = new GridPane();
 		grid.setPrefSize(520, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
 		setGridPane(grid);
 		
-		GridPane grid2 = new GridPane();
+		grid2 = new GridPane();
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		
 		
-		GridPane grid3 = new GridPane();
+		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
@@ -171,7 +189,6 @@ public class gameStart implements Observer {
 		
 		hb = new HBox();
 		hb2 = new HBox();
-		HBox hb = new HBox();
 
 		
 		firstImg.setFitHeight(50);
@@ -199,9 +216,37 @@ public class gameStart implements Observer {
 		doImg(secondImg, availTowers.get(1));
 		doImg(sellImg, null);
 		
+
 		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
 		
 		grid3.getChildren().add(hb2);
+		Monster monster = new BasicMonster();
+		monster.setPoint(road.get(getRoad));
+		
+		Image mImg = new Image("/img/monster1.JPG");
+		ImageView monsterImg = new ImageView(mImg);
+		//monsterImg.set
+		monsterImg.setFitHeight((int) RECTSIZE / 2);
+		monsterImg.setFitWidth((int) RECTSIZE / 2);
+
+		
+//		Image monster = new Image("/img/monster1.JPG");
+//		ImageView monsterImg = new ImageView(monster);
+//		monsterImg.setFitHeight((int) RECTSIZE / 2);
+//		monsterImg.setFitWidth((int) RECTSIZE / 2);
+//		this.enemyWave(monsterImg);
+		
+		
+
+		// this.enemyWave(monsterImg);
+		//grid.getChildren().add(monsterImg);
+		
+		
+//		Timeline timeline = new Timeline(
+//				new KeyFrame(Duration.millis(100),
+//				new AnimationHandler()));
+		
+
 		window.setTop(grid3);
 		window.setCenter(grid);
 		window.setBottom(grid2);
@@ -214,15 +259,34 @@ public class gameStart implements Observer {
 		
 	}
 	
-	public void enemyWave() {
-		TranslateTransition translateTransition = new TranslateTransition();
-		translateTransition.setDuration(Duration.millis(2000));
-		//translateTransition.setNode(//);
-		translateTransition.setByX(400);
-		translateTransition.setCycleCount(5);
-		translateTransition.setAutoReverse(true);
-		translateTransition.play(); 
-	}
+	
+
+	
+
+	
+
+//	private class AnimationHandler implements EventHandler<ActionEvent> {
+//		int tick = 0; // This handle method gets called every 100 ms
+//		GridPane grid;
+//		
+//		public AnimationHandler(GridPane gird) {
+//			this.grid = grid;
+//		}
+//		
+//		@Override
+//		public void handle(ActionEvent event) {
+//			tick++; 
+//			grid.drawImage(backGround, 0, 0);
+//			x += 1.5;
+//			y -= 0.08;
+//			grid.drawImage(ship, x, y);
+//			if (tick > 200) {
+//				timeline.stop();
+//			}	
+//		}
+//		
+//	}
+
 	
 	/**
 	 * this class is used to draw circles
@@ -231,8 +295,8 @@ public class gameStart implements Observer {
 	public void setGridPane(GridPane grid) {
 		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 
-		grid.setHgap(1);
-		grid.setVgap(1);
+//		grid.setHgap(1);
+//		grid.setVgap(1);
 		Point point;
 		Image image = new Image("/img/enemy.png");
 
