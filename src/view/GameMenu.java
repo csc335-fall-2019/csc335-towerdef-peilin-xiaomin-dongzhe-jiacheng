@@ -3,9 +3,15 @@ package view;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -25,30 +31,76 @@ import javafx.util.Duration;
 public class GameMenu{
 
 	
+	private String choice = "English";
 	private GameStage newGame = new GameStage();
 	public GameMenu(Stage stage, BorderPane window) {
-		basicStage(stage, window,"English");
+		basicStage(stage, window,choice);
 		
 	}
-//	
-//	private void languageClick(BorderPane window, Button language, Stage stage) {
-//		// TODO Auto-generated method stub
-//		language.setOnMouseClicked((event) -> {
-//			stage.close();
-//			
-//		});
-//		
-//	}
 	
+	private void languageClick(Button language, Stage stage) {
+		// TODO Auto-generated method stub
+		language.setOnMouseClicked((event) -> {
+			stage.close();
+			Stage stageLang = new Stage();
+			HBox hb = new HBox();
+			
+			stageLang.setTitle("Language Setting");
+			BorderPane windowLang = new BorderPane();
+			
+			
+			
+			Label languageAll = new Label("Language:");
+			ToggleGroup group = new ToggleGroup();
+			RadioButton English = new RadioButton("English");
+			RadioButton Chinese = new RadioButton("Chinese");
+			
+			
+			English.setToggleGroup(group);
+			Chinese.setToggleGroup(group);
+			hb.getChildren().addAll(languageAll, English, Chinese);
+			
+			English.setOnMouseClicked((eventE)->{
+				choice = "English";
+			});
+			
+			Chinese.setOnMouseClicked((eventC)->{
+				choice = "Chinese";
+			});
+			
+			
+//			System.out.println(English.isSelected());
+//			System.out.println(Chinese.isSelected());
+//			if(English.isSelected()) {
+//				System.out.println("EClick");
+//				choice = "English";
+//			}
+//			if(Chinese.isSelected()) {
+//				System.out.println("CClick");
+//				choice = "Chinese";
+//			}
+			
+			VBox vb = new VBox();
+		
+			Button OK = new Button("OK");
+			vb.getChildren().addAll(hb,OK);
+			
+			windowLang.setCenter(vb);
+			Scene scene = new Scene(windowLang, 300, 150);
+			stageLang.setScene(scene);
+			stageLang.show();
+			
+			OK.setOnMouseClicked((event2)->{
+				stageLang.close();
+				System.out.println("nw");
+				BorderPane window = new BorderPane();
+				basicStage(stage, window, choice);
+			});
+			
+		});
+		
+	}
 	
-//	private String choiceLanguage() {
-//		String language = null;
-//		Stage stage = new Stage();
-//		Button english = new Button("English");
-//		Button chinese = new Button("Chinese");
-//
-//		return language;
-//	}
 
 	private void mouseClick(Button label, Stage stage, Image image) {
 		label.setOnMouseClicked((event) -> {
@@ -59,10 +111,12 @@ public class GameMenu{
 	
 	
 	private void basicStage(Stage stage, BorderPane window, String lang) {
+		System.out.println("1");
 		Button text;
 		Button language;
 		stage.setTitle("Tower Defense");
 		GridPane grid = new GridPane();
+//		System.out.println(2);
 		grid = new GridPane();
 		grid.setPrefSize(800, 450);
 		
@@ -93,17 +147,19 @@ public class GameMenu{
 		img3.setFitHeight(120);
 		img3.setFitWidth(120);
 		
-//		if(lang.equals("English")) {
-//			text = new Button("NEW GAME");
-//			language = new Button("Language");
-//		}
-//		else if(lang.equals("Chinese")) {
-//			text = new Button("新游戏");
-//			language = new Button("语言");
-//		}
+		System.out.println(choice);
+		if(choice.equals("English")) {
+			text = new Button("NEW GAME");
+			language = new Button("Language");
+		}
+		else {
+			System.out.println("Chinese");
+			text = new Button("新游戏");
+			language = new Button("语言");
+		}
 		
-		text = new Button("NEW GAME");
-		language = new Button("Language");
+//		text = new Button("NEW GAME");
+//		language = new Button("Language");
 		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
 		text.setStyle("-fx-focus-color: transparent;");
 		
@@ -136,7 +192,11 @@ public class GameMenu{
 		grid.getChildren().add(vb);
 		
 		mouseClick(text,stage, image3);
-//		languageClick(language, stage);
+		languageClick(language, stage);
+		
+		Scene scene = new Scene(window);
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 }

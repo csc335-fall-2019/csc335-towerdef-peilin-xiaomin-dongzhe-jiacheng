@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -78,6 +79,9 @@ public class GameStage implements Observer {
 	private int getRoad = 0;
 	private ArrayList<Point> road;
 	
+	private Label currName;
+	private String towername;
+	
 	
 	// private ImageView[][] images;
 	
@@ -116,8 +120,13 @@ public class GameStage implements Observer {
 			goldL.setTextFill(Color.ORANGE);
 			goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 			
+			System.out.println(towername);
+			currName = new Label(towername);
+			currName.setTextFill(Color.ORANGE);
+			currName.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+			
 			hb2.getChildren().clear();
-			hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
+			hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL, currName);
 			//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 			// update on stage;
 		}
@@ -185,6 +194,7 @@ public class GameStage implements Observer {
 		goldL = new Label(String.valueOf(totalGold));
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
 			
 		
 		hb = new HBox();
@@ -371,6 +381,8 @@ public class GameStage implements Observer {
 				if(currentPoint.isRoad()) {
 
 					rectangle.setFill(Color.WHITE);
+				
+
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
@@ -381,7 +393,7 @@ public class GameStage implements Observer {
 					}
 				}else {
 					rectangle.setFill(Color.GREEN);
-					doRectangle(rectangle);
+					doRectangle(rectangle, Color.GREEN);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
@@ -412,6 +424,9 @@ public class GameStage implements Observer {
 			}
 		}
 	}
+	
+	
+	
 	
 	
 	private void doImg(ImageView image, Tower currTower) {
@@ -470,33 +485,44 @@ public class GameStage implements Observer {
 	}
 	
 	
-	private void doRectangle(Rectangle ret) {
+	private void doRectangle(Rectangle ret, Color color) {
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				int x = 0, y = 0;
-				for (int i = 0; i < controller.HEIGHT; i++) {
-					for (int j = 0; j < controller.WIDTH; j++) {
-						if (rectangles[i][j].equals(ret)) {
-							x = i;
-							y = j;
+				
+				if(color == Color.WHITE) {
+					
+					towername = "Error";
+//					System.out.println(towername);
+				}
+				else {
+					
+					towername = "GO";
+					
+					int x = 0, y = 0;
+					for (int i = 0; i < controller.HEIGHT; i++) {
+						for (int j = 0; j < controller.WIDTH; j++) {
+							if (rectangles[i][j].equals(ret)) {
+								x = i;
+								y = j;
+							}
 						}
 					}
-				}
-				if(current == sellImg) {
-					if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
-						controller.sellTower(x, y);
-						current = null;
+					if(current == sellImg) {
+						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
+							controller.sellTower(x, y);
+							current = null;
+						}
+						//ret.setFill(Color.GREEN);
 					}
-					//ret.setFill(Color.GREEN);
-				}
-				else if (controller.canSetTower(x,y) && currentTower != null) {
-					controller.buildTower(x, y, currentTower);
-					current = null;
-					currentTower = null;
-					//ret.setFill(new ImagePattern(current.getImage()));
+					else if (controller.canSetTower(x,y) && currentTower != null) {
+						controller.buildTower(x, y, currentTower);
+						current = null;
+						currentTower = null;
+						//ret.setFill(new ImagePattern(current.getImage()));
+					}
 				}
 			}
 			
