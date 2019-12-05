@@ -91,9 +91,9 @@ public class Point {
 		return end;
 	}
 	public String toString() {
-		if(start) return "s";
-		if(end) return "e";
-		if (road) return "-";
+		if(start) return "s"+ " `(" + x + "," + y + ")";
+		if(end) return "e" + " `(" + x + "," + y + ")";
+		if (road) return "-" + " `(" + x + "," + y + ")";
 		return "0";
 	}
 }

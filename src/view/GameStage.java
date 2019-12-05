@@ -228,12 +228,13 @@ public class GameStage implements Observer {
 		//monsterImg.set
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
 		monsterImg.setFitWidth((int) RECTSIZE / 2);
+
 		
 //		Image monster = new Image("/img/monster1.JPG");
 //		ImageView monsterImg = new ImageView(monster);
 //		monsterImg.setFitHeight((int) RECTSIZE / 2);
 //		monsterImg.setFitWidth((int) RECTSIZE / 2);
-		//this.enemyWave(monsterImg);
+//		this.enemyWave(monsterImg);
 		
 		
 
