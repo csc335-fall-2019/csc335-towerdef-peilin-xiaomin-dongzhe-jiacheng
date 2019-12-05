@@ -22,9 +22,9 @@ public class View extends Application{
 		
 		GameMenu menu = new GameMenu(stage, window);
 	
-		Scene scene = new Scene(window);
-		stage.setScene(scene);
-		stage.show();
+//		Scene scene = new Scene(window);
+//		stage.setScene(scene);
+//		stage.show();
 	}
 	
 }
