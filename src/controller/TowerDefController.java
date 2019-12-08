@@ -74,7 +74,7 @@ public class TowerDefController {
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
-		for(int i =0;i<100;i++) {
+		for(int i =0;i<10;i++) {
 			model.addMonsters(new BasicMonster());
 		}
 	}

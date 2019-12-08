@@ -134,9 +134,8 @@ public class GameStage implements Observer {
 		}catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal));
+		
 		}
-		
-		
 		
 	}
 	
@@ -293,11 +292,11 @@ public class GameStage implements Observer {
 			ImageView monsterImg = new ImageView(mImg);
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
-			monsterImg.setLayoutX(RECTSIZE);
-			monsterImg.setLayoutY(RECTSIZE);
+//			monsterImg.setLayoutX(RECTSIZE);
+//			monsterImg.setLayoutY(RECTSIZE);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster);
-			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
-			//monsterKey.
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/400),move);
+			//monsterKey.e3
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -305,11 +304,17 @@ public class GameStage implements Observer {
 			monsterTimeline.play();
 		}
 		
-		//grid.getChildren().remove(monsterImg);
-		
 	}
 	
+	private class BulletsHandler implements EventHandler<ActionEvent>{
 
+		@Override
+		public void handle(ActionEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
 		int count = 0 ;
@@ -334,6 +339,7 @@ public class GameStage implements Observer {
 				time.stop();
 				img.setVisible(false);
 				model.lossHealth(monster);
+				//time.setRate(value);
 				//System.out.println(1);
 			}else if(heal == 0){
 				time.stop();
@@ -404,10 +410,6 @@ public class GameStage implements Observer {
 	 * @param pane is the gridpane object.
 	 */
 	public void setGridPane(GridPane grid) {
-		//grid.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-
-//		grid.setHgap(1);
-//		grid.setVgap(1);
 		Point point;
 		Image image = new Image("/img/enemy.png");
 
@@ -438,34 +440,9 @@ public class GameStage implements Observer {
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
-				
-				
-//				ImageView currImage = new ImageView();
-//				Point currentPoint = model.getMap().getGraph()[i][j];
-//				if (currentPoint.isRoad()) {
-//					Image road = new Image();
-//					currImage.setImage(road);
-//					//if (currentPoint.isStart()) {
-//					//	Image start = new Image();
-//					//	currImage.setImage(start);
-//					//}
-//					if (currentPoint.isEnd()) {
-//						Image end = new Image("/img/end.png");
-//						currImage.setImage(start);
-//					}
-//				}
-//				else {
-//					Image land = new Image();
-//					currImage.setImage(land);
-//				}
-//				currImage.setFitHeight(70.0f);
-//				currImage.setFitWidth(70.0f);
-//				this.images[i][j] = currImage;
-//				grid.add(currImage, j, i);
 			}
 		}
 	}
-	
 	
 	
 	
@@ -569,8 +546,6 @@ public class GameStage implements Observer {
 			
 		});
 	}
-	
-	
 	
 	private void setHome(Rectangle ret) {
 		Image image = new Image("/img/home.png");
