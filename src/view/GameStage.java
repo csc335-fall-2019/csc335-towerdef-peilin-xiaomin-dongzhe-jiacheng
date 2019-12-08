@@ -268,7 +268,7 @@ public class GameStage implements Observer {
 					createMonster(monsters.get(count));
 					count++;
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1300);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -318,7 +318,7 @@ public class GameStage implements Observer {
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster);
-			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/200),move);
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
