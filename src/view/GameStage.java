@@ -462,7 +462,7 @@ public class GameStage implements Observer {
 						Tooltip.install(image, new Tooltip("Sell tower: -20% of original price"));
 					}
 					else {
-						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));
+						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));						
 					}
 				}
 
