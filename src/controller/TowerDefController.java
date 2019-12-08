@@ -74,8 +74,9 @@ public class TowerDefController {
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
-		model.addMonsters(new BasicMonster());
-//		this.player = this.map.getPlayer();
+		for(int i =0;i<100;i++) {
+			model.addMonsters(new BasicMonster());
+		}
 	}
 	
 	public void buildRoad(Map newMap, Point start) {

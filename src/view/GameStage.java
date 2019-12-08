@@ -50,8 +50,6 @@ public class GameStage implements Observer {
 	private ImageView current;
 	private Tower currentTower;
 	private ImageView sellImg;
-	
-	private Monster[] monsters;
 	private Thread gameThread;
 	private Thread monsterThread;
 	
@@ -79,10 +77,10 @@ public class GameStage implements Observer {
 	private GridPane grid3;
 	private int getRoad = 0;
 	private ArrayList<Point> road;
-	
+	private ArrayList<Monster> monsters;
 	private Label currName;
 	private String towername;
-	
+	private ArrayList<Timeline> allTimeline;
 	
 	// private ImageView[][] images;
 	
@@ -95,45 +93,50 @@ public class GameStage implements Observer {
 		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
 		road = controller.getModel().getMap().getRoads();
+		monsters = controller.getModel().getMonsters();
 	}
+	
 	
 	
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
-		if (msg instanceof TowerMessage) {
+		try {
+			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
+			if (msg instanceof TowerMessage) {
 
-			Tower tower = (Tower) msg.getObj();;
-			System.out.println(msg.getMoney());
-			if(msg.getMoney()> 0) {
-				rectangles[msg.getRow()][msg.getColumn()].setFill(Color.GREEN);
-			}else if(msg.getMoney()< 0) {
-				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
+				Tower tower = (Tower) msg.getObj();;
+				System.out.println(msg.getMoney());
+				if(msg.getMoney()> 0) {
+					rectangles[msg.getRow()][msg.getColumn()].setFill(Color.GREEN);
+				}else if(msg.getMoney()< 0) {
+					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
+				}
+				System.out.println(model.getMap().getPlayer().getMoney());
+				model.getMap().getPlayer().changeMoney(msg.getMoney());
+				totalGold = model.getMap().getPlayer().getMoney();
+				System.out.println(totalGold);
+				
+				goldL = new Label(String.valueOf(totalGold));
+				goldL.setTextFill(Color.ORANGE);
+				goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+				
+				System.out.println(towername);
+				currName = new Label(towername);
+				currName.setTextFill(Color.ORANGE);
+				currName.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+				
+				hb2.getChildren().clear();
+				hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL, currName);
+				//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
+				// update on stage;
 			}
-			System.out.println(model.getMap().getPlayer().getMoney());
-			System.out.println();
-			model.getMap().getPlayer().changeMoney(msg.getMoney());
-			totalGold = model.getMap().getPlayer().getMoney();
-			System.out.println(totalGold);
-			
-			goldL = new Label(String.valueOf(totalGold));
-			goldL.setTextFill(Color.ORANGE);
-			goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-			
-			System.out.println(towername);
-			currName = new Label(towername);
-			currName.setTextFill(Color.ORANGE);
-			currName.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-			
-			hb2.getChildren().clear();
-			hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL, currName);
-			//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
-			// update on stage;
+		}catch (Exception e) {
+			heal = model.getMap().getPlayer().getHealth();
+			healL.setText(String.valueOf(heal));
 		}
-		else { 
-			
-		}
+		
+		
 		
 	}
 	
@@ -231,30 +234,25 @@ public class GameStage implements Observer {
 		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
 		
 		grid3.getChildren().add(hb2);
-		Monster monster = new BasicMonster();
-		monster.setPoint(road.get(getRoad));
 		
 		
 		gameThread = new Thread() {
-			int monster = 0;
+			int count = 0;
 			public void run() {
-				
+				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
+					//System.out.println(1);
+					createMonster(monsters.get(count));
+					count++;
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		};
 		
-		Image mImg = new Image("/img/monster1.JPG");
-		ImageView monsterImg = new ImageView(mImg);
-		monsterImg.setFitHeight((int) RECTSIZE / 2);
-		monsterImg.setFitWidth((int) RECTSIZE / 2);
-		monsterImg.setLayoutX(RECTSIZE);
-		monsterImg.setLayoutY(RECTSIZE);
-		MonsterHandler move = new MonsterHandler(monsterImg);
-		KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/200),move);
-		Timeline monsterTimeline = new Timeline(monsterKey);
-		monsterTimeline.setAutoReverse(false);
-		monsterTimeline.setCycleCount(Timeline.INDEFINITE);
-		move.addTimeline(monsterTimeline);
-		monsterTimeline.play();
+		gameThread.start();
 		//monsterImg.setTranslateX(2*RECTSIZE);
 		//monsterImg.setTranslateY(1*RECTSIZE);
 //		Image monster = new Image("/img/monster1.JPG");
@@ -289,7 +287,27 @@ public class GameStage implements Observer {
 	
 
 	
-
+	private void createMonster(Monster monster) {
+		if(monster instanceof BasicMonster) {
+			Image mImg = new Image("/img/monster1.JPG");
+			ImageView monsterImg = new ImageView(mImg);
+			monsterImg.setFitHeight((int) RECTSIZE / 2);
+			monsterImg.setFitWidth((int) RECTSIZE / 2);
+			monsterImg.setLayoutX(RECTSIZE);
+			monsterImg.setLayoutY(RECTSIZE);
+			MonsterHandler move = new MonsterHandler(monsterImg,monster);
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
+			//monsterKey.
+			Timeline monsterTimeline = new Timeline(monsterKey);
+			monsterTimeline.setAutoReverse(false);
+			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
+			move.addTimeline(monsterTimeline);
+			monsterTimeline.play();
+		}
+		
+		//grid.getChildren().remove(monsterImg);
+		
+	}
 	
 
 	private class MonsterHandler implements EventHandler<ActionEvent> {
@@ -298,14 +316,13 @@ public class GameStage implements Observer {
 		Point nextPoint;
 		ImageView img;
 		Timeline time;
-		public MonsterHandler(ImageView monsterImg) {
+		Monster monster;
+		public MonsterHandler(ImageView monsterImg,Monster monster) {
 			nextPoint  = road.get(currentRoad+1);
 			this.img = monsterImg;
-			
-			
 			img.setTranslateX(road.get(currentRoad).getY()*RECTSIZE+RECTSIZE/4);
 			img.setTranslateY(road.get(currentRoad).getX()*RECTSIZE);
-			grid.getChildren().add(img);
+			this.monster = monster;
 		}
 		
 		@Override
@@ -315,7 +332,11 @@ public class GameStage implements Observer {
 			
 			if(currentRoad == road.size()-1) {
 				time.stop();
+				img.setVisible(false);
+				model.lossHealth(monster);
 				//System.out.println(1);
+			}else if(heal == 0){
+				time.stop();
 			}else {
 				if(moveLeft()) {
 					img.setTranslateX(img.getTranslateX()-1.0);
@@ -334,9 +355,9 @@ public class GameStage implements Observer {
 						nextPoint  = road.get(currentRoad+1);
 					}
 				}
-				grid.getChildren().add(img);
+				
 			}
-			
+			grid.getChildren().add(img);
 			count++;
 		}
 		public void addTimeline(Timeline time) {
