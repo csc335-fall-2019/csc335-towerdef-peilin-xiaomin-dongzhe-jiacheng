@@ -51,6 +51,7 @@ public class GameStage implements Observer {
 	private Tower currentTower;
 	private ImageView sellImg;
 	
+	private Monster[] monsters;
 	private Thread gameThread;
 	private Thread monsterThread;
 	
@@ -233,13 +234,29 @@ public class GameStage implements Observer {
 		Monster monster = new BasicMonster();
 		monster.setPoint(road.get(getRoad));
 		
+		
+		gameThread = new Thread() {
+			int monster = 0;
+			public void run() {
+				
+			}
+		};
+		
 		Image mImg = new Image("/img/monster1.JPG");
 		ImageView monsterImg = new ImageView(mImg);
-		//monsterImg.set
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
 		monsterImg.setFitWidth((int) RECTSIZE / 2);
-
-		
+		monsterImg.setLayoutX(RECTSIZE);
+		monsterImg.setLayoutY(RECTSIZE);
+		MonsterHandler move = new MonsterHandler(monsterImg);
+		KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/200),move);
+		Timeline monsterTimeline = new Timeline(monsterKey);
+		monsterTimeline.setAutoReverse(false);
+		monsterTimeline.setCycleCount(Timeline.INDEFINITE);
+		move.addTimeline(monsterTimeline);
+		monsterTimeline.play();
+		//monsterImg.setTranslateX(2*RECTSIZE);
+		//monsterImg.setTranslateY(1*RECTSIZE);
 //		Image monster = new Image("/img/monster1.JPG");
 //		ImageView monsterImg = new ImageView(monster);
 //		monsterImg.setFitHeight((int) RECTSIZE / 2);
@@ -275,27 +292,90 @@ public class GameStage implements Observer {
 
 	
 
-//	private class AnimationHandler implements EventHandler<ActionEvent> {
-//		int tick = 0; // This handle method gets called every 100 ms
-//		GridPane grid;
-//		
-//		public AnimationHandler(GridPane gird) {
-//			this.grid = grid;
-//		}
-//		
-//		@Override
-//		public void handle(ActionEvent event) {
-//			tick++; 
-//			grid.drawImage(backGround, 0, 0);
-//			x += 1.5;
-//			y -= 0.08;
-//			grid.drawImage(ship, x, y);
-//			if (tick > 200) {
-//				timeline.stop();
-//			}	
-//		}
-//		
-//	}
+	private class MonsterHandler implements EventHandler<ActionEvent> {
+		int currentRoad = 0;
+		int count = 0 ;
+		Point nextPoint;
+		ImageView img;
+		Timeline time;
+		public MonsterHandler(ImageView monsterImg) {
+			nextPoint  = road.get(currentRoad+1);
+			this.img = monsterImg;
+			
+			
+			img.setTranslateX(road.get(currentRoad).getY()*RECTSIZE+RECTSIZE/4);
+			img.setTranslateY(road.get(currentRoad).getX()*RECTSIZE);
+			grid.getChildren().add(img);
+		}
+		
+		@Override
+		public void handle(ActionEvent event) {
+			//System.out.println(1000);
+			grid.getChildren().remove(img);
+			
+			if(currentRoad == road.size()-1) {
+				time.stop();
+				//System.out.println(1);
+			}else {
+				if(moveLeft()) {
+					img.setTranslateX(img.getTranslateX()-1.0);
+				}else if(moveRight()) {
+					img.setTranslateX(img.getTranslateX()+1.0);
+				}else if (moveUp()) {
+					img.setTranslateY(img.getTranslateY()+1.0);
+				}else if(moveDown()) {
+					img.setTranslateY(img.getTranslateY()-1.0);
+				}
+				
+				if(count >=RECTSIZE) {
+					count = 0;
+					currentRoad++;
+					if(currentRoad < road.size()-1) {
+						nextPoint  = road.get(currentRoad+1);
+					}
+				}
+				grid.getChildren().add(img);
+			}
+			
+			count++;
+		}
+		public void addTimeline(Timeline time) {
+			this.time = time;
+		}
+		private boolean moveLeft() {
+			Point point = road.get(currentRoad);
+			if(point.getX() == nextPoint.getX() && point.getY() > nextPoint.getY()) {
+				return true;
+			}
+			
+			return point.equals(nextPoint);
+		}
+		private boolean moveRight() {
+			Point point = road.get(currentRoad);
+			if(point.getX() == nextPoint.getX() && point.getY() < nextPoint.getY()) {
+				return true;
+			}
+			
+			return point.equals(nextPoint);
+		}
+		private boolean moveUp() {
+			Point point = road.get(currentRoad);
+			if(point.getY() == nextPoint.getY() && point.getX() < nextPoint.getX()) {
+				return true;
+			}
+			
+			return point.equals(nextPoint);
+		}
+		private boolean moveDown() {
+			Point point = road.get(currentRoad);
+			if(point.getY() == nextPoint.getY() && point.getX() > nextPoint.getX()) {
+				return true;
+			}
+			
+			return point.equals(nextPoint);
+		}
+		
+	}
 
 	
 	/**
@@ -468,6 +548,7 @@ public class GameStage implements Observer {
 			
 		});
 	}
+	
 	
 	
 	private void setHome(Rectangle ret) {
