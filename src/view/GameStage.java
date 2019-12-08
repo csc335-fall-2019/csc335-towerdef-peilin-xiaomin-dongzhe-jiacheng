@@ -127,7 +127,7 @@ public class GameStage implements Observer {
 					bulletImg.setFitHeight((int) RECTSIZE / 4);
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
 					BulletHandler move = new BulletHandler(bulletImg,point);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(1000/400),move);
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(1000/900),move);
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
 					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
