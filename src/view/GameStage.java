@@ -318,7 +318,7 @@ public class GameStage implements Observer {
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster);
-			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/200),move);
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -405,7 +405,7 @@ public class GameStage implements Observer {
 	}
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
-		int count = 0 ;
+		double count = 0.0 ;
 		Point nextPoint;
 		ImageView img;
 		Timeline time;
