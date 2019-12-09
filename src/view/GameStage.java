@@ -6,16 +6,15 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.TowerDefController;
-
-import javafx.animation.TranslateTransition;
 import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -28,18 +27,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
 import javafx.util.Duration;
 import model.BasicMonster;
 import model.BasicTower;
 import model.Images;
 import model.Monster;
+
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
@@ -53,9 +51,10 @@ public class GameStage implements Observer {
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
+	
 //	private ImageView sellImg;
 	private Thread gameThread;
-	
+
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
@@ -74,7 +73,7 @@ public class GameStage implements Observer {
 	private Label number2;
 	private GridPane grid2;
 	private GridPane grid3;
-	private int getRoad = 0;
+	//private int getRoad = 0;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
 	private Label currName;
@@ -190,8 +189,6 @@ public class GameStage implements Observer {
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
-		
-		
 		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -289,6 +286,7 @@ public class GameStage implements Observer {
 			}
 		};
 		
+
 		gameThread.start();
 		//monsterImg.setTranslateX(2*RECTSIZE);
 		//monsterImg.setTranslateY(1*RECTSIZE);
@@ -309,6 +307,7 @@ public class GameStage implements Observer {
 //				new AnimationHandler()));
 		
 
+
 		window.setTop(grid3);
 		window.setCenter(grid);
 		window.setBottom(grid2);
@@ -320,6 +319,7 @@ public class GameStage implements Observer {
 		
 		
 	}
+
 	
 	
 
