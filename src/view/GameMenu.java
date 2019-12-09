@@ -69,17 +69,6 @@ public class GameMenu{
 			});
 			
 			
-//			System.out.println(English.isSelected());
-//			System.out.println(Chinese.isSelected());
-//			if(English.isSelected()) {
-//				System.out.println("EClick");
-//				choice = "English";
-//			}
-//			if(Chinese.isSelected()) {
-//				System.out.println("CClick");
-//				choice = "Chinese";
-//			}
-			
 			VBox vb = new VBox();
 		
 			Button OK = new Button("OK");
@@ -158,8 +147,7 @@ public class GameMenu{
 			language = new Button("语言");
 		}
 		
-//		text = new Button("NEW GAME");
-//		language = new Button("Language");
+
 		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
 		text.setStyle("-fx-focus-color: transparent;");
 		

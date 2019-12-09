@@ -151,8 +151,17 @@ public class GameStage implements Observer {
 				currName.setTextFill(Color.ORANGE);
 				currName.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 				
-				hb2.getChildren().clear();
-				hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL, currName);
+				
+				
+				grid3.getChildren().clear();
+				hb = new HBox();
+				hb2 = new HBox();
+				hb.getChildren().addAll(healthImg, number, healL);
+				hb2.getChildren().addAll(goldImg, number2, goldL);
+				grid3.add(hb, 0, 0);
+				grid3.add(hb2, 1, 0);
+				grid3.setHgap(30);
+				
 				//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 				// update on stage;
 			}
@@ -225,8 +234,7 @@ public class GameStage implements Observer {
 		
 			
 		
-		hb = new HBox();
-		hb2 = new HBox();
+
 
 		
 		firstImg.setFitHeight(50);
@@ -246,18 +254,31 @@ public class GameStage implements Observer {
 		goldImg.setFitWidth(50);
 		
 		
-		hb.getChildren().addAll(firstImg, secondImg, sellImg);
+//		hb.getChildren().addAll(firstImg, secondImg, sellImg);
+		grid2.add(firstImg,0,0);
+		grid2.add(secondImg, 1, 0);
+		grid2.add(sellImg, 2, 0);
+		grid2.setHgap(10);
 		
-		grid2.getChildren().add(hb);
+//		grid2.getChildren().add(hb);
 		
 		doImg(firstImg, availTowers.get(0));
 		doImg(secondImg, availTowers.get(1));
 		doImg(sellImg, null);
 		
 
-		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
+//		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
+//		hb2.setSpacing(20);
+//		grid3.add(healthImg, 0, 0);
 		
-		grid3.getChildren().add(hb2);
+		hb = new HBox();
+		hb2 = new HBox();
+		hb.getChildren().addAll(healthImg, number, healL);
+		hb2.getChildren().addAll(goldImg, number2, goldL);
+		grid3.add(hb, 0, 0);
+		grid3.add(hb2, 1, 0);
+		grid3.setHgap(30);
+		
 		
 		
 		gameThread = new Thread() {
