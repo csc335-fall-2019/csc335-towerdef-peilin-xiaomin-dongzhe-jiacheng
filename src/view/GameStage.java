@@ -13,9 +13,11 @@ import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -26,6 +28,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.LineTo;
@@ -82,6 +86,7 @@ public class GameStage implements Observer {
 	private String towername;
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
+	private Button reset;
 	// private ImageView[][] images;
 	
 	
@@ -222,7 +227,6 @@ public class GameStage implements Observer {
 		goldL = new Label(String.valueOf(totalGold));
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
 			
 		
 		hb = new HBox();
@@ -245,25 +249,33 @@ public class GameStage implements Observer {
 		goldImg.setFitHeight(50);
 		goldImg.setFitWidth(50);
 		
+//		Image placeHolder = new Image("/img/");
+//		ImageView placeImg = new ImageView(placeHolder);
+//		placeImg.setFitHeight(50);
+//		placeImg.setFitWidth(50);
 		
+		
+		
+		hb.setSpacing(10);
 		hb.getChildren().addAll(firstImg, secondImg, sellImg);
-		
 		grid2.getChildren().add(hb);
 		
 		doImg(firstImg, availTowers.get(0));
 		doImg(secondImg, availTowers.get(1));
 		doImg(sellImg, null);
 		
-
+		hb2.setSpacing(5);
 		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
-		
+		addStackPane(hb2);
 		grid3.getChildren().add(hb2);
+		
+//		reset.setOnAction(value);
 		
 		
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
-				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
+				while(count < monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 					//System.out.println(1);
 					createMonster(monsters.get(count));
 					count++;
@@ -308,7 +320,16 @@ public class GameStage implements Observer {
 		
 	}
 	
-	
+	public void addStackPane(HBox hb) {
+		StackPane stack = new StackPane();
+		reset = new Button("RESET");
+		reset.setTextFill(Color.WHITE);
+		reset.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+		stack.getChildren().add(reset);
+	    stack.setAlignment(Pos.TOP_RIGHT);
+	    hb.getChildren().add(stack);            // Add to HBox from Example 1-2
+//	    HBox.setHgrow(stack, Priority.ALWAYS);
+	}
 
 	
 	private void createMonster(Monster monster) {
