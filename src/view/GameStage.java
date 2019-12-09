@@ -334,8 +334,7 @@ public class GameStage implements Observer {
 	
 	private void createMonster(Monster monster) {
 		if(monster instanceof BasicMonster) {
-			Image mImg = new Image("/img/monster2.png");
-			ImageView monsterImg = new ImageView(mImg);
+			ImageView monsterImg = monster.getImg();
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster);
@@ -345,6 +344,7 @@ public class GameStage implements Observer {
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
 			move.addTimeline(monsterTimeline);
 			monsterTimeline.play();
+			//System.out.println(monsterImg.getTranslateX());
 		}
 		
 	}
