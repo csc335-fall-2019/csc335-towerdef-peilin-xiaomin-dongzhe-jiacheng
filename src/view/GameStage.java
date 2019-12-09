@@ -313,7 +313,7 @@ public class GameStage implements Observer {
 	
 	private void createMonster(Monster monster) {
 		if(monster instanceof BasicMonster) {
-			Image mImg = new Image("/img/monster1.JPG");
+			Image mImg = new Image("/img/monster2.png");
 			ImageView monsterImg = new ImageView(mImg);
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
@@ -550,7 +550,7 @@ public class GameStage implements Observer {
 						Tooltip.install(image, new Tooltip("Sell tower: -20% of original price"));
 					}
 					else {
-						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));
+						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));						
 					}
 				}
 
