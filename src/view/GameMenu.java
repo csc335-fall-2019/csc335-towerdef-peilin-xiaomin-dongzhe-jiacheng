@@ -173,6 +173,7 @@ public class GameMenu{
 		
 		vb.getChildren().addAll(hb1,hb2,hb3);
 		
+		
 		grid.setAlignment(Pos.CENTER);
 		grid.setPadding(new Insets(30));
 		grid.setHgap(100);
