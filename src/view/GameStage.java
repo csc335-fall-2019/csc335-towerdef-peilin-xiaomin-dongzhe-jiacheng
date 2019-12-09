@@ -280,7 +280,7 @@ public class GameStage implements Observer {
 					createMonster(monsters.get(count));
 					count++;
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1300);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -334,8 +334,7 @@ public class GameStage implements Observer {
 	
 	private void createMonster(Monster monster) {
 		if(monster instanceof BasicMonster) {
-			Image mImg = new Image("/img/monster2.png");
-			ImageView monsterImg = new ImageView(mImg);
+			ImageView monsterImg = monster.getImg();
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster);
@@ -345,6 +344,7 @@ public class GameStage implements Observer {
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
 			move.addTimeline(monsterTimeline);
 			monsterTimeline.play();
+			//System.out.println(monsterImg.getTranslateX());
 		}
 		
 	}
@@ -426,7 +426,7 @@ public class GameStage implements Observer {
 	}
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
-		int count = 0 ;
+		double count = 0.0 ;
 		Point nextPoint;
 		ImageView img;
 		Timeline time;

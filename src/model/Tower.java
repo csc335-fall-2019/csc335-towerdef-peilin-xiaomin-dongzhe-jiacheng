@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Tower {
 	protected int cost;
@@ -11,7 +11,7 @@ public class Tower {
 	protected Bullets bullet;
 	private int energy = 0;
 	private	ArrayList <Point> rangePoint = new ArrayList<>();
-	
+	protected ImageView img;
 	public Tower() {
 		this.bullet = new Bullets();
 	}
@@ -74,5 +74,11 @@ public class Tower {
 	}
 	public ArrayList <Point> getRangePoint(){
 		return rangePoint;
+	}
+	public void setImg(ImageView img) {
+		this.img = img;
+	}
+	public ImageView getImg() {
+		return img;
 	}
 }

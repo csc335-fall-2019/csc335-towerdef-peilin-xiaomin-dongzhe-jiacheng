@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.ImageView;
+
 public class Monster {
 	protected int gold;
 	protected int speed;
@@ -8,6 +10,7 @@ public class Monster {
 	protected int health;
 	protected int energy;
 	private Point point;
+	private ImageView img;
 
 	//protected boolean dead = false;
 	public Monster() {
@@ -67,5 +70,11 @@ public class Monster {
 	}
 	public void setPoint(Point point) {
 		this.point = point;
+	}
+	public void setImg(ImageView img) {
+		this.img = img;
+	}
+	public ImageView getImg() {
+		return img;
 	}
 }
