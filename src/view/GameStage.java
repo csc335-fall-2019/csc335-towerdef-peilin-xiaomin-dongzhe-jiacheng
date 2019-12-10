@@ -19,6 +19,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,8 +31,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.LineTo;
@@ -87,6 +89,7 @@ public class GameStage implements Observer {
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Button reset;
+	private VBox vb;
 	// private ImageView[][] images;
 	
 	
@@ -169,7 +172,7 @@ public class GameStage implements Observer {
 		
 	}
 	
-	public void createNewGame(Stage stage) {
+	public void createNewGame(Stage stage)  {
 //		Stage stage = new Stage();
 		stage.setTitle("Tower Defense");
 		
@@ -249,12 +252,23 @@ public class GameStage implements Observer {
 		goldImg.setFitHeight(50);
 		goldImg.setFitWidth(50);
 		
-//		Image placeHolder = new Image("/img/");
-//		ImageView placeImg = new ImageView(placeHolder);
-//		placeImg.setFitHeight(50);
-//		placeImg.setFitWidth(50);
+		MenuBar menuBar = new MenuBar();
+		Menu menu = new Menu("File"); 
+		MenuItem newgame = new MenuItem("New Game");
+		menu.getItems().add(newgame);  // add menu bar and menu items
+		menuBar.getMenus().add(menu);
 		
-		
+		newgame.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				stage.close();
+				Stage stage = new Stage();
+				createNewGame(stage);
+				
+			}
+		});
+	
 		
 		hb.setSpacing(10);
 		hb.getChildren().addAll(firstImg, secondImg, sellImg);
@@ -266,11 +280,8 @@ public class GameStage implements Observer {
 		
 		hb2.setSpacing(5);
 		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
-		addStackPane(hb2);
 		grid3.getChildren().add(hb2);
-		
-//		reset.setOnAction(value);
-		
+	
 		
 		gameThread = new Thread() {
 			int count = 0;
@@ -307,8 +318,9 @@ public class GameStage implements Observer {
 //				new KeyFrame(Duration.millis(100),
 //				new AnimationHandler()));
 		
-
-		window.setTop(grid3);
+		VBox vb = new VBox();
+		vb.getChildren().addAll(menuBar, grid3);
+		window.setTop(vb); 
 		window.setCenter(grid);
 		window.setBottom(grid2);
 		
@@ -320,16 +332,6 @@ public class GameStage implements Observer {
 		
 	}
 	
-	public void addStackPane(HBox hb) {
-		StackPane stack = new StackPane();
-		reset = new Button("RESET");
-		reset.setTextFill(Color.WHITE);
-		reset.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-		stack.getChildren().add(reset);
-	    stack.setAlignment(Pos.TOP_RIGHT);
-	    hb.getChildren().add(stack);            // Add to HBox from Example 1-2
-//	    HBox.setHgrow(stack, Priority.ALWAYS);
-	}
 
 	
 	private void createMonster(Monster monster) {
@@ -544,6 +546,8 @@ public class GameStage implements Observer {
 						rectangle.setFill(new ImagePattern(image));
 					}
 				}else {
+//					Image img = new Image("/img/road.png");
+//					rectangle.setFill(new ImagePattern(img));
 					rectangle.setFill(Color.GREEN);
 					doRectangle(rectangle, Color.GREEN);
 				}
