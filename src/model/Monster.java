@@ -7,7 +7,7 @@ public class Monster {
 	protected int speed;
 	protected int armor;
 	protected int magicResist;
-	protected int health;
+	protected double health;
 	protected int energy;
 	private Point point;
 	private ImageView img;
@@ -37,7 +37,7 @@ public class Monster {
 	public int getMagicResist() {
 		return magicResist;
 	}
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 	public int getEnergy() {
@@ -49,8 +49,11 @@ public class Monster {
 	public void setHealth(int health) {
 		this.health = health;
 	}
+	public void healthLoss(double health) {
+		this.health -= health;
+	}
 	public boolean dead() {
-		return health == 0;
+		return health <=0;
 	}
 	public void newSpeed(int speed) {
 		this.speed = speed;
