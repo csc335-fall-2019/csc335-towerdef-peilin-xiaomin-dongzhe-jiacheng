@@ -90,13 +90,16 @@ public class GameStage implements Observer {
 	//private int getRoad = 0;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
-	private Label currName;
-	private String towername;
+//	private Label currName;
+//	private String towername;
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
 	private Stage stage; 
 	private VBox vb;
+	private GameStage2 level2;
+	
+	private int deadMonsters;
 	// private ImageView[][] images;
 	
 	
@@ -164,11 +167,6 @@ public class GameStage implements Observer {
 				goldL.setTextFill(Color.ORANGE);
 				goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 				
-				System.out.println(towername);
-				currName = new Label(towername);
-				currName.setTextFill(Color.ORANGE);
-				currName.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-				
 				
 				
 				grid3.getChildren().clear();
@@ -221,11 +219,6 @@ public class GameStage implements Observer {
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
 		
-//		sell = new Image("/img/sell.png");
-//		sellImg = new ImageView(sell);
-		
-//		health = new Image("/img/health.png");
-//		healthImg = new ImageView(health);
 		
 		number = new Label("X");
 		number.setTextFill(Color.ORANGE);
@@ -301,12 +294,14 @@ public class GameStage implements Observer {
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
+				deadMonsters = 0; 
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 					//System.out.println(1);
-					createMonster(monsters.get(count));
+					createMonster(monsters.get(count), stageA);
 					count++;
 					try {
 						Thread.sleep(2000);
+						System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -363,6 +358,7 @@ public class GameStage implements Observer {
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				gameThread.start();
+				
 			}
 		});
 		
@@ -384,12 +380,12 @@ public class GameStage implements Observer {
 	
 
 	
-	private void createMonster(Monster monster) {
+	private void createMonster(Monster monster, Stage stage) {
 		if(monster instanceof BasicMonster) {
 			ImageView monsterImg = monster.getImg();
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
-			MonsterHandler move = new MonsterHandler(monsterImg,monster);
+			MonsterHandler move = new MonsterHandler(monsterImg,monster, stage);
 			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
@@ -512,7 +508,7 @@ public class GameStage implements Observer {
 		Timeline time;
 		Monster monster;
 //		private Rectangle[][] rectangles;
-		public MonsterHandler(ImageView monsterImg,Monster monster) {
+		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) {
 			nextPoint  = road.get(currentRoad+1);
 			this.img = monsterImg;
 			img.setTranslateX(road.get(currentRoad).getY()*RECTSIZE+RECTSIZE/4);
@@ -531,10 +527,17 @@ public class GameStage implements Observer {
 				img.setVisible(false);
 //				images.getHomeV().setVisible(false);
 				if(nextPoint.isEnd()) {
+					deadMonsters++;
 					System.out.println(nextPoint.getX()+" "+nextPoint.getY());
 					System.out.println("getend");
 					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
+					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+						System.out.println("you win");
+						stage.close();
+//						level2.createLevel2();
+						
+					}
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
 				
@@ -547,10 +550,18 @@ public class GameStage implements Observer {
 
 			}else if(monster.dead()){
 				//monsters.remove(monster);
+				deadMonsters++; 
 				monsterLeft++;
 				road.get(currentRoad).clearMonster(monster);
 				time.stop();
 				img.setVisible(false);
+				
+				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+					System.out.println("you win");
+					stage.close();
+//					level2.createLevel2();
+					
+				}
 
 			}else {
 				if(moveLeft()) {
@@ -723,14 +734,7 @@ public class GameStage implements Observer {
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
-				if(img == roadPattern) {
-					
-					towername = "Error";
-//					System.out.println(towername);
-				}
-				else {
-					
-					towername = "GO";
+				if(img != roadPattern) {
 					
 					int x = 0, y = 0;
 					for (int i = 0; i < controller.HEIGHT; i++) {

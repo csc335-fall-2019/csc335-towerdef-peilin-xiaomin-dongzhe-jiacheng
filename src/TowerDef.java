@@ -1,8 +1,5 @@
-import controller.TowerDefController;
+
 import javafx.application.Application;
-import model.BasicTower;
-import model.Tower;
-import model.TowerDefModel;
 import view.View;
 
 public class TowerDef {

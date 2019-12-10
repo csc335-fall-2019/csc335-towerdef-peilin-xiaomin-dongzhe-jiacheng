@@ -18,6 +18,8 @@ public class Images {
 	private Image homeend;
 	private Image home;
 	private ImageView homeV;
+	private Image bat;
+	private ImageView batV;
 	
 	public Images() {
 		backimg = new Image("/img/background.jpg");
@@ -34,7 +36,18 @@ public class Images {
 		home = new Image("/img/home.png");
 		homeV = new ImageView(home);
 		
+		bat = new Image("/img/bat.png");
+		batV = new ImageView(bat);
 		
+	}
+	
+	
+	public Image getBat() {
+		return bat;
+	}
+	
+	public ImageView getBatV() {
+		return batV;
 	}
 	
 	public Image getHome() {
