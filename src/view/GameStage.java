@@ -310,7 +310,7 @@ public class GameStage implements Observer {
 		};
 		
 
-		gameThread.start();
+//		gameThread.start();
 		//monsterImg.setTranslateX(2*RECTSIZE);
 		//monsterImg.setTranslateY(1*RECTSIZE);
 //		Image monster = new Image("/img/monster1.JPG");
@@ -332,7 +332,9 @@ public class GameStage implements Observer {
 		MenuBar menuBar = new MenuBar();
 		Menu menu = new Menu("File"); 
 		MenuItem newgame = new MenuItem("New Game");
-		menu.getItems().add(newgame);  // add menu bar and menu items
+		MenuItem exit = new MenuItem("Exit");
+		MenuItem start = new MenuItem("Start");
+		menu.getItems().addAll(start, newgame, exit);  // add menu bar and menu items
 		menuBar.getMenus().add(menu);
 		
 		newgame.setOnAction(new EventHandler<ActionEvent>() {
@@ -343,6 +345,19 @@ public class GameStage implements Observer {
 //				Stage stageB = new Stage();
 //				BorderPane window = new BorderPane();
 //				GameMenu menu = new GameMenu(stageB, window);
+			}
+		});
+		
+		
+//		exit.setOnAction(new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent event) {
+//				stage.close();
+//			}
+//		});
+		
+		start.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				gameThread.start();
 			}
 		});
 		
@@ -718,7 +733,8 @@ public class GameStage implements Observer {
 		MenuBar menuBar = new MenuBar();
 		Menu menu = new Menu("File"); 
 		MenuItem newgame = new MenuItem("New Game");
-		menu.getItems().add(newgame);  // add menu bar and menu items
+		MenuItem exit = new MenuItem("Exit");
+		menu.getItems().addAll(newgame, exit);  // add menu bar and menu items
 		menuBar.getMenus().add(menu);
 		
 		newgame.setOnAction(new EventHandler<ActionEvent>() {
@@ -729,6 +745,12 @@ public class GameStage implements Observer {
 				Stage stageB = new Stage();
 				BorderPane window = new BorderPane();
 				GameMenu menu = new GameMenu(stageB, window);
+			}
+		});
+		
+		exit.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				newStage.close();
 			}
 		});
 		
