@@ -416,6 +416,7 @@ public class GameStage implements Observer {
 			img.setTranslateX(road.get(currentRoad).getY()*RECTSIZE+RECTSIZE/4);
 			img.setTranslateY(road.get(currentRoad).getX()*RECTSIZE);
 			this.monster = monster;
+			road.get(currentRoad).setMonster(monster);
 		}
 		
 		@Override
@@ -444,7 +445,9 @@ public class GameStage implements Observer {
 				
 				if(count >=RECTSIZE) {
 					count = 0;
+					road.get(currentRoad).clearMonster(monster);
 					currentRoad++;
+					road.get(currentRoad).setMonster(monster);
 					if(currentRoad < road.size()-1) {
 						nextPoint  = road.get(currentRoad+1);
 					}
