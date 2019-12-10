@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 
 import controller.TowerDefController;
 import javafx.animation.KeyFrame;
@@ -177,13 +178,10 @@ public class GameStage implements Observer {
 		}catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			
-			healL.setText(String.valueOf(heal));
-			if(heal == 0) {
-				System.out.println("gameover");
-				gameOver(stage);
-			}
-		
+			healL.setText(String.valueOf(heal));	
 		}
+		
+		
 		
 	}
 	
