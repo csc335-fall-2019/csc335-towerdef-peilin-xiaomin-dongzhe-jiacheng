@@ -135,11 +135,15 @@ public class TowerDefController {
 	public boolean canSetTower(int x,int y) {
 		return model.getMap().getGraph()[x][y].canSetTower();
 	}
-	public void buildTower(int x,int y,Tower tower) {
+	
+	public void buildTower(int x,int y,Tower tower) {		
 		model.setTower(tower, x, y);
 	}
 	
+
+	
 	public void sellTower(int x, int y) {
+		System.out.println("sell");
 		model.sellTower(x, y);
 	}
 	

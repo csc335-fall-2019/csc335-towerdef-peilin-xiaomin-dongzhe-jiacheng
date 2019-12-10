@@ -108,7 +108,8 @@ public class GameStage implements Observer {
 			if (msg instanceof TowerMessage) {
 
 				Tower tower = (Tower) msg.getObj();;
-				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
+				Point point = tower.getPoint();
+				// Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 				if(msg.getMoney()> 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(Color.GREEN);
 					Timeline BulletTime = BulletsTimeline.get(point);
@@ -120,13 +121,13 @@ public class GameStage implements Observer {
 					img = null;
 					BulletsTimeline.remove(point);
 					BulletsImageView.remove(point);
-				}else if(msg.getMoney()< 0) {
+				} else if(msg.getMoney()< 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
 					Image bImg = new Image("/img/bullet1.JPG");
 					ImageView bulletImg = new ImageView(bImg);
 					bulletImg.setFitHeight((int) RECTSIZE / 4);
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point);
+					BulletHandler move = new BulletHandler(bulletImg, point);
 					KeyFrame BulletKey = new KeyFrame(Duration.millis(1000/900),move);
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
@@ -321,9 +322,6 @@ public class GameStage implements Observer {
 	}
 
 	
-	
-
-	
 	private void createMonster(Monster monster) {
 		if(monster instanceof BasicMonster) {
 			ImageView monsterImg = monster.getImg();
@@ -340,82 +338,7 @@ public class GameStage implements Observer {
 		}
 		
 	}
-	
-	private class BulletHandler implements EventHandler<ActionEvent>{
 
-		
-		ImageView img;
-		Point point;
-		int count = 0 ;
-		Timeline time;
-		public BulletHandler(ImageView imgView,Point point) {
-			img = imgView;
-			this.point = point;
-			img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
-			img.setTranslateY(point.getX()*RECTSIZE);
-		}
-		public void addTimeline(Timeline timeline) {
-			time = timeline;
-			
-		}
-		@Override
-		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub]
-			grid.getChildren().remove(img);
-			if(heal == 0) {
-				time.stop();
-			}
-			if(moveLeft()) {
-				img.setTranslateX(img.getTranslateX()-1.0);
-			}else if(moveRight()) {
-				img.setTranslateX(img.getTranslateX()+1.0);
-			}else if (moveUp()) {
-				img.setTranslateY(img.getTranslateY()+1.0);
-			}else if(moveDown()) {
-				img.setTranslateY(img.getTranslateY()-1.0);
-			}
-			
-			if(count >=RECTSIZE) {
-				count = 0;
-				img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
-				img.setTranslateY(point.getX()*RECTSIZE);
-			}
-			grid.getChildren().add(img);
-			count++;
-		}
-		public void sell() {
-			img.setVisible(false);
-		}
-		private boolean moveDown() {
-			try {
-				return model.getMap().getGraph()[point.getX()-1][point.getY()].isRoad();
-			}catch (Exception e) {
-				return false;
-			}
-		}
-		private boolean moveUp() {
-			try {
-				return model.getMap().getGraph()[point.getX()+1][point.getY()].isRoad();
-			}catch (Exception e) {
-				return false;
-			}
-		}
-		private boolean moveRight() {
-			try {
-				return model.getMap().getGraph()[point.getX()][point.getY()+1].isRoad();
-			}catch (Exception e) {
-				return false;
-			}
-		}
-		
-		private boolean moveLeft() {
-			try {
-				return model.getMap().getGraph()[point.getX()][point.getY()-1].isRoad();
-			}catch (Exception e) {
-				return false;
-			}
-		}
-	}
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
 		double count = 0.0 ;
@@ -504,7 +427,170 @@ public class GameStage implements Observer {
 			
 			return point.equals(nextPoint);
 		}
+	}
+	
+	private class TowerHandler implements EventHandler<ActionEvent> {
+		private ImageView towerImg;
+		private ImageView bulletImg;
+		private Tower tower;
+		private Point point;
+		private int count = 0;
+		private Timeline timeline;
 		
+		public TowerHandler(ImageView towerImg, ImageView bulletImg, Tower tower) {
+			this.towerImg = towerImg;
+			this.bulletImg = bulletImg;
+			this.tower = tower;
+			this.point = tower.getPoint();
+			
+			bulletImg.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
+			bulletImg.setTranslateY(point.getX()*RECTSIZE);
+		}
+		
+		public void addTimeline(Timeline timeline) {
+			this.timeline = timeline;
+		}
+		
+		@Override
+		public void handle(ActionEvent event) {
+			// TODO Auto-generated method stub
+			grid.getChildren().remove(bulletImg);
+			
+			if(heal == 0) {
+				timeline.stop();
+			}
+			if(moveLeft()) {
+				bulletImg.setTranslateX(bulletImg.getTranslateX()-1.0);
+			}else if(moveRight()) {
+				bulletImg.setTranslateX(bulletImg.getTranslateX()+1.0);
+			}else if (moveUp()) {
+				bulletImg.setTranslateY(bulletImg.getTranslateY()+1.0);
+			}else if(moveDown()) {
+				bulletImg.setTranslateY(bulletImg.getTranslateY()-1.0);
+			}
+			
+			if(count >=RECTSIZE) {
+				count = 0;
+				bulletImg.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
+				bulletImg.setTranslateY(point.getX()*RECTSIZE);
+			}
+			grid.getChildren().add(bulletImg);
+			count++;
+			
+		}
+		
+		public void sell() {
+			bulletImg.setVisible(false);
+		}
+		private boolean moveDown() {
+			try {
+				return model.getMap().getGraph()[point.getX()-1][point.getY()].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		private boolean moveUp() {
+			try {
+				return model.getMap().getGraph()[point.getX()+1][point.getY()].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		private boolean moveRight() {
+			try {
+				return model.getMap().getGraph()[point.getX()][point.getY()+1].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		
+		private boolean moveLeft() {
+			try {
+				return model.getMap().getGraph()[point.getX()][point.getY()-1].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		
+	}
+	
+	private class BulletHandler implements EventHandler<ActionEvent>{
+		ImageView img;
+		Tower tower;
+		Point point;
+		int count = 0 ;
+		Timeline time;
+		public BulletHandler(ImageView imgView, Point point) {
+			img = imgView;
+			this.point = point;
+			// point = tower.getPoint();
+			img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
+			img.setTranslateY(point.getX()*RECTSIZE);
+		}
+		public void addTimeline(Timeline timeline) {
+			time = timeline;
+			
+		}
+		@Override
+		public void handle(ActionEvent event) {
+			// TODO Auto-generated method stub]
+			grid.getChildren().remove(img);
+			
+			if(heal == 0) {
+				time.stop();
+			}
+			if(moveLeft()) {
+				img.setTranslateX(img.getTranslateX()-1.0);
+			}else if(moveRight()) {
+				img.setTranslateX(img.getTranslateX()+1.0);
+			}else if (moveUp()) {
+				img.setTranslateY(img.getTranslateY()+1.0);
+			}else if(moveDown()) {
+				img.setTranslateY(img.getTranslateY()-1.0);
+			}
+			
+			if(count >=RECTSIZE) {
+				count = 0;
+				img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
+				img.setTranslateY(point.getX()*RECTSIZE);
+			}
+			grid.getChildren().add(img);
+			count++;
+		}
+		
+		public void sell() {
+			img.setVisible(false);
+		}
+		
+		private boolean moveDown() {
+			try {
+				return model.getMap().getGraph()[point.getX()-1][point.getY()].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		private boolean moveUp() {
+			try {
+				return model.getMap().getGraph()[point.getX()+1][point.getY()].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		private boolean moveRight() {
+			try {
+				return model.getMap().getGraph()[point.getX()][point.getY()+1].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
+		
+		private boolean moveLeft() {
+			try {
+				return model.getMap().getGraph()[point.getX()][point.getY()-1].isRoad();
+			}catch (Exception e) {
+				return false;
+			}
+		}
 	}
 
 	

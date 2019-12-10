@@ -26,6 +26,7 @@ public class TowerDefMoveMessage implements Serializable {
     public Object getObj() {
 		return obj;  	
     }
+    
     public int getMoney() {
     	return money;
     }

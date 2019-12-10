@@ -6,5 +6,5 @@ public class TowerMessage extends TowerDefMoveMessage {
 		super(row, col, obj,money);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 }

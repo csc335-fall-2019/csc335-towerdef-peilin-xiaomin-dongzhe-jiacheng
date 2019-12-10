@@ -37,6 +37,7 @@ public class TowerDefModel extends Observable {
 	}
 	
 	public void setTower(Tower tower, int row, int col) {
+		tower.setPoint(this.map.getGraph()[row][col]);
 		this.map.getGraph()[row][col].setTower(tower);
 		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,-tower.getCost());
 		
@@ -48,12 +49,14 @@ public class TowerDefModel extends Observable {
 	
 	public void sellTower(int row, int col) {
 		Tower tower = this.map.getGraph()[row][col].getTower();
+		tower.setPoint(null);
 		this.map.getGraph()[row][col].sellTower();
 		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,(int)Math.floor(tower.getCost()*0.8));
 		
 		setChanged();
         notifyObservers(msg);
 	}
+
 	
 	public void monsterDie(int xPos, int yPos) {
 		this.map.getGraph()[xPos][yPos].clearMonster();
