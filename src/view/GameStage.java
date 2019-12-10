@@ -13,6 +13,7 @@ import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -23,6 +24,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -82,6 +88,7 @@ public class GameStage implements Observer {
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
+	private Stage stage; 
 	// private ImageView[][] images;
 	
 	
@@ -97,6 +104,7 @@ public class GameStage implements Observer {
 		BulletsTimeline = new HashMap<Point,Timeline>();
 		BulletsImageView = new HashMap<Point,ImageView>();
 		images = new Images();
+		
 	}
 	
 	
@@ -169,14 +177,20 @@ public class GameStage implements Observer {
 			}
 		}catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
+			
 			healL.setText(String.valueOf(heal));
+			if(heal == 0) {
+				System.out.println("gameover");
+				gameOver(stage);
+			}
 		
 		}
 		
 	}
 	
-	public void createNewGame(Stage stage) {
+	public void createNewGame(Stage stageA) {
 //		Stage stage = new Stage();
+		stage = stageA;
 		stage.setTitle("Tower Defense");
 		
 		BorderPane window = new BorderPane();
@@ -214,6 +228,9 @@ public class GameStage implements Observer {
 		healL = new Label(String.valueOf(heal));
 		healL.setTextFill(Color.ORANGE);
 		healL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
+		
+		
 		
 //		gold = new Image("/img/gold.png");
 //		goldImg = new ImageView(gold);
@@ -315,7 +332,6 @@ public class GameStage implements Observer {
 		
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
-		
 		stage.show();
 		
 		
@@ -444,7 +460,6 @@ public class GameStage implements Observer {
 				//System.out.println(1);
 			}else if(heal == 0){
 				time.stop();
-				
 				
 			}else {
 				if(moveLeft()) {
@@ -656,7 +671,32 @@ public class GameStage implements Observer {
 	}
 	
 	
-	private void getOver() {
+	private void gameOver(Stage stage) {
+		stage.close();
+		Stage newStage = new Stage();
+		newStage.setTitle("Tower Defense");
+		BorderPane window = new BorderPane();
+		GridPane grid = new GridPane();
+		grid.setPrefSize(800, 450);
+		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		images.getgameOverbackV().setFitHeight(450);
+		images.getgameOverbackV().setFitWidth(800);
+		
+		grid.add(images.getgameOverbackV(), 0, 0);
+		HBox hb = new HBox();
+		hb.getChildren().add(images.getOver());
+		hb.setAlignment(Pos.CENTER);
+		grid.getChildren().add(hb);
+		grid.setAlignment(Pos.CENTER);
+		
+		
+		window.setCenter(grid);
+		Scene scene = new Scene(window);
+		newStage.setScene(scene);
+		newStage.show();
+		
+		
 		
 	}
 }

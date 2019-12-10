@@ -21,7 +21,8 @@ public class View extends Application{
 		BorderPane window = new BorderPane();
 		
 		GameMenu menu = new GameMenu(stage, window);
-	
+		
+		
 //		Scene scene = new Scene(window);
 //		stage.setScene(scene);
 //		stage.show();
