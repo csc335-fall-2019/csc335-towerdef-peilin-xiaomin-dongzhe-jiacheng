@@ -56,7 +56,7 @@ public class GameStage implements Observer {
 	private ImageView current;
 	private Tower currentTower;
 	private ImageView sellImg;
-
+	private int monsterLeft = 1;
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -141,7 +141,7 @@ public class GameStage implements Observer {
 					bulletImg.setFitHeight((int) RECTSIZE / 4);
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
 					BulletHandler move = new BulletHandler(bulletImg,point);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(1000/900),move);
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(1000/70),move);
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
 					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -287,7 +287,7 @@ public class GameStage implements Observer {
 					createMonster(monsters.get(count));
 					count++;
 					try {
-						Thread.sleep(1300);
+						Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -338,7 +338,7 @@ public class GameStage implements Observer {
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster);
-			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/200),move);
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -374,13 +374,41 @@ public class GameStage implements Observer {
 				time.stop();
 			}
 			if(moveLeft()) {
-				img.setTranslateX(img.getTranslateX()-1.0);
+				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
+					img.setVisible(true);
+					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.2);
+					img.setTranslateX(img.getTranslateX()-2.0);
+				}else {
+					img.setVisible(false);
+				}
+				
 			}else if(moveRight()) {
-				img.setTranslateX(img.getTranslateX()+1.0);
+				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
+					img.setVisible(true);
+					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.2);
+					img.setTranslateX(img.getTranslateX()+2.0);
+				}else {
+					img.setVisible(false);
+				}
+				
 			}else if (moveUp()) {
-				img.setTranslateY(img.getTranslateY()+1.0);
+				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
+					img.setVisible(true);
+					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.2);
+					img.setTranslateY(img.getTranslateY()+2.0);
+				}else {
+					img.setVisible(false);
+				}
+	
 			}else if(moveDown()) {
-				img.setTranslateY(img.getTranslateY()-1.0);
+				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
+					img.setVisible(true);
+					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.2);
+					img.setTranslateY(img.getTranslateY()-2.0);
+				}else {
+					img.setVisible(false);
+				}
+				
 			}
 			
 			if(count >=RECTSIZE) {
@@ -454,6 +482,12 @@ public class GameStage implements Observer {
 			}else if(heal == 0){
 				time.stop();
 
+			}else if(monster.dead()){
+				//monsters.remove(monster);
+				monsterLeft++;
+				road.get(currentRoad).clearMonster(monster);
+				time.stop();
+				img.setVisible(false);
 			}else {
 				if(moveLeft()) {
 					img.setTranslateX(img.getTranslateX()-1.0);
