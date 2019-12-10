@@ -58,8 +58,8 @@ public class TowerDefModel extends Observable {
 	}
 
 	
-	public void monsterDie(int xPos, int yPos) {
-		this.map.getGraph()[xPos][yPos].clearMonster();
+	public void monsterDie(int row, int col) {
+		this.map.getGraph()[row][col].clearMonster();
 		
 		setChanged();
         notifyObservers();
