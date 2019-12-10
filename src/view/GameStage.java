@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import controller.TowerDefController;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -124,7 +125,8 @@ public class GameStage implements Observer {
 				Tower tower = (Tower) msg.getObj();;
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 				if(msg.getMoney()> 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(Color.GREEN);
+					
+					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
 					Timeline BulletTime = BulletsTimeline.get(point);
 					ImageView img = BulletsImageView.get(point);
 					BulletTime.stop();
@@ -188,6 +190,7 @@ public class GameStage implements Observer {
 			}
 
 		}
+		
 		
 		
 		
@@ -550,7 +553,7 @@ public class GameStage implements Observer {
 	 */
 	public void setGridPane(GridPane grid) {
 		Point point;
-		Image image = new Image("/img/enemy.png");
+		Image image = new Image("/img/start.png");
 
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
@@ -561,8 +564,8 @@ public class GameStage implements Observer {
 
 				Point currentPoint = model.getMap().getGraph()[i][j];
 				if(currentPoint.isRoad()) {
-
-					rectangle.setFill(Color.WHITE);
+					
+					rectangle.setFill(new ImagePattern(images.getRoad2()));
 				
 
 					point = model.getMap().getGraph()[i][j];
@@ -574,8 +577,9 @@ public class GameStage implements Observer {
 						rectangle.setFill(new ImagePattern(image));
 					}
 				}else {
-					rectangle.setFill(Color.GREEN);
-					doRectangle(rectangle, Color.GREEN);
+					ImagePattern img = new ImagePattern(images.getgameOverback());
+					rectangle.setFill(img);
+					doRectangle(rectangle, img );
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
@@ -642,14 +646,14 @@ public class GameStage implements Observer {
 	}
 	
 	
-	private void doRectangle(Rectangle ret, Color color) {
+	private void doRectangle(Rectangle ret, ImagePattern img) {
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
-				if(color == Color.WHITE) {
+				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
+				if(img == roadPattern) {
 					
 					towername = "Error";
 //					System.out.println(towername);
@@ -693,8 +697,8 @@ public class GameStage implements Observer {
 	
 	
 	private void gameOver(Stage stage) {
-		stage.close();
 		Stage newStage = new Stage();
+		stage.close();
 		newStage.setTitle("Tower Defense");
 		BorderPane window = new BorderPane();
 		GridPane grid = new GridPane();

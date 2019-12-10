@@ -14,6 +14,7 @@ public class Images {
 	private ImageView newBullet;
 	private Image gameOverback;
 	private ImageView gameOverbackV;
+	private Image road2;
 	
 	public Images() {
 		backimg = new Image("/img/background.jpg");
@@ -25,10 +26,14 @@ public class Images {
 		newBullet = new ImageView(new Image("/img/newbullet.png"));
 		gameOverback = new Image("/img/gameoverback.png");
 		gameOverbackV = new ImageView(gameOverback);
+		road2 = new Image("/img/road2.jpg");
 		
 		
 	}
 	
+	public Image getRoad2() {
+		return road2;
+	}
 	public Image getBackImg() {
 		return backimg;
 	}
