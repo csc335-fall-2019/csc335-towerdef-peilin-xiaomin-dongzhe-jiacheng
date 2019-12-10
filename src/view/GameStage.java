@@ -447,8 +447,9 @@ public class GameStage implements Observer {
 					count = 0;
 					road.get(currentRoad).clearMonster(monster);
 					currentRoad++;
-					road.get(currentRoad).setMonster(monster);
+					
 					if(currentRoad < road.size()-1) {
+						road.get(currentRoad).setMonster(monster);
 						nextPoint  = road.get(currentRoad+1);
 					}
 				}
