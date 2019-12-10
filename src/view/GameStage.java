@@ -339,7 +339,10 @@ public class GameStage implements Observer {
 
 			@Override
 			public void handle(ActionEvent event) {
-
+//				stage.close();
+//				Stage stageB = new Stage();
+//				BorderPane window = new BorderPane();
+//				GameMenu menu = new GameMenu(stageB, window);
 			}
 		});
 		
@@ -712,6 +715,24 @@ public class GameStage implements Observer {
 		grid.setAlignment(Pos.CENTER);
 		
 		
+		MenuBar menuBar = new MenuBar();
+		Menu menu = new Menu("File"); 
+		MenuItem newgame = new MenuItem("New Game");
+		menu.getItems().add(newgame);  // add menu bar and menu items
+		menuBar.getMenus().add(menu);
+		
+		newgame.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				newStage.close();
+				Stage stageB = new Stage();
+				BorderPane window = new BorderPane();
+				GameMenu menu = new GameMenu(stageB, window);
+			}
+		});
+		
+		window.setTop(menuBar);
 		window.setCenter(grid);
 		Scene scene = new Scene(window);
 		newStage.setScene(scene);
