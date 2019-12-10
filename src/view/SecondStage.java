@@ -212,6 +212,7 @@ public class SecondStage implements Observer {
 	}
 	
 	
+	
 	public void createNewGame(Stage stage) {
 
 		stage.setTitle("Tower Defense");
