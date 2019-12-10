@@ -27,13 +27,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.BasicTower;
+import model.Images;
 
 public class GameMenu{
 
-	
+	private Images images;
 	private String choice = "English";
 	private GameStage newGame = new GameStage();
+	private BasicTower tower;
 	public GameMenu(Stage stage, BorderPane window) {
+		images = new Images();
 		basicStage(stage, window,choice);
 		
 	}
@@ -69,17 +73,6 @@ public class GameMenu{
 			});
 			
 			
-//			System.out.println(English.isSelected());
-//			System.out.println(Chinese.isSelected());
-//			if(English.isSelected()) {
-//				System.out.println("EClick");
-//				choice = "English";
-//			}
-//			if(Chinese.isSelected()) {
-//				System.out.println("CClick");
-//				choice = "Chinese";
-//			}
-			
 			VBox vb = new VBox();
 		
 			Button OK = new Button("OK");
@@ -102,7 +95,7 @@ public class GameMenu{
 	}
 	
 
-	private void mouseClick(Button label, Stage stage, Image image) {
+	private void mouseClick(Button label, Stage stage) {
 		label.setOnMouseClicked((event) -> {
 			stage.close();
 			newGame.createNewGame(stage);
@@ -121,31 +114,32 @@ public class GameMenu{
 		grid.setPrefSize(800, 450);
 		
 		window.setCenter(grid);
-		Image image = new Image("/img/background.jpg");
+//		Image image = new Image("/img/background.jpg");
 		
 		
-		grid.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+		grid.setBackground(new Background(new BackgroundImage(images.getBackImg(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
 				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
 
-		Image image2 = new Image("/img/newbullet.png");
-		ImageView img2 = new ImageView(image2);
-		img2.setFitHeight(50);
-		img2.setFitWidth(50);
+//		Image image2 = new Image("/img/newbullet.png");
+//		ImageView img2 = new ImageView(image2);
+		images.getNewbullet().setFitHeight(50);
+		images.getNewbullet().setFitWidth(50);
 		
 		
 		TranslateTransition trans = new TranslateTransition();
 		trans.setDuration(Duration.millis(2000));
-		trans.setNode(img2);
+		trans.setNode(images.getNewbullet());
 		trans.setByX(600);
 		trans.setCycleCount(Timeline.INDEFINITE);
 		trans.setAutoReverse(false);
 		trans.play();
 		
-		Image image3 = new Image("/img/TOWER.png");
-		ImageView img3 = new ImageView(image3);
-		img3.setFitHeight(120);
-		img3.setFitWidth(120);
+//		Image image3 = new Image("/img/TOWER.png");
+//		ImageView img3 = new ImageView(image3);
+		tower = new BasicTower();
+		tower.getImg().setFitHeight(120);
+		tower.getImg().setFitWidth(120);
 		
 		System.out.println(choice);
 		if(choice.equals("English")) {
@@ -158,8 +152,7 @@ public class GameMenu{
 			language = new Button("语言");
 		}
 		
-//		text = new Button("NEW GAME");
-//		language = new Button("Language");
+
 		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
 		text.setStyle("-fx-focus-color: transparent;");
 		
@@ -179,11 +172,12 @@ public class GameMenu{
 		hb2.getChildren().add(language);
 		hb2.setAlignment(Pos.CENTER);
 		
-		hb3.getChildren().add(img3);
-		hb3.getChildren().add(img2);
+		hb3.getChildren().add(tower.getImg());
+		hb3.getChildren().add(images.getNewbullet());
 		
 		
 		vb.getChildren().addAll(hb1,hb2,hb3);
+		
 		
 		grid.setAlignment(Pos.CENTER);
 		grid.setPadding(new Insets(30));
@@ -191,7 +185,7 @@ public class GameMenu{
 		grid.setVgap(100);
 		grid.getChildren().add(vb);
 		
-		mouseClick(text,stage, image3);
+		mouseClick(text,stage);
 		languageClick(language, stage);
 		
 		Scene scene = new Scene(window);

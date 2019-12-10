@@ -6,18 +6,16 @@ import java.util.Observable;
 import java.util.Observer;
 
 import controller.TowerDefController;
-
-import javafx.animation.TranslateTransition;
 import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -28,27 +26,34 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
 import javafx.util.Duration;
 import model.BasicMonster;
+import model.BasicTower;
+import model.Images;
 import model.Monster;
+
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
+import model.Turret;
 
 public class GameStage implements Observer {
 	
@@ -56,9 +61,10 @@ public class GameStage implements Observer {
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
-	private ImageView sellImg;
-	private Thread gameThread;
 	
+//	private ImageView sellImg;
+	private Thread gameThread;
+
 	private Rectangle[][] rectangles;
 	private TowerDefModel model;
 	private TowerDefController controller;
@@ -66,31 +72,27 @@ public class GameStage implements Observer {
 	private Label goldL;
 	private HBox hb;
 	private HBox hb2;
-	private Image first;
-	private Image second;
-	private ImageView firstImg;
-	private ImageView secondImg;
-	private Image sell;
-	private Image health;
-	private ImageView healthImg;
+//	private Image sell;
+//	private Image health;
+//	private ImageView healthImg;
 	private Label number;
 	private Label healL;
 	private int heal;
-	private Image gold;
-	private ImageView goldImg;
+//	private Image gold;
+//	private ImageView goldImg;
 	private Label number2;
 	private GridPane grid2;
 	private GridPane grid3;
-	private int getRoad = 0;
+	//private int getRoad = 0;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
 	private Label currName;
 	private String towername;
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
-	private Button reset;
 	private VBox vb;
-	// private ImageView[][] images;
+	private Images images;
+	private Stage stage; 
 	
 	
 	public GameStage() {
@@ -104,6 +106,8 @@ public class GameStage implements Observer {
 		monsters = controller.getModel().getMonsters();
 		BulletsTimeline = new HashMap<Point,Timeline>();
 		BulletsImageView = new HashMap<Point,ImageView>();
+		images = new Images();
+		
 	}
 	
 	
@@ -159,21 +163,37 @@ public class GameStage implements Observer {
 				currName.setTextFill(Color.ORANGE);
 				currName.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 				
-				hb2.getChildren().clear();
-				hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL, currName);
+				
+				
+				grid3.getChildren().clear();
+				hb = new HBox();
+				hb2 = new HBox();
+				hb.getChildren().addAll(images.getHealth(), number, healL);
+				hb2.getChildren().addAll(images.getGold(), number2, goldL);
+				grid3.add(hb, 0, 0);
+				grid3.add(hb2, 1, 0);
+				grid3.setHgap(30);
+				
+				
 				//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
 				// update on stage;
 			}
 		}catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
+			
 			healL.setText(String.valueOf(heal));
+			if(heal == 0) {
+				System.out.println("gameover");
+				gameOver(stage);
+			}
 		
 		}
 		
 	}
 	
-	public void createNewGame(Stage stage)  {
+	public void createNewGame(Stage stageA) {
 //		Stage stage = new Stage();
+		stage = stageA;
 		stage.setTitle("Tower Defense");
 		
 		BorderPane window = new BorderPane();
@@ -187,25 +207,18 @@ public class GameStage implements Observer {
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
-		
-		
 		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
-		first = new Image("/img/TOWER.png");
-		firstImg = new ImageView(first);
 		
-		second = new Image("/img/tower2.png");
-		secondImg = new ImageView(second);
+//		sell = new Image("/img/sell.png");
+//		sellImg = new ImageView(sell);
 		
-		sell = new Image("/img/sell.png");
-		sellImg = new ImageView(sell);
-		
-		health = new Image("/img/health.png");
-		healthImg = new ImageView(health);
+//		health = new Image("/img/health.png");
+//		healthImg = new ImageView(health);
 		
 		number = new Label("X");
 		number.setTextFill(Color.ORANGE);
@@ -217,8 +230,11 @@ public class GameStage implements Observer {
 		healL.setTextFill(Color.ORANGE);
 		healL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 		
-		gold = new Image("/img/gold.png");
-		goldImg = new ImageView(gold);
+		
+		
+		
+//		gold = new Image("/img/gold.png");
+//		goldImg = new ImageView(gold);
 		
 		
 		number2 = new Label("X");
@@ -232,25 +248,46 @@ public class GameStage implements Observer {
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 			
 		
+
+
+		BasicTower firstImg = new BasicTower();
+		Turret secondImg = new Turret();
+		firstImg.getImg().setFitHeight(50);
+		firstImg.getImg().setFitWidth(50);
+			
+		secondImg.getImg().setFitHeight(50);
+		secondImg.getImg().setFitWidth(50);
+		
+		
+		images.getSell().setFitHeight(50);
+		images.getSell().setFitWidth(50);
+		
+		images.getHealth().setFitHeight(50);
+		images.getHealth().setFitWidth(50);
+		
+		images.getGold().setFitHeight(50);
+		images.getGold().setFitWidth(50);
+		
+
+		grid2.add(firstImg.getImg(),0,0);
+		grid2.add(secondImg.getImg(), 1, 0);
+		grid2.add(images.getSell(), 2, 0);
+		grid2.setHgap(10);
+		
+		
+		doImg(firstImg.getImg(), availTowers.get(0));
+		doImg(secondImg.getImg(), availTowers.get(1));
+		doImg(images.getSell(), null);
+		
+		
 		hb = new HBox();
 		hb2 = new HBox();
-
+		hb.getChildren().addAll(images.getHealth(), number, healL);
+		hb2.getChildren().addAll(images.getGold(), number2, goldL);
+		grid3.add(hb, 0, 0);
+		grid3.add(hb2, 1, 0);
+		grid3.setHgap(30);
 		
-		firstImg.setFitHeight(50);
-		firstImg.setFitWidth(50);
-			
-		secondImg.setFitHeight(50);
-		secondImg.setFitWidth(50);
-		
-		
-		sellImg.setFitHeight(50);
-		sellImg.setFitWidth(50);
-		
-		healthImg.setFitHeight(50);
-		healthImg.setFitWidth(50);
-		
-		goldImg.setFitHeight(50);
-		goldImg.setFitWidth(50);
 		
 		MenuBar menuBar = new MenuBar();
 		Menu menu = new Menu("File"); 
@@ -269,20 +306,7 @@ public class GameStage implements Observer {
 			}
 		});
 	
-		
-		hb.setSpacing(10);
-		hb.getChildren().addAll(firstImg, secondImg, sellImg);
-		grid2.getChildren().add(hb);
-		
-		doImg(firstImg, availTowers.get(0));
-		doImg(secondImg, availTowers.get(1));
-		doImg(sellImg, null);
-		
-		hb2.setSpacing(5);
-		hb2.getChildren().addAll(healthImg, number, healL, goldImg, number2, goldL);
-		grid3.getChildren().add(hb2);
-	
-		
+			
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
@@ -299,6 +323,7 @@ public class GameStage implements Observer {
 			}
 		};
 		
+
 		gameThread.start();
 		//monsterImg.setTranslateX(2*RECTSIZE);
 		//monsterImg.setTranslateY(1*RECTSIZE);
@@ -326,11 +351,11 @@ public class GameStage implements Observer {
 		
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
-		
 		stage.show();
 		
 		
 	}
+
 	
 
 	
@@ -454,6 +479,7 @@ public class GameStage implements Observer {
 				//System.out.println(1);
 			}else if(heal == 0){
 				time.stop();
+				
 			}else {
 				if(moveLeft()) {
 					img.setTranslateX(img.getTranslateX()-1.0);
@@ -567,11 +593,11 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub 
-				if ((image == sellImg && currTower == null)
+				if ((image == images.getSell() && currTower == null)
 					|| controller.canBuyTower(currTower)) {
 					image.setFitHeight(65);
 					image.setFitWidth(65);
-					if(image == sellImg) {
+					if(image == images.getSell()) {
 						Tooltip.install(image, new Tooltip("Sell tower: -20% of original price"));
 					}
 					else {
@@ -600,7 +626,7 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				if (image == sellImg && currTower == null 
+				if (image == images.getSell() && currTower == null 
 					|| controller.canBuyTower(currTower)) {
 					current = image;
 					currentTower = currTower;
@@ -641,7 +667,7 @@ public class GameStage implements Observer {
 							}
 						}
 					}
-					if(current == sellImg) {
+					if(current == images.getSell()) {
 						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 							controller.sellTower(x, y);
 							current = null;
@@ -663,5 +689,35 @@ public class GameStage implements Observer {
 	private void setHome(Rectangle ret) {
 		Image image = new Image("/img/home.png");
 		ret.setFill(new ImagePattern(image));
+	}
+	
+	
+	private void gameOver(Stage stage) {
+		stage.close();
+		Stage newStage = new Stage();
+		newStage.setTitle("Tower Defense");
+		BorderPane window = new BorderPane();
+		GridPane grid = new GridPane();
+		grid.setPrefSize(800, 450);
+		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		images.getgameOverbackV().setFitHeight(450);
+		images.getgameOverbackV().setFitWidth(800);
+		
+		grid.add(images.getgameOverbackV(), 0, 0);
+		HBox hb = new HBox();
+		hb.getChildren().add(images.getOver());
+		hb.setAlignment(Pos.CENTER);
+		grid.getChildren().add(hb);
+		grid.setAlignment(Pos.CENTER);
+		
+		
+		window.setCenter(grid);
+		Scene scene = new Scene(window);
+		newStage.setScene(scene);
+		newStage.show();
+		
+		
+		
 	}
 }
