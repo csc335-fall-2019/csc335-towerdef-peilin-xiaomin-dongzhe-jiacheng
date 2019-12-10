@@ -132,6 +132,8 @@ public class SecondStage implements Observer {
 			Monster monster = msg.getMonster();
 			ImageView monsterImg = monster.getImg();
 			
+			grid.getChildren().remove(monsterImg);
+			
 			if (currPoint.isStart()) {
 				monsterImg.setTranslateX(currPoint.getY()*RECTSIZE+RECTSIZE/4);
 				monsterImg.setTranslateY(currPoint.getX()*RECTSIZE);
@@ -156,13 +158,12 @@ public class SecondStage implements Observer {
 					monsterImg.setTranslateY(currY-1.0);
 				}
 			}
+			grid.getChildren().add(monsterImg);
 		}
 		else if (arg instanceof LoseHealthMessage) {
 			LoseHealthMessage msg = (LoseHealthMessage) arg;
 			Monster currMonster = msg.getMonster();
 			Player player = msg.getPlayer();
-			
-			
 		}
 	}
 	
