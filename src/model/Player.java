@@ -24,7 +24,12 @@ public class Player {
 	public void changeMoney(int money) {
 		this.money += money;
 	}
+	
 	public boolean canBuyTower(int cost) {
 		return money >= cost;
+	}
+	
+	public boolean isOver() {
+		return this.health == 0;
 	}
 }

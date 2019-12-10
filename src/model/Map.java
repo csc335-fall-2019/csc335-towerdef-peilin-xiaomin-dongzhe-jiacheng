@@ -6,14 +6,13 @@ public class Map {
 	private Player player;
 	private Point[][] graph;
 	private ArrayList<Point> road;
-//	private int health;
+	private Point start;
+	private Point end;
 	
-
-	
-	public Map(Player player,int height,int width) {
-		graph = new Point[height][width];
-		road = new ArrayList<Point>();
+	public Map(Player player, int height, int width) {
 		this.player = player;
+		this.graph = new Point[height][width];
+		this.road = new ArrayList<Point>();
 	}
 	
 	public Player getPlayer() {
@@ -23,15 +22,35 @@ public class Map {
 	public Point[][] getGraph(){
 		return graph;
 	}
-	public void addRoad(Point point) {
-		road.add(point);
-	}
-	public ArrayList<Point> getRoads(){
+	
+	public ArrayList<Point> getRoad() {
 		return road;
 	}
-	public void update(int x, int y,Point point) {
-		graph[x][y] = point;
+	
+	public Point getStart() {
+		return start;
 	}
+	
+	public Point getEnd() {
+		return end;
+	}
+	
+	public void setStart(Point start) {
+		this.start = start;
+	}
+	
+	public void setEnd(Point end) {
+		this.end = end;
+	}
+	
+	public void addRoad(Point point) {
+		this.road.add(point);
+	}
+	
+	public void update(int x, int y,Point point) {
+		this.graph[x][y] = point;
+	}
+	
 	public String toString() {
 		String str = "";
 		for(int i =0;i<graph.length;i++) {

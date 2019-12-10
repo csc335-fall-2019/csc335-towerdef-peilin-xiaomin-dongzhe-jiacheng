@@ -7,21 +7,21 @@ public class Monster {
 	protected int speed;
 	protected int armor;
 	protected int magicResist;
-	protected int health;
+	protected int blood;
 	protected int energy;
 	private Point point;
 	private ImageView img;
 
-	//protected boolean dead = false;
 	public Monster() {
 		
 	}
-	public Monster(int gold,int speed,int armor,int magicResist,int health, int energy) {
+	
+	public Monster(int gold,int speed,int armor,int magicResist,int blood, int energy) {
 		this.gold =gold;
 		this.speed = speed;
 		this.armor = armor;
 		this.magicResist = magicResist;
-		this.health = health;
+		this.blood = blood;
 		this.energy = energy;
 	}
 	
@@ -37,8 +37,8 @@ public class Monster {
 	public int getMagicResist() {
 		return magicResist;
 	}
-	public int getHealth() {
-		return health;
+	public int getBlood() {
+		return blood;
 	}
 	public int getEnergy() {
 		return energy;
@@ -46,24 +46,26 @@ public class Monster {
 	public Point getPoint() {
 		return point;
 	}
-	public void setHealth(int health) {
-		this.health = health;
+	public ImageView getImg() {
+		return img;
 	}
-	public boolean dead() {
-		return health == 0;
-	}
-	public void newSpeed(int speed) {
-		this.speed = speed;
-	}
+	
+	
+	
 	public void setGold(int gold) {
-		this.gold = gold;
-		
+		this.gold = gold;	
 	}
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
 	public void setArmor(int armor) {
 		this.armor = armor;
+	}
+	public void setMagicResist(int magicResist) {
+		this.magicResist = magicResist;
+	}
+	public void setBlood(int blood) {
+		this.blood = blood;
 	}
 	public void setEnergy(int energy) {
 		this.energy = energy;
@@ -74,7 +76,13 @@ public class Monster {
 	public void setImg(ImageView img) {
 		this.img = img;
 	}
-	public ImageView getImg() {
-		return img;
+	
+	public boolean isDead() {
+		return blood == 0;
 	}
+	
+	public void bloodLoss(int attack) {
+		this.blood -= (attack - armor);
+	}
+
 }

@@ -32,7 +32,7 @@ public class GameMenu{
 
 	
 	private String choice = "English";
-	private GameStage newGame = new GameStage();
+	private SecondStage newGame = new SecondStage();
 	public GameMenu(Stage stage, BorderPane window) {
 		basicStage(stage, window,choice);
 		

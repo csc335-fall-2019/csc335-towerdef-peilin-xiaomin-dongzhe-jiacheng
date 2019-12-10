@@ -12,6 +12,7 @@ import java.util.Queue;
 import model.BasicMonster;
 import model.BasicTower;
 import model.Map;
+import model.Monster;
 import model.Player;
 import model.Point;
 import model.Tower;
@@ -25,12 +26,8 @@ public class TowerDefController {
 	public final int HEIGHT = 6;
 	
 	private TowerDefModel model;
-//	private Player player;
-//	private Map map;
-	//private Point start;
-
 	
-	public Point point;
+	
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
@@ -49,10 +46,10 @@ public class TowerDefController {
 	public void buildBasicStage() {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
-		Point start = null;
+		// Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
-				point = new Point(row, col, false);
+				Point point = new Point(row, col, false);
 				if ((row == 1 && col <= 7) 
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
@@ -61,25 +58,63 @@ public class TowerDefController {
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
-					start = point;
+					newMap.setStart(point);
 				}
 				if (row == 4 && col == 0) {
 					point.setEnd();
+					newMap.setEnd(point);
 				}
 				newMap.update(row, col, point);
 			}
 		}
-		this.buildRoad(newMap, start);
-		System.out.println(newMap.getRoads());
+		this.buildRoad(newMap);
+		System.out.println(newMap.getRoad());
 		model.setMap(newMap);
-		model.addTowers(new BasicTower());
-		model.addTowers(new Turret());
+		model.addAvailTower(new BasicTower());
+		model.addAvailTower(new Turret());
 		for(int i =0;i<10;i++) {
-			model.addMonsters(new BasicMonster());
+			model.addMonster(new BasicMonster());
 		}
 	}
 	
-	public void buildRoad(Map newMap, Point start) {
+	public void buildStage() {
+		Player newPlayer = new Player(20);
+		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
+		// Point start = null;
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				Point point = new Point(row, col, false);
+				if ((row == 1 && col <= 7) 
+					|| (row == 4 && col <= 7) 
+					|| (col == 7 && row >= 1 && row <= 4)) {
+					point.setRoad();
+					
+				}
+				if (row == 1 && col == 0) {
+					point.setStart();
+					newMap.setStart(point);
+					// start = point;
+				}
+				if (row == 4 && col == 0) {
+					point.setEnd();
+					newMap.setEnd(point);
+				}
+				newMap.update(row, col, point);
+			}
+		}
+		this.buildRoad(newMap);
+		System.out.println(newMap.getRoad());
+		model.setMap(newMap);
+		model.addAvailTower(new BasicTower());
+		model.addAvailTower(new Turret());
+		for(int i =0;i<10;i++) {
+			model.addMonster(new BasicMonster());
+		}
+	}
+	
+	
+	public void buildRoad(Map newMap) {
+		Point start = newMap.getStart();
 		int x = start.getX();
 		int y = start.getY();
 		
@@ -132,6 +167,7 @@ public class TowerDefController {
 	public boolean canBuyTower(Tower tower) {
 		return model.getMap().getPlayer().canBuyTower(tower.getCost());
 	}
+	
 	public boolean canSetTower(int x,int y) {
 		return model.getMap().getGraph()[x][y].canSetTower();
 	}
@@ -140,11 +176,30 @@ public class TowerDefController {
 		model.setTower(tower, x, y);
 	}
 	
-
-	
 	public void sellTower(int x, int y) {
 		System.out.println("sell");
 		model.sellTower(x, y);
+	}
+	
+	public void monsterWaves() {
+		
+	}
+	
+//	public void moveMonster() {
+//		int currentWaves = waves - 1;
+//		for (Monster currMonster : monsterWaves[currentWaves]) {
+//			Point currPoint = currMonster.getPoint();
+//			Point nextRoad = map.getRoad().get(map.getRoad().indexOf(currPoint));
+//			
+//		}
+//	}
+	
+//	public void lossHealth(Monster monster) {
+//		this.model.lossHealth(monster);
+//	}
+	
+	public void changeMoney(int money) {
+		this.model.getMap().getPlayer().changeMoney(money);
 	}
 	
 }

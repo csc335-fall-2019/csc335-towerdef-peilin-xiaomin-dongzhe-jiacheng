@@ -1,19 +1,24 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.scene.image.ImageView;
 
 public class Tower {
-	protected int cost;
-	protected Point point;
-	protected int range;
-	protected Bullets bullet;
-	private int energy = 0;
-	protected ImageView img;
+	private int cost;
+	private Point point;
+	private int range;
+	private int attack;
+	private int speed;
+	private ArrayList<Monster> availMonsters;
+	private ImageView img;
+	
+//	private int energy = 0;
+
 	
 	public Tower() {
-		this.bullet = new Bullets();
+		
 	}
 	
 	public int getCost() {
@@ -28,33 +33,28 @@ public class Tower {
 		return range;
 	}
 	
-	public Bullets getBullet() {
-		return bullet;
-	}
-	
 	public int getAttack() {
-		return this.bullet.getAttack();
+		return attack;
 	}
 	
-	public double getattackSpeed() {
-		return this.bullet.getSpeed();
+	public int getSpeed() {
+		return speed;
 	}
 	
-//	public ArrayList <Point> getRangePoint(){
-//		return rangePoints;
-//	}
-//	
-//	public String getType() {
-//		return type;
-//	}
-	
-	public int getEnergy() {
-		return this.energy;
+	public ArrayList<Monster> getAvailMonsters() {
+		return availMonsters;
 	}
 	
 	public ImageView getImg() {
 		return img;
 	}
+
+	
+//	public int getEnergy() {
+//		return this.energy;
+//	}
+//	
+
 	
 	
 	public void setCost(int cost) {
@@ -69,43 +69,50 @@ public class Tower {
 		this.range = range;
 	}
 	
-	public void setBullet(Bullets bullet) {
-		this.bullet = bullet;
-	}
-	
 	public void setAttack(int attack) {
-		this.bullet.setAttack(attack);
+		this.attack = attack;
 	}
 	
-	public void setAttackSpeed(double attackSpeed) {
-		this.bullet.setSpeed(attackSpeed);
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
 	
-//	public void setRangePoint(ArrayList<Point> rangePoints) {
-//		this.rangePoints = rangePoints;
+//	public void EnergyUP(int amount) {
+//		this.energy += amount;	
 //	}
 //	
-//	public void setType(String type) {
-//		this.type = type;
+//	public boolean checkUltimate() {
+//		if(this.energy >= 100) {
+//			return true;
+//		}
+//		return false;
 //	}
-	
-	public void EnergyUP(int amount) {
-		this.energy += amount;	
-	}
-	
-	public boolean checkUltimate() {
-		if(this.energy >= 100) {
-			return true;
-		}
-		return false;
-	}
-	
-	public void EnergyClear() {
-		this.energy = 0;
-	}
+//	
+//	public void EnergyClear() {
+//		this.energy = 0;
+//	}
+//	
 	
 	public void setImg(ImageView img) {
 		this.img = img;
+	}
+	
+	public void addMonster(Monster monster) {
+		this.availMonsters.add(monster);
+	}
+	
+	public void removeMonster(Monster monster) {
+		this.availMonsters.remove(monster);
+	}
+	
+	public void clearDeadMonsters() {
+		ArrayList<Monster> deadMonsters = new ArrayList<Monster>();
+		for (Monster monster: availMonsters) {
+			if (monster.getBlood() == 0) {
+				deadMonsters.add(monster);
+			}
+		}
+		availMonsters.removeAll(deadMonsters);	
 	}
 
 }
