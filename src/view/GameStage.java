@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import controller.TowerDefController;
 import javafx.animation.KeyFrame;
+import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -39,6 +40,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -468,6 +472,19 @@ public class GameStage implements Observer {
 			grid.getChildren().add(img);
 			count++;
 		}
+		
+		public void attack(ImageView img) {
+			Path path = new Path();
+			
+			path.getElements().add(new MoveTo(50, 50));
+			path.getElements().add(new LineTo(300, 50));
+			PathTransition pathTransition = new PathTransition();
+			pathTransition.setDuration(Duration.millis(5000));
+			pathTransition.setNode(img);
+			pathTransition.setPath(path);
+			pathTransition.play();
+		}
+		
 		public void sell() {
 			img.setVisible(false);
 		}
