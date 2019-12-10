@@ -481,6 +481,7 @@ public class GameStage implements Observer {
 		ImageView img;
 		Timeline time;
 		Monster monster;
+//		private Rectangle[][] rectangles;
 		public MonsterHandler(ImageView monsterImg,Monster monster) {
 			nextPoint  = road.get(currentRoad+1);
 			this.img = monsterImg;
@@ -497,6 +498,15 @@ public class GameStage implements Observer {
 			if(currentRoad == road.size()-1) {
 				time.stop();
 				img.setVisible(false);
+//				images.getHomeV().setVisible(false);
+				if(nextPoint.isEnd()) {
+					System.out.println(nextPoint.getX()+" "+nextPoint.getY());
+					System.out.println("getend");
+					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
+//					rectangle.setFill(new ImagePattern(images.getHomeend()));
+				}
+//				setHome(road.get(currentRoad), images.getHomeend());
+				
 				model.lossHealth(monster);
 				//time.setRate(value);
 				//System.out.println(1);
@@ -589,7 +599,7 @@ public class GameStage implements Observer {
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						setHome(rectangle);
+						setHome(rectangle, images.getHome());
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
@@ -604,6 +614,7 @@ public class GameStage implements Observer {
 			}
 		}
 	}
+	
 	
 	
 	
@@ -708,8 +719,7 @@ public class GameStage implements Observer {
 		});
 	}
 	
-	private void setHome(Rectangle ret) {
-		Image image = new Image("/img/home.png");
+	private void setHome(Rectangle ret, Image image) {
 		ret.setFill(new ImagePattern(image));
 	}
 	

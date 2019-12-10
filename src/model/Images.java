@@ -15,6 +15,9 @@ public class Images {
 	private Image gameOverback;
 	private ImageView gameOverbackV;
 	private Image road2;
+	private Image homeend;
+	private Image home;
+	private ImageView homeV;
 	
 	public Images() {
 		backimg = new Image("/img/background.jpg");
@@ -27,8 +30,23 @@ public class Images {
 		gameOverback = new Image("/img/gameoverback.png");
 		gameOverbackV = new ImageView(gameOverback);
 		road2 = new Image("/img/road2.jpg");
+		homeend = new Image("/img/homeEnd.png");
+		home = new Image("/img/home.png");
+		homeV = new ImageView(home);
 		
 		
+	}
+	
+	public Image getHome() {
+		return home;
+	}
+	
+	public ImageView getHomeV() {
+		return homeV;
+	}
+	
+	public Image getHomeend() {
+		return homeend;
 	}
 	
 	public Image getRoad2() {
