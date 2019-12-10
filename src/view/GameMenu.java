@@ -36,6 +36,10 @@ public class GameMenu{
 	private String choice = "English";
 	private GameStage newGame = new GameStage();
 	private BasicTower tower;
+	private Label languageAll;
+	private ToggleGroup group;
+	private RadioButton English;
+	private RadioButton Chinese;
 	public GameMenu(Stage stage, BorderPane window) {
 		images = new Images();
 		basicStage(stage, window,choice);
@@ -53,11 +57,18 @@ public class GameMenu{
 			BorderPane windowLang = new BorderPane();
 			
 			
-			
-			Label languageAll = new Label("Language:");
-			ToggleGroup group = new ToggleGroup();
-			RadioButton English = new RadioButton("English");
-			RadioButton Chinese = new RadioButton("Chinese");
+			if(choice.equals("English")) {
+				languageAll = new Label("Language:");
+				group = new ToggleGroup();
+				English = new RadioButton("English");
+				Chinese = new RadioButton("Chinese");
+			}
+			else {
+				languageAll = new Label("语言:");
+				group = new ToggleGroup();
+				English = new RadioButton("英语");
+				Chinese = new RadioButton("中文");
+			}
 			
 			
 			English.setToggleGroup(group);
