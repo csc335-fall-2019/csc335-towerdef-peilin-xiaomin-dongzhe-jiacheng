@@ -5,6 +5,7 @@
 package controller;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -26,10 +27,11 @@ import model.Tower5;
 import model.TowerDefModel;
 import model.Turret;
 
+
 public class TowerDefController {
 
 	
-	public final int WIDTH = 10;
+	public final int WIDTH = 10;  // this is the size of the game board
 	public final int HEIGHT = 6;
 	
 	private TowerDefModel model;
@@ -77,7 +79,10 @@ public class TowerDefController {
 		
 		
 	}
-	
+/**
+ * This is a function to build the first stage
+ * @param newMap, the map of the game board
+ */
 	public void buildFirstPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
@@ -86,21 +91,22 @@ public class TowerDefController {
 				if ((row == 1 && col <= 7) 
 					|| (row == 4 && col <= 7) 
 					|| (col == 7 && row >= 1 && row <= 4)) {
-					point.setRoad();
+					point.setRoad();  // set these points for monster to walk throught
 //					newMap.addRoad(point);
 				}
 				if (row == 1 && col == 0) {
 					point.setStart();
-					start = point;
+					start = point;  // mark the beginning of the road
 				}
 				if (row == 4 && col == 0) {
-					point.setEnd();
+					point.setEnd(); // mark the end of the road
 				}
-				newMap.update(row, col, point);
+				newMap.update(row, col, point); //update this to be a pointer object
 			}
 		}
-		this.buildRoad(newMap, start);
-		for(int i =0;i<10;i++) {
+		this.buildRoad(newMap, start); 
+		
+		for(int i =0;i<10;i++) {   // mutiple waves of different monster
 			model.addMonsters(new BasicMonster());
 		}
 		for(int i =0;i<3;i++) {
@@ -114,7 +120,10 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 
 	}
-	
+/**
+ * Build the second stage.
+ * @param newMap, the map of the game board
+ */
 	public void buildSecondPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
@@ -137,7 +146,7 @@ public class TowerDefController {
 			}
 		}
 		this.buildRoad(newMap, start);
-		for(int i =0;i<10;i++) {
+		for(int i =0;i<10;i++) {   // set the waves of different monster
 			model.addMonsters(new BasicMonster());
 		}
 		for(int i =0;i<3;i++) {
@@ -151,11 +160,14 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 	}
 	
-	
+/**
+ * The map of the third stage
+ * @param newMap, the map of the game board
+ */
 	public void buildThirdPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
-			for (int col = 0; col < WIDTH; col++) {
+			for (int col = 0; col < WIDTH; col++) {  // set the road
 				point = new Point(row, col, false);
 				if (col == 0 || col == 2 
 					|| ((col == 5 || col == 8) && row <= 3)
@@ -171,11 +183,11 @@ public class TowerDefController {
 				if (row == 0 && col == 9) {
 					point.setEnd();
 				}
-				newMap.update(row, col, point);
+				newMap.update(row, col, point); // update if the point is road or not 
 			}
 		}
 		this.buildRoad(newMap, start);
-		for(int i =0;i<10;i++) {
+		for(int i =0;i<10;i++) {    // set waves of different monster
 			model.addMonsters(new BasicMonster());
 		}
 		for(int i =0;i<3;i++) {
@@ -189,7 +201,11 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 	}
 	
-	
+/**
+ * Find the road, 
+ * @param newMap, the map of the game board
+ * @param start, the beginning of the road
+ */
 	public void buildRoad(Map newMap, Point start) {
 		int x = start.getX();
 		int y = start.getY();
@@ -239,23 +255,42 @@ public class TowerDefController {
 		}
 		
 	}
-	
+/**
+ * This function is to return the ability to buy tower
+ * @param tower, a specified tower.
+ * @return a boolean, if the player can buy the tower.
+ */
 	public boolean canBuyTower(Tower tower) {
 		return model.getMap().getPlayer().canBuyTower(tower.getCost());
 	}
+/**
+ * This function is to return the ability to put a tower in a location
+ * @param x, the x-value of the point.
+ * @param y, the y- value of the point.
+ * @return , boolean the ability to put the tower in that location 
+ */
 	public boolean canSetTower(int x,int y) {
 		return model.getMap().getGraph()[x][y].canSetTower();
 	}
-	
+/**
+ * 
+ * @param x, the x-value of the point.
+ * @param y, the y-value of the point.
+ * @param tower, a specified tower.
+ */
 	public void buildTower(int x,int y,Tower tower) {		
-		model.setTower(tower, x, y);
+		model.setTower(tower, x, y);  // put the tower in the map
 	}
 	
 
-	
+/**
+ * This function is to sell the Tower.
+ * @param x, x-value of the current location.
+ * @param y, y-value of the current location
+ */
 	public void sellTower(int x, int y) {
 		System.out.println("sell");
-		model.sellTower(x, y);
+		model.sellTower(x, y); // to sell the tower
 	}
 	
 }

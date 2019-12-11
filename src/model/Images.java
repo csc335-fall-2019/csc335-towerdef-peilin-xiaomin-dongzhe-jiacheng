@@ -1,3 +1,6 @@
+/**
+ * A class to store everything with images
+ */
 package model;
 
 import javafx.scene.image.Image;
@@ -28,7 +31,7 @@ public class Images {
 	private ImageView enemy2V;
 	
 	
-	public Images() {
+	public Images() { //load the images
 		backimg = new Image("/img/background.jpg");
 		background = new ImageView(backimg);
 		health = new ImageView(new Image("/img/health.png"));
@@ -55,7 +58,8 @@ public class Images {
 		
 		
 	}
-	
+	//   get methods to return the images            //
+	//-----------------------------------------------// 
 	public Image getPause() {
 		return pause;
 	}
