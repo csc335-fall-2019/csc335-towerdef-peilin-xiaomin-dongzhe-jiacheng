@@ -155,6 +155,18 @@ public class TowerDefController {
 			}
 		}
 		this.buildRoad(newMap, start);
+		for(int i =0;i<10;i++) {
+			model.addMonsters(new BasicMonster());
+		}
+		for(int i =0;i<3;i++) {
+			model.addMonsters(new SecondMonster());
+		}
+		for(int i =0;i<2;i++) {
+			model.addMonsters(new Monster3());
+		}
+		model.addMonsters(new Monster4());
+		model.addMonsters(new Monster5());
+		model.addMonsters(new Monster6());
 	}
 	
 	
