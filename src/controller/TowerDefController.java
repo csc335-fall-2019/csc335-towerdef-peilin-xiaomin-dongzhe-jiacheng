@@ -20,6 +20,9 @@ import model.Player;
 import model.Point;
 import model.SecondMonster;
 import model.Tower;
+import model.Tower3;
+import model.Tower4;
+import model.Tower5;
 import model.TowerDefModel;
 import model.Turret;
 
@@ -67,6 +70,11 @@ public class TowerDefController {
 		model.setMap(newMap);
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
+		model.addTowers(new Tower3());
+		model.addTowers(new Tower4());
+		model.addTowers(new Tower5());
+		
+		
 		
 	}
 	
