@@ -33,9 +33,9 @@ public class TowerDefController {
 //	private Player player;
 //	private Map map;
 	//private Point start;
-
-	
 	public Point point;
+	
+	
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
@@ -70,7 +70,7 @@ public class TowerDefController {
 		
 	}
 	
-	public void buildFirstPath(Map newMap) {
+	private void buildFirstPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -107,7 +107,7 @@ public class TowerDefController {
 
 	}
 	
-	public void buildSecondPath(Map newMap) {
+	private void buildSecondPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -144,7 +144,7 @@ public class TowerDefController {
 	}
 	
 	
-	public void buildThirdPath(Map newMap) {
+	private void buildThirdPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {

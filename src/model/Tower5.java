@@ -9,10 +9,10 @@ public class Tower5 extends Tower {
 	private double attackSpeed = .5;
 	public Tower5() {
 		super.setCost(cost);
-		super.setImg(new ImageView(new Image("/img/turret3.jpg")));
-		super.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
+		super.setImg(new ImageView(new Image("/img/turret3.jpg")));
+		super.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
 	}
 	
 }

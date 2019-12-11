@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import javafx.scene.image.ImageView;
 
@@ -176,6 +176,59 @@ public class TowerDefModelTest {
 		
 	}
 	
+	@Test
+	public void testBasicTower() {
+		Tower tower = new BasicTower();
+	}
 	
+	@Test
+	public void testTurret() {
+		Tower tower = new Turret();
+	}	
+	
+	@Test
+	public void testTower3() {
+		Tower tower = new Tower3();
+	}	
+	
+	@Test
+	public void testTower4() {
+		Tower tower = new Tower4();
+	}	
+	
+	@Test
+	public void testTower5() {
+		Tower tower = new Tower5();
+	}	
+	
+	@Test
+	public void testBasicMonster() {
+		Monster monster = new BasicMonster();
+	}	
+	
+	@Test
+	public void testSecondMonster() {
+		Monster monster = new SecondMonster();
+	}
+	
+	@Test
+	public void testMonster3() {
+		Monster monster = new Monster3();
+	}
+	
+	@Test
+	public void testMonster4() {
+		Monster monster = new Monster4();
+	}
+	
+	@Test
+	public void testMonster5() {
+		Monster monster = new Monster5();
+	}
+	
+	@Test
+	public void testMonster6() {
+		Monster monster = new Monster6();
+	}
 	
 }

@@ -11,10 +11,10 @@ public class BasicTower extends Tower {
 	private double attackSpeed = 1;
 	public BasicTower() {
 		super.setCost(cost);
-		super.setImg(new ImageView(new Image("/img/TOWER.png")));
-		super.setBullet(new ImageView(new Image("/img/bullet.png")));
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
+		super.setImg(new ImageView(new Image("/img/TOWER.png")));
+		super.setBullet(new ImageView(new Image("/img/bullet.png")));
 	}
 	
 	
