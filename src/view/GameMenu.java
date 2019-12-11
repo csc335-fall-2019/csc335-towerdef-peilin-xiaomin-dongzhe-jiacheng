@@ -111,6 +111,7 @@ public class GameMenu{
 	private void mouseClick(Button now, Stage stage) {
 		now.setOnMouseClicked((event) -> {
 			stage.close();
+			newGame = new GameStage(3);
 			newGame.createNewGame(stage);
 		});
 		
