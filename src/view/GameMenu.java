@@ -133,7 +133,7 @@ public class GameMenu{
 				// TODO Auto-generated method stub
 				
 				stage.close();
-				newGame = new GameStage(2);
+				newGame = new GameStage(3);
 				newGame.createNewGame(stage);
 				
 			}

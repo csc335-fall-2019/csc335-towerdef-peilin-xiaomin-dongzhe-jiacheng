@@ -122,17 +122,18 @@ public class TowerDefController {
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
-				if ((row == 2 && col >= 2 && col <= 6) 
-					|| (row == 4 && col >= 2)
-					|| (col == 6 && row <= 2)
-					|| (col == 2 && row >= 2 && row <=4)) {
+				if (col == 0 || col == 2 
+					|| ((col == 5 || col == 8) && row <= 3)
+					|| (row == 5 && col == 1)
+					|| (row == 0 && (col == 3 || col == 4 || col == 9))
+					|| (row == 3 && (col == 6 || col == 7))) {
 					point.setRoad();
 				}
-				if (row == 0 && col == 6) {
+				if (row == 0 && col == 0) {
 					point.setStart();
 					start = point;
 				}
-				if (row == 4 && col == 9) {
+				if (row == 0 && col == 9) {
 					point.setEnd();
 				}
 				newMap.update(row, col, point);
@@ -140,6 +141,7 @@ public class TowerDefController {
 		}
 		this.buildRoad(newMap, start);
 	}
+	
 	
 	public void buildRoad(Map newMap, Point start) {
 		int x = start.getX();
