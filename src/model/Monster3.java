@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 
 public class Monster3 extends Monster {
 	private int gold = 14;
-	private double speed = 0.5;
+	private double speed = 10;
 	private int health = 100;
 	private int lossHealth = 20;
 	public Monster3() {
