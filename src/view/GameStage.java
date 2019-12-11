@@ -106,6 +106,7 @@ public class GameStage implements Observer {
 	private RadioButton one;
 	private int deadMonsters;
 	// private ImageView[][] images;
+	private GridPane grid4;
 	
 	
 	public GameStage() {
