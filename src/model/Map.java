@@ -6,9 +6,6 @@ public class Map {
 	private Player player;
 	private Point[][] graph;
 	private ArrayList<Point> road;
-//	private int health;
-	
-
 	
 	public Map(Player player,int height,int width) {
 		graph = new Point[height][width];
@@ -32,6 +29,11 @@ public class Map {
 	public void update(int x, int y,Point point) {
 		graph[x][y] = point;
 	}
+	
+	public void setPointDisable(Point point) {
+		this.graph[point.getX()][point.getY()].setDisable();
+	}
+	
 	
 //	public String toString() {
 //		String str = "";

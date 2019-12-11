@@ -10,6 +10,7 @@ public class Point {
 	private ArrayList<Monster> monsters = new ArrayList<Monster>();
 	private boolean start = false;
 	private boolean end = false;
+	private boolean disable = false;
 	
 	public Point(int x,int y,boolean isRoad) {
 		this.x = x;
@@ -37,6 +38,9 @@ public class Point {
 	}
 	public boolean isEnd() {
 		return end;
+	}
+	public boolean isdisabled() {
+		return disable;
 	}
 	
 	public void setRoad() {
@@ -69,6 +73,10 @@ public class Point {
 	}
 	public void setEnd() {
 		end = true;
+	}
+	
+	public void setDisable() {
+		this.disable = true;
 	}
 	
 //	public String toString() {

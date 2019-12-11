@@ -68,6 +68,7 @@ public class GameStage implements Observer {
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
+	private int stageNum;
 
 	private ImageView sellImg;
 	private int monsterLeft = 1;
@@ -121,6 +122,7 @@ public class GameStage implements Observer {
 	
 	
 	public GameStage(int stageNum) {
+		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		if (stageNum == 1) {
@@ -676,7 +678,7 @@ public class GameStage implements Observer {
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						setHome(rectangle, images.getHome());
+						rectangle.setFill(new ImagePattern(image));
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
@@ -808,11 +810,28 @@ public class GameStage implements Observer {
 			}
 			
 		});
+		
+		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		ret.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
-	private void setHome(Rectangle ret, Image image) {
-		ret.setFill(new ImagePattern(image));
-	}
 	
 	private void changeGold(int gold) {
 		model.getMap().getPlayer().changeMoney(gold);
