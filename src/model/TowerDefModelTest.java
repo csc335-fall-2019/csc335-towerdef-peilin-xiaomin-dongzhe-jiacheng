@@ -2,9 +2,77 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
+import javafx.scene.image.ImageView;
+
 public class TowerDefModelTest {
+	
+	private static final double DELTA = 1e-15;
+	
+	@Test
+	public void testTowers() {
+		Tower tower = new Tower();
+		Point point = new Point(1, 2, false);
+		ImageView img = new ImageView();
+		ImageView bulletImg = new ImageView();
+		tower.setAttack(10);
+		tower.setRange(3);
+		tower.setBullet(bulletImg);
+		tower.setCost(5);
+		tower.setImg(img);
+		tower.setPoint(point);
+		tower.setSpeed(8.0);
+		tower.addAttackRange(point);
+		
+		assertEquals(10, tower.getAttack());
+		assertEquals(bulletImg, tower.getBullet());
+		assertEquals(5, tower.getCost());
+		assertEquals(img, tower.getImg());
+		assertEquals(point, tower.getPoint());
+		assertTrue(tower.getAttackRange().contains(point));
+		assertEquals(tower.getSpeed(), 8.0, DELTA);
+		
+//		BasicTower basicTower = new BasicTower();
+//		Turret turret = new Turret();
+//		Tower3 twoer3 = new Tower3();
+//		Tower4 tower4 = new Tower4();
+//		Tower5 tower5 = new Tower5();
+	}
+	
+	@Test
+	public void testMonsters() {
+		Monster monster1 = new Monster();
+		Monster monster2 = new Monster(10, 3.0, 20.0, 2);
+		
+		Point point = new Point(1, 2, false);
+		ImageView img = new ImageView();
+		monster1.setGold(15);
+		monster1.setHealth(50.0);
+		monster1.setImg(img);
+		monster1.setLossPlayerHealth(5);
+		monster1.setPoint(point);
+		monster1.setSpeed(5.0);
+		
+		assertEquals(15, monster1.getGold());
+		assertEquals(monster1.getHealth(), 50.0, DELTA);
+		assertEquals(monster1.getImg(), img);
+		assertEquals(monster1.getPoint(), point);
+		assertEquals(monster1.getSpeed(), 5.0, DELTA);
+		assertEquals(monster1.lossPlayerHealth(), 5);
+		assertEquals(monster2.getGold(), 10);
+		assertEquals(monster2.getHealth(), 20.0, DELTA);
+		assertEquals(monster2.getSpeed(), 3.0, DELTA);
+		assertEquals(monster2.lossPlayerHealth(), 2);
+		
+		monster1.healthLoss(2.0);
+		assertFalse(monster1.dead());
+		monster1.healthLoss(48.0);
+		assertTrue(monster1.dead());
+		
+	}
 	
 	@Test
 	public void testPoint() {
@@ -24,20 +92,20 @@ public class TowerDefModelTest {
 		assertFalse(point1.canSetTower());
 		assertTrue(point2.canSetTower());
 		assertTrue(point2.canSetTower());
-		Tower tower1 = new BasicTower();
-		Tower tower2 = new Turret();
+		Tower tower1 = new Tower();
+		Tower tower2 = new Tower();
 		point2.setTower(tower1);
 		point3.setTower(tower2);
-		
-		
 		assertFalse(point2.canSetTower());
-		Tower getTower = point2.getTower();
-		assertEquals(tower1, getTower);
+		assertFalse(point3.canSetTower());
+		assertEquals(tower1, point2.getTower());
+		assertEquals(tower2, point3.getTower());
 		point2.sellTower();
+		point3.sellTower();
 		assertTrue(point2.canSetTower());
+		assertTrue(point3.canSetTower());
 		
-		
-		Monster monster = new BasicMonster();
+		Monster monster = new Monster();
 		point1.setMonster(monster);
 		assertTrue(point1.getMonster().contains(monster));
 		point1.clearMonster(monster);
@@ -53,36 +121,61 @@ public class TowerDefModelTest {
 	 
 	@Test
 	public void testPlayer() {
+		Player player = new Player(50);
+		player.lossHealth(3);
+		player.changeMoney(20);
+		player.changeMoney(-5);
+		assertTrue(player.canBuyTower(10));
 		
+		assertEquals(50-3, player.getHealth());
+		assertEquals(100+20-5, player.getMoney());
+		assertFalse(player.canBuyTower(200));
 	}
 	
 	@Test
 	public void testMap() {
-		Player player1 = new Player(20);
-		Map map = new Map(player1, 10, 10);
-		Player player2 = new Player(20);
-	}
-
-	
-	@Test
-	public void testImages() {
+		Player player = new Player(20);
+		Map map = new Map(player, 10, 10);
 		
-	}
-	
-	@Test
-	public void testTowers() {
+		assertEquals(player, map.getPlayer());
+		assertArrayEquals(new Point[10][10], map.getGraph());
 		
-	}
-	
-	@Test
-	public void testMonsters() {
-		
+		Point point = new Point(1, 1, false);
+		map.update(1, 1, point);
+		assertEquals(new ArrayList<Point>(), map.getRoads());
+		map.addRoad(point);
+		assertEquals(1, map.getRoads().size());
 	}
 	
 	@Test
 	public void testTowerDefModel() {
+		TowerDefModel model = new TowerDefModel();
+		
+		Player player = new Player(20);
+		Map map = new Map(player, 10, 10);
+		Point point = new Point(1, 1, false);
+		map.update(1, 1, point);
+		Monster monster = new Monster();
+		Tower tower = new Tower();
+		
+		model.setMap(map);
+		model.addTowers(tower);
+		model.setTower(tower, 1, 1);
+		model.sellTower(1, 1);
+		model.addMonsters(monster);
+		model.lossHealth(monster);
+		
+		assertEquals(map, model.getMap());
+		assertEquals(monster, model.getMonsters().get(0));
+		assertEquals(tower, model.getAvailTowers().get(0));
 		
 	}
+	
+	@Test
+	public void testTowerDefMoveMessage() {
+		
+	}
+	
 	
 	
 }

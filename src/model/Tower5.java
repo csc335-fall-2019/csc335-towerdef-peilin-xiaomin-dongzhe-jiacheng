@@ -14,9 +14,5 @@ public class Tower5 extends Tower {
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
 	}
-	@Override
-	public void setAttackRange(Map map) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

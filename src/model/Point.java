@@ -71,10 +71,10 @@ public class Point {
 		end = true;
 	}
 	
-	public String toString() {
-		if(start) return "s"+ " `(" + x + "," + y + ")";
-		if(end) return "e" + " `(" + x + "," + y + ")";
-		if (road) return "-" + " `(" + x + "," + y + ")";
-		return "0" + " `(" + x + "," + y + ")";
-	}
+//	public String toString() {
+//		if(start) return "s"+ " `(" + x + "," + y + ")";
+//		if(end) return "e" + " `(" + x + "," + y + ")";
+//		if (road) return "-" + " `(" + x + "," + y + ")";
+//		return "0" + " `(" + x + "," + y + ")";
+//	}
 }
