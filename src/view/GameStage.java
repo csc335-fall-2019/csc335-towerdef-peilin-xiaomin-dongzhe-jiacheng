@@ -114,6 +114,7 @@ public class GameStage implements Observer {
 	private int deadMonsters;
 	// private ImageView[][] images;
 	private GridPane grid4;
+	private HBox hbGrid;
 	
 	
 	public GameStage() {
@@ -227,9 +228,15 @@ public class GameStage implements Observer {
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
+		
+		
 		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		
+		grid4 = new GridPane();
+		grid4.setPrefSize(180, 50);
+		grid4.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
@@ -309,9 +316,11 @@ public class GameStage implements Observer {
 		hb2 = new HBox();
 		hb3 = new HBox();
 		hb4 = new HBox();
+		hbGrid = new HBox();
+		
 		hb.getChildren().addAll(images.getHealth(), number, healL);
 		hb2.getChildren().addAll(images.getGold(), number2, goldL);
-		hb3.getChildren().add(images.getPauseV());
+		hb4.getChildren().add(images.getPauseV());
 		hb4.getChildren().add(vbTime);
 		
 		
@@ -319,8 +328,11 @@ public class GameStage implements Observer {
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.add(hb3, 2, 0);
-		grid3.add(hb4, 3, 0);
+		grid4.add(hb4, 0, 0);
 		grid3.setHgap(30);
+		
+		hbGrid.getChildren().addAll(grid3,grid4);
+
 
 		gameThread = new Thread() {
 			int count = 0;
@@ -374,7 +386,7 @@ public class GameStage implements Observer {
 		});
 		
 		VBox vb = new VBox();
-		vb.getChildren().addAll(menuBar, grid3);
+		vb.getChildren().addAll(menuBar, hbGrid);
 
 		window.setTop(vb);
 		window.setCenter(grid);
