@@ -152,7 +152,7 @@ public class GameStage implements Observer {
 					Point point = tower.getPoint();
 					// Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 					if(msg.getMoney()> 0) {
-						
+						System.out.println("aaa");
 						rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
 						Timeline BulletTime = BulletsTimeline.get(point);
 						ImageView img = BulletsImageView.get(point);
@@ -505,18 +505,6 @@ public class GameStage implements Observer {
 			}
 			grid.getChildren().add(img);
 			count++;
-		}
-		
-		public void attack(ImageView img) {
-			Path path = new Path();
-			
-			path.getElements().add(new MoveTo(50, 50));
-			path.getElements().add(new LineTo(300, 50));
-			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(5000));
-			pathTransition.setNode(img);
-			pathTransition.setPath(path);
-			pathTransition.play();
 		}
 		
 		public void sell() {
