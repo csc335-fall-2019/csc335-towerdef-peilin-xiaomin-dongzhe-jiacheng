@@ -58,6 +58,9 @@ import model.Monster;
 import model.Player;
 import model.Point;
 import model.Tower;
+import model.Tower3;
+import model.Tower4;
+import model.Tower5;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
@@ -149,7 +152,20 @@ public class GameStage implements Observer {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
 			if (msg instanceof TowerMessage) {
 
-				Tower tower = (Tower) msg.getObj();;
+				Tower tower =msg.getTower();
+				
+				if(tower instanceof BasicTower) {
+					tower = new BasicTower();
+				}else if (tower instanceof Turret) {
+					tower = new Turret();
+				}else if(tower instanceof Tower3) {
+					tower = new Tower3();
+				}else if(tower instanceof Tower4) {
+					tower = new Tower4();
+				}else if (tower instanceof Tower5) {
+					tower = new Tower5();
+				}
+				
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 				if(msg.getMoney()> 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
@@ -165,12 +181,11 @@ public class GameStage implements Observer {
 				}
 				else if(msg.getMoney()< 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
-					Image bImg = new Image("/img/bullet1.JPG");
-					ImageView bulletImg = new ImageView(bImg);
+					ImageView bulletImg = tower.getBullet();
 					bulletImg.setFitHeight((int) RECTSIZE / 4);
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(5),move);
+					BulletHandler move = new BulletHandler(bulletImg,point,tower);
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
 					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -246,11 +261,31 @@ public class GameStage implements Observer {
 
 		BasicTower firstImg = new BasicTower();
 		Turret secondImg = new Turret();
+		Tower3 tower3 = new Tower3();
+		Tower4 tower4 = new Tower4();
+		Tower5 tower5 = new Tower5();
+		
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
 			
 		secondImg.getImg().setFitHeight(50);
 		secondImg.getImg().setFitWidth(50);
+	
+		
+		tower3.getImg().setFitHeight(50);
+		tower3.getImg().setFitWidth(50);
+		
+		tower4.getImg().setFitHeight(50);
+		tower4.getImg().setFitWidth(50);
+		
+		tower5.getImg().setFitHeight(50);
+		tower5.getImg().setFitWidth(50);
+		
+		
+		
+		
+		
+		
 		
 		
 		images.getSell().setFitHeight(50);
@@ -265,12 +300,19 @@ public class GameStage implements Observer {
 
 		grid2.add(firstImg.getImg(),0,0);
 		grid2.add(secondImg.getImg(), 1, 0);
-		grid2.add(images.getSell(), 2, 0);
+		grid2.add(tower3.getImg(), 2, 0);
+		grid2.add(tower4.getImg(), 3, 0);
+		grid2.add(tower5.getImg(), 4, 0);
+		grid2.add(images.getSell(), 5, 0);
 		grid2.setHgap(10);
 		
 		
 		doImg(firstImg.getImg(), availTowers.get(0));
 		doImg(secondImg.getImg(), availTowers.get(1));
+		doImg(tower3.getImg(), availTowers.get(2));
+		doImg(tower4.getImg(), availTowers.get(3));
+		doImg(tower5.getImg(), availTowers.get(4));
+		
 		doImg(images.getSell(), null);
 		
 		images.getPauseV().setFitHeight(80);
@@ -408,11 +450,13 @@ public class GameStage implements Observer {
 		Point point;
 		int count = 0 ;
 		Timeline time;
-		public BulletHandler(ImageView imgView,Point point) {
+		Tower tower;
+		public BulletHandler(ImageView imgView,Point point,Tower tower) {
 			img = imgView;
 			this.point = point;
 			img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
 			img.setTranslateY(point.getX()*RECTSIZE);
+			this.tower = tower;
 		}
 		public void addTimeline(Timeline timeline) {
 			time = timeline;
@@ -433,7 +477,7 @@ public class GameStage implements Observer {
 			if(moveLeft()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.1);
+					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 					img.setTranslateX(img.getTranslateX()-2.0);
 				}else {
 					img.setVisible(false);
@@ -442,7 +486,7 @@ public class GameStage implements Observer {
 			}else if(moveRight()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.1);
+					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 					img.setTranslateX(img.getTranslateX()+2.0);
 				}else {
 					img.setVisible(false);
@@ -451,7 +495,7 @@ public class GameStage implements Observer {
 			}else if (moveUp()) {
 				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.1);
+					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 					img.setTranslateY(img.getTranslateY()+2.0);
 				}else {
 					img.setVisible(false);
@@ -460,7 +504,7 @@ public class GameStage implements Observer {
 			}else if(moveDown()) {
 				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.1);
+					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 					img.setTranslateY(img.getTranslateY()-2.0);
 				}else {
 					img.setVisible(false);
