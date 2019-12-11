@@ -5,10 +5,10 @@ import javafx.scene.image.ImageView;
 public class Monster {
 	protected int gold;
 	protected int speed;
-	protected int armor;
-	protected int magicResist;
+	
+	protected int lossHealth;
+	
 	protected double health;
-	protected int energy;
 	private Point point;
 	private ImageView img;
 
@@ -16,13 +16,18 @@ public class Monster {
 	public Monster() {
 		
 	}
-	public Monster(int gold,int speed,int armor,int magicResist,int health, int energy) {
+	public Monster(int gold,int speed,int health, int lossHealth) {
 		this.gold =gold;
 		this.speed = speed;
-		this.armor = armor;
-		this.magicResist = magicResist;
+		
 		this.health = health;
-		this.energy = energy;
+		this.lossHealth = lossHealth;
+	}
+	public int lossPlayerHealth() {
+		return lossHealth;
+	}
+	public void setLossPlayerHealth(int lossHealth) {
+		this.lossHealth = lossHealth;
 	}
 	
 	public int getGold() {
@@ -31,18 +36,11 @@ public class Monster {
 	public int getSpeed() {
 		return speed;
 	}
-	public int getArmor() {
-		return armor;
-	}
-	public int getMagicResist() {
-		return magicResist;
-	}
+	
 	public double getHealth() {
 		return health;
 	}
-	public int getEnergy() {
-		return energy;
-	}
+	
 	public Point getPoint() {
 		return point;
 	}
@@ -65,12 +63,7 @@ public class Monster {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public void setArmor(int armor) {
-		this.armor = armor;
-	}
-	public void setEnergy(int energy) {
-		this.energy = energy;
-	}
+	
 	public void setPoint(Point point) {
 		this.point = point;
 	}
