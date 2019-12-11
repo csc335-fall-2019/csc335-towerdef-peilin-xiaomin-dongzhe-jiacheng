@@ -290,13 +290,20 @@ public class GameStage implements Observer {
 		group = new ToggleGroup();
 		one = new RadioButton("X1");
 		two = new RadioButton("X2");
+		
 		one.setToggleGroup(group);
 		two.setToggleGroup(group);
 		
 		vbTime = new VBox();
 		vbTime.getChildren().addAll(one,two);
 		
+		one.setOnMouseClicked((event)->{
+			SLEEP = 2000;
+		});
 		
+		two.setOnMouseClicked((event)->{
+			SLEEP = 1000;
+		});
 		hb = new HBox();
 		hb2 = new HBox();
 		hb3 = new HBox();
@@ -421,6 +428,11 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub]
+			if(one.isSelected()){
+				time.setRate(1.0);
+			} else if(two.isSelected()){
+				time.setRate(2.0);
+			}
 			grid.getChildren().remove(img);
 			if(heal == 0) {
 				time.stop();
@@ -524,6 +536,11 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			//System.out.println(1000);
+			if(one.isSelected()){
+				time.setRate(1.0);
+			} else if(two.isSelected()){
+				time.setRate(2.0);
+			} 
 			grid.getChildren().remove(img);
 			
 			if(currentRoad == road.size()-1) {
@@ -539,11 +556,7 @@ public class GameStage implements Observer {
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 						System.out.println("you win");
-			
-						
-						
-						
-						
+		
 						
 //						stage.close();
 //						level2.createLevel2();
@@ -570,9 +583,6 @@ public class GameStage implements Observer {
 				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 					System.out.println("you win");
 					
-					
-					
-					
 //					stage.close();
 //					level2.createLevel2();
 					
@@ -589,9 +599,7 @@ public class GameStage implements Observer {
 					//time.setRate(2.0);
 					img.setTranslateY(img.getTranslateY()+1.0);
 				}else if(moveDown()) {
-					
 					img.setTranslateY(img.getTranslateY()-1.0);
-				
 					
 				}
 				
