@@ -16,7 +16,7 @@ public class SecondMonster extends Monster {
 		super.setGold(gold);
 		super.setSpeed(speed);
 		super.setHealth(health);
-		super.setImg(new ImageView(new Image("/img/enemy2.gif")));
+		
 	}
 
 }

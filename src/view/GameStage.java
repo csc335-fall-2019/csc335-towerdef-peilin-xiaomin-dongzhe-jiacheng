@@ -59,8 +59,13 @@ import model.BasicMonster;
 import model.BasicTower;
 import model.Images;
 import model.Monster;
+import model.Monster3;
+import model.Monster4;
+import model.Monster5;
+import model.Monster6;
 import model.Player;
 import model.Point;
+import model.SecondMonster;
 import model.Tower;
 import model.Tower3;
 import model.Tower4;
@@ -448,6 +453,20 @@ public class GameStage implements Observer {
 	 */
 	private void createMonster(Monster monster, Stage stage) {
 
+		if(monster instanceof BasicMonster) {
+			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
+		}else if (monster instanceof SecondMonster) {
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+		}else if(monster instanceof Monster3) {
+			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
+		}else if (monster instanceof Monster4) {
+			monster.setImg(new ImageView(new Image("/img/enemy4.gif")));
+		}else if (monster instanceof Monster5) {
+			monster.setImg(new ImageView(new Image("/img/enemy5.gif")));
+		}else if(monster instanceof Monster6) {
+			monster.setImg(new ImageView(new Image("/img/enemy6.gif")));
+		}
+		
 		ImageView monsterImg = monster.getImg();
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
 		monsterImg.setFitWidth((int) RECTSIZE / 2); // set the image of the monster

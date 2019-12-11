@@ -15,7 +15,6 @@ public class BasicMonster extends Monster {
 		super.setLossPlayerHealth(lossHealth);// extend the monster class
 		super.setGold(gold);
 		super.setSpeed(speed);
-		super.setHealth(health);
-		super.setImg(new ImageView(new Image("/img/giphy.gif")));
-	}
+		super.setHealth(health);	
+		}
 }

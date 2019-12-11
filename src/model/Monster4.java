@@ -16,6 +16,5 @@ public class Monster4 extends Monster {
 		super.setGold(gold);
 		super.setSpeed(speed);
 		super.setHealth(health);
-		super.setImg(new ImageView(new Image("/img/enemy4.gif")));
 	}
 }
