@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import controller.TowerDefController;
 import javafx.animation.KeyFrame;
+import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -41,6 +42,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -51,7 +55,7 @@ import model.BasicMonster;
 import model.BasicTower;
 import model.Images;
 import model.Monster;
-
+import model.Player;
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
@@ -117,10 +121,16 @@ public class GameStage implements Observer {
 	private HBox hbGrid;
 	
 	
-	public GameStage() {
+	public GameStage(int stageNum) {
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
-		controller.buildBasicStage();
+		if (stageNum == 1) {
+			controller.buildBasicStage(1);
+		} else if (stageNum == 2) {
+			controller.buildBasicStage(2);
+		} else if (stageNum == 3) {
+			controller.buildBasicStage(3);
+		}
 		controller.getModel().addObserver(this);
 		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
@@ -130,10 +140,7 @@ public class GameStage implements Observer {
 		BulletsImageView = new HashMap<Point,ImageView>();
 		images = new Images();
 		monstersTimeline = new ArrayList<Timeline>();
-		
 	}
-	
-	
 	
 	@Override
 	public void update(Observable o, Object arg) {
@@ -145,18 +152,18 @@ public class GameStage implements Observer {
 				Tower tower = (Tower) msg.getObj();;
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 				if(msg.getMoney()> 0) {
-					
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
 					Timeline BulletTime = BulletsTimeline.get(point);
 					ImageView img = BulletsImageView.get(point);
 					BulletTime.stop();
 					BulletTime = null;
 					img.setVisible(false);
-					
+			     
 					img = null;
 					BulletsTimeline.remove(point);
 					BulletsImageView.remove(point);
-				}else if(msg.getMoney()< 0) {
+				}
+				else if(msg.getMoney()< 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
 					Image bImg = new Image("/img/bullet1.JPG");
 					ImageView bulletImg = new ImageView(bImg);
@@ -172,20 +179,16 @@ public class GameStage implements Observer {
 					BulletsTimeline.put(point, BulletTimeline);
 					BulletsImageView.put(point,bulletImg);
 					//SLEEP = 500;
-
 				}
-				changeGold(msg.getMoney());
+			    changeGold(msg.getMoney());
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
-			healL.setText(String.valueOf(heal));	
+			healL.setText(String.valueOf(heal)); 
 			if(heal == 0) {
 				gameOver(stage);
 			}
-
 		}
-		
-		
 		
 		
 	}
@@ -378,8 +381,6 @@ public class GameStage implements Observer {
 		
 	}
 
-	
-	
 
 	
 	private void createMonster(Monster monster, Stage stage) {
@@ -395,11 +396,11 @@ public class GameStage implements Observer {
 		move.addTimeline(monsterTimeline);
 		monsterTimeline.play();
 		monstersTimeline.add(monsterTimeline);
-			
-		
+
 		
 	}
-	
+
+
 	private class BulletHandler implements EventHandler<ActionEvent>{
 
 		
@@ -508,6 +509,7 @@ public class GameStage implements Observer {
 			}
 		}
 	}
+
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
 		double count = 0.0 ;
@@ -639,8 +641,14 @@ public class GameStage implements Observer {
 			
 			return point.equals(nextPoint);
 		}
-		
 	}
+	
+
+
+	
+	
+		
+		
 
 	
 	

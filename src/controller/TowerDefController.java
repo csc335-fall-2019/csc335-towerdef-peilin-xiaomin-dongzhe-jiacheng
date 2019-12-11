@@ -51,9 +51,26 @@ public class TowerDefController {
 	 /**
 	  * This method is used to build the map
 	  */
-	public void buildBasicStage() {
+	public void buildBasicStage(int stageNum) {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
+		if (stageNum == 1) {
+			this.buildFirstPath(newMap);
+		}
+		else if (stageNum == 2) {
+			this.buildSecondPath(newMap);
+		}
+		else if (stageNum == 3) {
+			this.buildThirdPath(newMap);
+		}
+		System.out.println(newMap.getRoads());
+		model.setMap(newMap);
+		model.addTowers(new BasicTower());
+		model.addTowers(new Turret());
+		
+	}
+	
+	public void buildFirstPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -75,10 +92,6 @@ public class TowerDefController {
 			}
 		}
 		this.buildRoad(newMap, start);
-		System.out.println(newMap.getRoads());
-		model.setMap(newMap);
-		model.addTowers(new BasicTower());
-		model.addTowers(new Turret());
 		for(int i =0;i<10;i++) {
 			model.addMonsters(new BasicMonster());
 		}
@@ -91,7 +104,59 @@ public class TowerDefController {
 		model.addMonsters(new Monster4());
 		model.addMonsters(new Monster5());
 		model.addMonsters(new Monster6());
+
 	}
+	
+	public void buildSecondPath(Map newMap) {
+		Point start = null;
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				point = new Point(row, col, false);
+				if ((row == 2 && col >= 2 && col <= 6) 
+					|| (row == 4 && col >= 2)
+					|| (col == 6 && row <= 2)
+					|| (col == 2 && row >= 2 && row <=4)) {
+					point.setRoad();
+				}
+				if (row == 0 && col == 6) {
+					point.setStart();
+					start = point;
+				}
+				if (row == 4 && col == 9) {
+					point.setEnd();
+				}
+				newMap.update(row, col, point);
+			}
+		}
+		this.buildRoad(newMap, start);
+	}
+	
+	
+	public void buildThirdPath(Map newMap) {
+		Point start = null;
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				point = new Point(row, col, false);
+				if (col == 0 || col == 2 
+					|| ((col == 5 || col == 8) && row <= 3)
+					|| (row == 5 && col == 1)
+					|| (row == 0 && (col == 3 || col == 4 || col == 9))
+					|| (row == 3 && (col == 6 || col == 7))) {
+					point.setRoad();
+				}
+				if (row == 0 && col == 0) {
+					point.setStart();
+					start = point;
+				}
+				if (row == 0 && col == 9) {
+					point.setEnd();
+				}
+				newMap.update(row, col, point);
+			}
+		}
+		this.buildRoad(newMap, start);
+	}
+	
 	
 	public void buildRoad(Map newMap, Point start) {
 		int x = start.getX();
@@ -149,11 +214,15 @@ public class TowerDefController {
 	public boolean canSetTower(int x,int y) {
 		return model.getMap().getGraph()[x][y].canSetTower();
 	}
-	public void buildTower(int x,int y,Tower tower) {
+	
+	public void buildTower(int x,int y,Tower tower) {		
 		model.setTower(tower, x, y);
 	}
 	
+
+	
 	public void sellTower(int x, int y) {
+		System.out.println("sell");
 		model.sellTower(x, y);
 	}
 	

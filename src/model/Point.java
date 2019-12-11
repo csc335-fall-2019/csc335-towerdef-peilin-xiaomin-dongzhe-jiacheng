@@ -94,6 +94,6 @@ public class Point {
 		if(start) return "s"+ " `(" + x + "," + y + ")";
 		if(end) return "e" + " `(" + x + "," + y + ")";
 		if (road) return "-" + " `(" + x + "," + y + ")";
-		return "0";
+		return "0" + " `(" + x + "," + y + ")";
 	}
 }

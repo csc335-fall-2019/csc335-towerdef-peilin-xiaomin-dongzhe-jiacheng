@@ -1,27 +1,27 @@
 package model;
 
 public class Bullets {
-	protected int physicalATK;
-	protected double speedATK;
+	protected int attack;
+	protected double speed;
 	
 	public Bullets() {
 		
 	}
 	
-	public int getphysATK() {
-		return this.physicalATK;
+	public int getAttack() {
+		return this.attack;
 	}
 		
 	public double getSpeed() {
-		return this.speedATK;
+		return this.speed;
 	}
 	
 	
-	public void setPhysATK(int newPower) {
-		this.physicalATK = newPower;
+	public void setAttack(int attack) {
+		this.attack = attack;
 	}
 	
-	public void setSpeedATK(double attackSpeed) {
-		this.speedATK = attackSpeed;
+	public void setSpeed(double attackSpeed) {
+		this.speed = attackSpeed;
 	}
 }

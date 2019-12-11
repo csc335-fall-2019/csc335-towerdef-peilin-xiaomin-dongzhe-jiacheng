@@ -12,30 +12,23 @@ public class Tower {
 	protected int attack;
 
 	protected ImageView img;
+	
 	public Tower() {
 	}
-
+	
 	public int getCost() {
 		return cost;
 	}
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
+	
 	public Point getPoint() {
 		return point;
 	}
-	public void setPos(Point point) {
-		this.point = point;
+	
+	public int getRange() {
+		return range;
 	}
-	public void setBulletImg(ImageView img) {
-		this.bullet = img;
-	}
-	public ImageView getBulletImg() {
-		return bullet;
-	}
-	public void setImg(ImageView img) {
-		this.img = img;
-	}
+	
+	
 	public ImageView getImg() {
 		return img;
 	}
@@ -44,5 +37,27 @@ public class Tower {
 	}
 	public int getAttack() {
 		return attack;
+	}
+
+	
+	
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+	
+	public void setPoint(Point point) {
+		this.point = point;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public void setPos(Point point) {
+		this.point = point;
+	}
+	
+	public void setImg(ImageView img) {
+		this.img = img;
 	}
 }

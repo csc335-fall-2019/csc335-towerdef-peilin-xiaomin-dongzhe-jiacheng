@@ -36,7 +36,7 @@ public class GameMenu{
 
 	private Images images;
 	private String choice = "English";
-	private GameStage newGame = new GameStage();
+	private GameStage newGame;
 	private BasicTower tower;
 	private Label languageAll;
 	private ToggleGroup group;
@@ -111,6 +111,7 @@ public class GameMenu{
 	private void mouseClick(Button now, Stage stage) {
 		now.setOnMouseClicked((event) -> {
 			stage.close();
+			newGame = new GameStage(3);
 			newGame.createNewGame(stage);
 		});
 		
@@ -125,6 +126,8 @@ public class GameMenu{
 //			}
 //			
 //		});
+
+
 //		
 //		now.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 //
