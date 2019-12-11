@@ -430,6 +430,7 @@ public class GameStage implements Observer {
 			if(heal == 0) {
 				time.stop();
 			}
+			
 			if(moveLeft()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
 					img.setVisible(true);
