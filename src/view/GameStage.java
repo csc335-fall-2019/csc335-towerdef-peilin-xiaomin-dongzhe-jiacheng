@@ -117,9 +117,13 @@ public class GameStage implements Observer {
 	// private ImageView[][] images;
 	private GridPane grid4;
 	private HBox hbGrid;
+	private int stageNum;
+	
 	
 	
 	public GameStage(int stageNum) {
+		this.stage = new Stage();
+		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
 		if (stageNum == 1) {
@@ -202,9 +206,10 @@ public class GameStage implements Observer {
 		
 	}
 	
-	public void createNewGame(Stage stageA) {
+
+	public void createNewGame() {
 //		Stage stage = new Stage();
-		stage = stageA;
+//		stage = stageA;
 		stage.setTitle("Tower Defense");
 		
 		BorderPane window = new BorderPane();
@@ -356,12 +361,12 @@ public class GameStage implements Observer {
 			public void run() {
 				deadMonsters = 0;
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
-					//System.out.println(1);	
+
 					if(isPause) {
 						pause();
 					}
 					try {
-						createMonster(monsters.get(count), stageA);
+						createMonster(monsters.get(count), stage);
 						count++;
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
@@ -494,7 +499,7 @@ public class GameStage implements Observer {
 					img.setVisible(false);
 				}
 				
-			}else if(moveRight()) {
+			} else if(moveRight()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
 					img.setVisible(true);
 					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
@@ -605,7 +610,15 @@ public class GameStage implements Observer {
 					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-						System.out.println("you win");
+						if(stageNum < 3) {
+							stageNum++;			
+							askNext();
+	
+						}
+						else {
+							stage.close();
+							System.out.println("you win");
+						}
 					}
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
@@ -626,7 +639,17 @@ public class GameStage implements Observer {
 				img.setVisible(false);
 				
 				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-					System.out.println("you win");
+					if(stageNum < 3) {
+						stageNum++;
+						
+						askNext();
+						
+						
+					}
+					else {
+						stage.close();
+						System.out.println("you win");
+					}
 					
 //					stage.close();
 //					level2.createLevel2();
@@ -700,12 +723,6 @@ public class GameStage implements Observer {
 	}
 	
 
-
-	
-	
-		
-		
-
 	
 	
 	/**
@@ -770,13 +787,24 @@ public class GameStage implements Observer {
 				
 				if(isPause) {
 					for(Timeline monster:monstersTimeline) {
-						
 						monster.stop();
 					}
+					if(!BulletsTimeline.isEmpty()) {
+						for(Timeline bullet:BulletsTimeline.values()) {
+							bullet.stop();
+						}
+					}
+					
 				}else {
 					for(Timeline monster:monstersTimeline) {
 						monster.play();
 					}
+					if(!BulletsTimeline.isEmpty()) {
+						for(Timeline bullet:BulletsTimeline.values()) {
+							bullet.play();
+						}
+					}
+					
 				}
 				
 				
@@ -785,8 +813,6 @@ public class GameStage implements Observer {
 			
 		});
 	}
-	
-
 	
 	
 	private void doImg(ImageView image, Tower currTower) {
@@ -958,9 +984,44 @@ public class GameStage implements Observer {
 		Scene scene = new Scene(window);
 		newStage.setScene(scene);
 		newStage.show();
+
 		
+	}
+	
+	
+	private void askNext() {
 		
+		Stage newStage = new Stage();
+		BorderPane windowNext = new BorderPane();
+		Label moveOn = new Label("DO YOU WANT TO CONTIUNE?");
+		ToggleGroup groupN = new ToggleGroup();
+		RadioButton yes = new RadioButton("YES");
+		RadioButton no = new RadioButton("NO");
+		yes.setToggleGroup(groupN);
+		no.setToggleGroup(groupN);
+		HBox hb = new HBox();
+		hb.getChildren().addAll(moveOn, yes, no);
+		windowNext.setCenter(hb);
 		
+		Scene scene = new Scene(windowNext);
+		newStage.setScene(scene);
+		newStage.show();
+		
+		yes.setOnMouseClicked((eventY) -> {
+			
+			newStage.close();
+			stage.close();
+			GameStage newGame = new GameStage(stageNum);
+			newGame.createNewGame();
+			
+		});
+		
+		no.setOnMouseClicked((eventNo) -> {
+			
+			newStage.close();
+			stage.close();
+		});
+	
 	}
 	
 }
