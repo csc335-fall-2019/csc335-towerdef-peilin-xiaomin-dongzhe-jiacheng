@@ -122,10 +122,16 @@ public class GameStage implements Observer {
 	private HBox hbGrid;
 	
 	
-	public GameStage() {
+	public GameStage(int stageNum) {
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
-		controller.buildBasicStage();
+		if (stageNum == 1) {
+			controller.buildBasicStage(1);
+		} else if (stageNum == 2) {
+			controller.buildBasicStage(2);
+		} else if (stageNum == 3) {
+			controller.buildBasicStage(3);
+		}
 		controller.getModel().addObserver(this);
 		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH];
 		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
@@ -135,10 +141,7 @@ public class GameStage implements Observer {
 		BulletsImageView = new HashMap<Point,ImageView>();
 		images = new Images();
 		monstersTimeline = new ArrayList<Timeline>();
-		
 	}
-	
-	
 	
 	@Override
 	public void update(Observable o, Object arg) {
@@ -434,6 +437,8 @@ public class GameStage implements Observer {
 
 
 	private class BulletHandler implements EventHandler<ActionEvent>{
+
+		
 		ImageView img;
 		Point point;
 		int count = 0 ;
@@ -506,7 +511,6 @@ public class GameStage implements Observer {
 			grid.getChildren().add(img);
 			count++;
 		}
-		
 		public void sell() {
 			img.setVisible(false);
 		}

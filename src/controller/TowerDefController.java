@@ -46,9 +46,29 @@ public class TowerDefController {
 	 /**
 	  * This method is used to build the map
 	  */
-	public void buildBasicStage() {
+	public void buildBasicStage(int stageNum) {
 		Player newPlayer = new Player(20);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
+		if (stageNum == 1) {
+			this.buildFirstPath(newMap);
+		}
+		else if (stageNum == 2) {
+			this.buildSecondPath(newMap);
+		}
+		else if (stageNum == 3) {
+			this.buildThirdPath(newMap);
+		}
+		System.out.println(newMap.getRoads());
+		model.setMap(newMap);
+		model.addTowers(new BasicTower());
+		model.addTowers(new Turret());
+		
+		for(int i =0;i<10;i++) {
+			model.addMonsters(new BasicMonster());
+		}
+	}
+	
+	public void buildFirstPath(Map newMap) {
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -70,13 +90,55 @@ public class TowerDefController {
 			}
 		}
 		this.buildRoad(newMap, start);
-		System.out.println(newMap.getRoads());
-		model.setMap(newMap);
-		model.addTowers(new BasicTower());
-		model.addTowers(new Turret());
-		for(int i =0;i<10;i++) {
-			model.addMonsters(new BasicMonster());
+	}
+	
+	public void buildSecondPath(Map newMap) {
+		Point start = null;
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				point = new Point(row, col, false);
+				if ((row == 2 && col >= 2 && col <= 6) 
+					|| (row == 4 && col >= 2)
+					|| (col == 6 && row <= 2)
+					|| (col == 2 && row >= 2 && row <=4)) {
+					point.setRoad();
+				}
+				if (row == 0 && col == 6) {
+					point.setStart();
+					start = point;
+				}
+				if (row == 4 && col == 9) {
+					point.setEnd();
+				}
+				newMap.update(row, col, point);
+			}
 		}
+		this.buildRoad(newMap, start);
+	}
+	
+	
+	public void buildThirdPath(Map newMap) {
+		Point start = null;
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				point = new Point(row, col, false);
+				if ((row == 2 && col >= 2 && col <= 6) 
+					|| (row == 4 && col >= 2)
+					|| (col == 6 && row <= 2)
+					|| (col == 2 && row >= 2 && row <=4)) {
+					point.setRoad();
+				}
+				if (row == 0 && col == 6) {
+					point.setStart();
+					start = point;
+				}
+				if (row == 4 && col == 9) {
+					point.setEnd();
+				}
+				newMap.update(row, col, point);
+			}
+		}
+		this.buildRoad(newMap, start);
 	}
 	
 	public void buildRoad(Map newMap, Point start) {

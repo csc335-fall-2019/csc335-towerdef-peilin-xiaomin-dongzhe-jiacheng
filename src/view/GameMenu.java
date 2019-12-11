@@ -36,7 +36,7 @@ public class GameMenu{
 
 	private Images images;
 	private String choice = "English";
-	private GameStage newGame = new GameStage();
+	private GameStage newGame;
 	private BasicTower tower;
 	private Label languageAll;
 	private ToggleGroup group;
@@ -133,6 +133,7 @@ public class GameMenu{
 				// TODO Auto-generated method stub
 				
 				stage.close();
+				newGame = new GameStage(2);
 				newGame.createNewGame(stage);
 				
 			}
