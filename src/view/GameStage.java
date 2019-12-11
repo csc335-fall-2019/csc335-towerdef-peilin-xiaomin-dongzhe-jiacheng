@@ -22,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -96,9 +98,12 @@ public class GameStage implements Observer {
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
 	private Stage stage; 
-	private VBox vb;
-	private GameStage2 level2;
-	
+	private VBox vbTime;
+	private HBox hb3;
+	private HBox hb4;
+	private ToggleGroup group;
+	private RadioButton two;
+	private RadioButton one;
 	private int deadMonsters;
 	// private ImageView[][] images;
 	
@@ -247,6 +252,9 @@ public class GameStage implements Observer {
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 		
+		
+		
+		
 			
 		
 
@@ -280,13 +288,34 @@ public class GameStage implements Observer {
 		doImg(secondImg.getImg(), availTowers.get(1));
 		doImg(images.getSell(), null);
 		
+		images.getPauseV().setFitHeight(80);
+		images.getPauseV().setFitWidth(100);
+		
+		group = new ToggleGroup();
+		one = new RadioButton("X1");
+		two = new RadioButton("X2");
+		one.setToggleGroup(group);
+		two.setToggleGroup(group);
+		
+		vbTime = new VBox();
+		vbTime.getChildren().addAll(one,two);
+		
 		
 		hb = new HBox();
 		hb2 = new HBox();
+		hb3 = new HBox();
+		hb4 = new HBox();
 		hb.getChildren().addAll(images.getHealth(), number, healL);
 		hb2.getChildren().addAll(images.getGold(), number2, goldL);
+		hb3.getChildren().add(images.getPauseV());
+		hb4.getChildren().add(vbTime);
+		
+		
+	
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
+		grid3.add(hb3, 2, 0);
+		grid3.add(hb4, 3, 0);
 		grid3.setHgap(30);
 		
 		
@@ -534,7 +563,13 @@ public class GameStage implements Observer {
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 						System.out.println("you win");
-						stage.close();
+			
+						
+						
+						
+						
+						
+//						stage.close();
 //						level2.createLevel2();
 						
 					}
@@ -558,7 +593,11 @@ public class GameStage implements Observer {
 				
 				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 					System.out.println("you win");
-					stage.close();
+					
+					
+					
+					
+//					stage.close();
 //					level2.createLevel2();
 					
 				}
@@ -665,6 +704,27 @@ public class GameStage implements Observer {
 				grid.add(rectangle, j, i);
 			}
 		}
+	}
+	
+	
+	private void doPause(ImageView image) {
+		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+			
+		});
+	}
+	
+	
+	private void doTime(RadioButton button) {
+		button.setOnMouseClicked((eventE)->{
+			
+		});
 	}
 	
 	

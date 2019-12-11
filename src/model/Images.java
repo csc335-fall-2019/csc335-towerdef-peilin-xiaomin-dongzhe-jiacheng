@@ -18,8 +18,12 @@ public class Images {
 	private Image homeend;
 	private Image home;
 	private ImageView homeV;
-	private Image bat;
-	private ImageView batV;
+	private Image newgame;
+	private ImageView newgameV;
+	
+	private Image pause;
+	private ImageView pauseV;
+	
 	
 	public Images() {
 		backimg = new Image("/img/background.jpg");
@@ -36,18 +40,29 @@ public class Images {
 		home = new Image("/img/home.png");
 		homeV = new ImageView(home);
 		
-		bat = new Image("/img/bat.png");
-		batV = new ImageView(bat);
+		newgame = new Image("/img/newgame.png");
+		newgameV = new ImageView(newgame);
+		
+		pause = new Image("/img/pause.png");
+		pauseV = new ImageView(pause);
+		
 		
 	}
 	
-	
-	public Image getBat() {
-		return bat;
+	public Image getPause() {
+		return pause;
 	}
 	
-	public ImageView getBatV() {
-		return batV;
+	public ImageView getPauseV() {
+		return pauseV;
+	}
+	
+	public Image getnewGame() {
+		return newgame;
+	}
+	
+	public ImageView getnewGameV() {
+		return newgameV;
 	}
 	
 	public Image getHome() {

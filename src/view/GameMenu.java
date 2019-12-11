@@ -5,6 +5,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -106,18 +108,55 @@ public class GameMenu{
 	}
 	
 
-	private void mouseClick(Button label, Stage stage) {
-		label.setOnMouseClicked((event) -> {
-			stage.close();
-			newGame.createNewGame(stage);
+	private void mouseClick(ImageView now, Stage stage) {
+//		now.setOnMouseClicked((event) -> {
+//			stage.close();
+//			newGame.createNewGame(stage);
+//		});
+		
+		now.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				now.setFitHeight(200);
+				now.setFitWidth(400);
+				
+			}
+			
+		});
+		
+		now.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+				stage.close();
+				newGame.createNewGame(stage);
+				
+			}
+			
+		});
+		
+		now.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				now.setFitHeight(150);
+				now.setFitWidth(300);
+			}
+			
 		});
 	}
 	
 	
 	private void basicStage(Stage stage, BorderPane window, String lang) {
 		System.out.println("1");
-		Button text;
+//		Button text;
 		Button language;
+		ImageView now = new ImageView();
 		stage.setTitle("Tower Defense");
 		GridPane grid = new GridPane();
 //		System.out.println(2);
@@ -154,29 +193,30 @@ public class GameMenu{
 		
 		System.out.println(choice);
 		if(choice.equals("English")) {
-			text = new Button("NEW GAME");
+//			text = new Button("NEW GAME");
 			language = new Button("Language");
+			now = images.getnewGameV();
 		}
 		else {
 			System.out.println("Chinese");
-			text = new Button("新游戏");
+//			text = new Button("新游戏");
 			language = new Button("语言");
 		}
 		
 
-		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
-		text.setStyle("-fx-focus-color: transparent;");
+//		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
+//		text.setStyle("-fx-focus-color: transparent;");
 		
-		
-		language.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
-		language.setStyle("-fx-focus-color: transparent;");
+//		
+////		language.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
+////		language.setStyle("-fx-focus-color: transparent;");
 		
 		VBox vb = new VBox();
 		HBox hb1 = new HBox();
 		HBox hb2 = new HBox();
 		HBox hb3 = new HBox();
 		
-		hb1.getChildren().add(text);
+		hb1.getChildren().add(now);
 		hb1.setAlignment(Pos.CENTER);
 		
 		
@@ -196,7 +236,7 @@ public class GameMenu{
 		grid.setVgap(100);
 		grid.getChildren().add(vb);
 		
-		mouseClick(text,stage);
+		mouseClick(now,stage);
 		languageClick(language, stage);
 		
 		Scene scene = new Scene(window);
