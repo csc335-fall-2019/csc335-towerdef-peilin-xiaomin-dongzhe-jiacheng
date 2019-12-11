@@ -24,6 +24,9 @@ public class Images {
 	private Image pause;
 	private ImageView pauseV;
 	
+	private Image enemy2;
+	private ImageView enemy2V;
+	
 	
 	public Images() {
 		backimg = new Image("/img/background.jpg");
@@ -45,6 +48,10 @@ public class Images {
 		
 		pause = new Image("/img/pause.png");
 		pauseV = new ImageView(pause);
+		
+		
+		
+		
 		
 		
 	}
