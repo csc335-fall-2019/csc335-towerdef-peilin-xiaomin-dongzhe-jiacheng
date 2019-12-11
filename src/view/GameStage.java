@@ -372,11 +372,11 @@ public class GameStage implements Observer {
 		});
 		
 		
-//		exit.setOnAction(new EventHandler<ActionEvent>() {
-//			public void handle(ActionEvent event) {
-//				stage.close();
-//			}
-//		});
+		exit.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				stage.close();
+			}
+		});
 		
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -871,7 +871,9 @@ public class GameStage implements Observer {
 		});
 		
 		exit.setOnAction(new EventHandler<ActionEvent>() {
+			@SuppressWarnings("deprecation")
 			public void handle(ActionEvent event) {
+				
 				newStage.close();
 			}
 		});
