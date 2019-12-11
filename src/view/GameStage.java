@@ -174,29 +174,7 @@ public class GameStage implements Observer {
 					//SLEEP = 500;
 
 				}
-				//System.out.println(model.getMap().getPlayer().getMoney());
-				model.getMap().getPlayer().changeMoney(msg.getMoney());
-				totalGold = model.getMap().getPlayer().getMoney();
-				System.out.println(totalGold);
-				
-				goldL = new Label(String.valueOf(totalGold));
-				goldL.setTextFill(Color.ORANGE);
-				goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-				
-				
-				
-				grid3.getChildren().clear();
-				hb = new HBox();
-				hb2 = new HBox();
-				hb.getChildren().addAll(images.getHealth(), number, healL);
-				hb2.getChildren().addAll(images.getGold(), number2, goldL);
-				grid3.add(hb, 0, 0);
-				grid3.add(hb2, 1, 0);
-				grid3.setHgap(30);
-				
-				
-				//rectangles[msg.getRow()][msg.getColumn()].setFill(Color.RED);
-				// update on stage;
+				changeGold(msg.getMoney());
 			}
 		}catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
@@ -409,7 +387,7 @@ public class GameStage implements Observer {
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster, stage);
-			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60*monster.getSpeed()),move);
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -569,11 +547,6 @@ public class GameStage implements Observer {
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 						System.out.println("you win");
-		
-						
-//						stage.close();
-//						level2.createLevel2();
-						
 					}
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
@@ -582,11 +555,11 @@ public class GameStage implements Observer {
 				//time.setRate(value);
 				//System.out.println(1);
 			}else if(heal == 0){
-				time.stop();
 				monstersTimeline.remove(time);
 
 			}else if(monster.dead()){
-				//monsters.remove(monster);
+				changeGold(monster.getGold());
+				time.stop();
 				deadMonsters++; 
 				monsterLeft++;
 				road.get(currentRoad).clearMonster(monster);
@@ -668,6 +641,7 @@ public class GameStage implements Observer {
 		
 	}
 
+	
 	
 	/**
 	 * this class is used to draw circles
@@ -831,7 +805,27 @@ public class GameStage implements Observer {
 		ret.setFill(new ImagePattern(image));
 	}
 	
-	
+	private void changeGold(int gold) {
+		model.getMap().getPlayer().changeMoney(gold);
+		totalGold = model.getMap().getPlayer().getMoney();
+		System.out.println(totalGold);
+		
+		goldL = new Label(String.valueOf(totalGold));
+		goldL.setTextFill(Color.ORANGE);
+		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
+		
+		
+		grid3.getChildren().clear();
+		hb = new HBox();
+		hb2 = new HBox();
+		hb.getChildren().addAll(images.getHealth(), number, healL);
+		hb2.getChildren().addAll(images.getGold(), number2, goldL);
+		grid3.add(hb, 0, 0);
+		grid3.add(hb2, 1, 0);
+		grid3.setHgap(30);
+		
+	}
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
