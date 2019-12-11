@@ -344,10 +344,11 @@ public class GameStage implements Observer {
 					count++;
 					try {
 						Thread.sleep(SLEEP);
-						System.out.println(count);
+						//System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					
 				}
 			}
 		};
