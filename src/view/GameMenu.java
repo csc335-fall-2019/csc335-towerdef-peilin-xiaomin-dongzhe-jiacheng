@@ -1,3 +1,6 @@
+/**
+ * This class is to construct the view of the game. 
+ */
 package view;
 
 import javafx.animation.Timeline;
@@ -33,8 +36,8 @@ import model.BasicTower;
 import model.Images;
 
 public class GameMenu{
-
-	private Images images;
+//----------------------------------------// private fields to used 
+	private Images images;               
 	private String choice = "English";
 	private GameStage newGame;
 	private BasicTower tower;
@@ -49,24 +52,29 @@ public class GameMenu{
 	private RadioButton Level3;
 	private Button Levels;
 	private int levelNum = 1;
-	public GameMenu(Stage stage, BorderPane window) {
+//-------------------------------------//
+	public GameMenu(Stage stage, BorderPane window) { // construct
 		images = new Images();
 		basicStage(stage, window,choice);
 		
 	}
-	
+/**
+ * This class is an additional feature that we add, we can select language.
+ * @param language , a button 
+ * @param stage , the current stage
+ */
 	private void languageClick(Button language, Stage stage) {
 		// TODO Auto-generated method stub
-		language.setOnMouseClicked((event) -> {
+		language.setOnMouseClicked((event) -> {  // lauch a window when language button clicked
 			stage.close();
 			Stage stageLang = new Stage();
-			HBox hb = new HBox();
+			HBox hb = new HBox(); 
 			
 			stageLang.setTitle("Language Setting");
 			BorderPane windowLang = new BorderPane();
 			
 			
-			if(choice.equals("English")) {
+			if(choice.equals("English")) {    // in the window can choose english or chinese
 				languageAll = new Label("Language:");
 				group = new ToggleGroup();
 				English = new RadioButton("English");
@@ -103,11 +111,11 @@ public class GameMenu{
 			stageLang.setScene(scene);
 			stageLang.show();
 			
-			OK.setOnMouseClicked((event2)->{
+			OK.setOnMouseClicked((event2)->{   //when language is selected
 				stageLang.close();
 				System.out.println("nw");
 				BorderPane window = new BorderPane();
-				basicStage(stage, window, choice);
+				basicStage(stage, window, choice); //go back to the home stage
 			});
 			
 		});
@@ -115,7 +123,7 @@ public class GameMenu{
 	}
 	
 
-	private void mouseClick(Button now, Stage stage) {
+	private void mouseClick(Button now, Stage stage) { 
 		now.setOnMouseClicked((event) -> {
 			stage.close();
 			newGame = new GameStage(levelNum);
@@ -123,33 +131,38 @@ public class GameMenu{
 		});
 	}
 	
-	
+/**
+ * This function is to construct the welcome home stage
+ * @param stage, a stage
+ * @param window, a window
+ * @param lang, the language option
+ */
 	private void basicStage(Stage stage, BorderPane window, String lang) {
 		System.out.println("1");
-		Button text;
+		Button text; // the new game button
 		Button language;
 		stage.setTitle("Tower Defense");
 		GridPane grid = new GridPane();
 //		System.out.println(2);
 		grid = new GridPane();
-		grid.setPrefSize(800, 450);
+		grid.setPrefSize(800, 450); // set size of the grid pane
 		
-		window.setCenter(grid);
+		window.setCenter(grid); // set the gird pane in the center of the window
 //		Image image = new Image("/img/background.jpg");
 		
-		
+		// set the image of the game board
 		grid.setBackground(new Background(new BackgroundImage(images.getBackImg(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
 				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
 
 //		Image image2 = new Image("/img/newbullet.png");
 //		ImageView img2 = new ImageView(image2);
-		images.getNewbullet().setFitHeight(50);
+		images.getNewbullet().setFitHeight(50); //the animation bullet on the welcome stage
 		images.getNewbullet().setFitWidth(50);
 		
 		
 		TranslateTransition trans = new TranslateTransition();
-		trans.setDuration(Duration.millis(2000));
+		trans.setDuration(Duration.millis(2000)); // animation on the welcome stage
 		trans.setNode(images.getNewbullet());
 		trans.setByX(600);
 		trans.setCycleCount(Timeline.INDEFINITE);
@@ -158,12 +171,12 @@ public class GameMenu{
 		
 //		Image image3 = new Image("/img/TOWER.png");
 //		ImageView img3 = new ImageView(image3);
-		tower = new BasicTower();
+		tower = new BasicTower(); // place the basic tower on the welcome stage
 		tower.getImg().setFitHeight(120);
 		tower.getImg().setFitWidth(120);
 		
 		System.out.println(choice);
-		if(choice.equals("English")) {
+		if(choice.equals("English")) {  // displace the button base on the language selection 
 			text = new Button("NEW GAME");
 			language = new Button("Language");
 		}
@@ -174,10 +187,10 @@ public class GameMenu{
 		}
 		
 
-		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
+		text.setFont(Font.font("Verdana", FontWeight.BOLD, 45));  // display the button in preferred style
 		text.setStyle("-fx-focus-color: transparent;");
 		
-//		
+	
 		language.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
 		language.setStyle("-fx-focus-color: transparent;");
 		
@@ -198,14 +211,14 @@ public class GameMenu{
 		hb3.getChildren().add(tower.getImg());
 		hb3.getChildren().add(images.getNewbullet());
 		
-		Levels = new Button("Levels");
+		Levels = new Button("Levels"); // a button to select level
 		
 		hb4.getChildren().add(Levels);
 		
 		vb.getChildren().addAll(hb1,hb2,hb3,hb4);
 		
 		
-		grid.setAlignment(Pos.CENTER);
+		grid.setAlignment(Pos.CENTER);   // style the window
 		grid.setPadding(new Insets(30));
 		grid.setHgap(100);
 		grid.setVgap(100);
@@ -219,14 +232,17 @@ public class GameMenu{
 		stage.setScene(scene);
 		stage.show();
 	}
-	
-	private void levelsOnClick(Button levels) {
+/**
+ * This is function is to select level.
+ * @param levels, a button.
+ */
+	private void levelsOnClick(Button levels) { 
 		levels.setOnMouseClicked((event) ->{
-			Stage levelS = new Stage();
-			levelS.setTitle("Select Levels");
+			Stage levelS = new Stage();  // build a new window for level selection
+			levelS.setTitle("Select Levels"); 
 			BorderPane windowL = new BorderPane();
 			HBox hb = new HBox();
-			if(choice.equals("English")) {
+			if(choice.equals("English")) {     // set the text to display base on the language selection 
 				levelsAll = new Label("Levels:");
 				groupLevel = new ToggleGroup();
 				Level1 = new RadioButton("Level1");
@@ -244,7 +260,7 @@ public class GameMenu{
 			Level2.setToggleGroup(groupLevel);
 			Level3.setToggleGroup(groupLevel);
 			
-			Level1.setOnAction((event1) ->{
+			Level1.setOnAction((event1) ->{   // three levels to select
 				levelNum = 1;
 			});
 			
@@ -269,7 +285,7 @@ public class GameMenu{
 			windowL.setCenter(vb);
 			Scene scene = new Scene(windowL, 300, 150);
 			levelS.setScene(scene);
-			levelS.show();
+			levelS.show();   // launch the level selection window
 			
 			OK.setOnMouseClicked((event2)->{
 				levelS.close();

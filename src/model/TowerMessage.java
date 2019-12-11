@@ -1,3 +1,6 @@
+/**
+ * The move message class
+ */
 package model;
 
 public class TowerMessage extends TowerDefMoveMessage {
