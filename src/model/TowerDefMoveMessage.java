@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class TowerDefMoveMessage implements Serializable {
 	private int row;
 	private int col;
-	private Object obj;
+	private Tower obj;
 	private int money;
 	
-	public TowerDefMoveMessage(int row, int col, Object obj,int money) {
+	public TowerDefMoveMessage(int row, int col, Tower obj,int money) {
 		this.row = row;
 		this.col = col;
 		this.obj = obj;
@@ -23,7 +23,7 @@ public class TowerDefMoveMessage implements Serializable {
     	return col;
     }
     
-    public Object getObj() {
+    public Tower getTower() {
 		return obj;  	
     }
     
