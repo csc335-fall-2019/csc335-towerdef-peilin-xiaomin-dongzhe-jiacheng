@@ -8,9 +8,13 @@ import javafx.scene.image.ImageView;
 public class BasicTower extends Tower {
 	private int cost =10;
 	private int attack = 1;
+	private double attackSpeed = 1;
 	public BasicTower() {
 		super.setCost(cost);
 		super.setImg(new ImageView(new Image("/img/TOWER.png")));
+		super.setBullet(new ImageView(new Image("/img/bullet.png")));
+		super.setAttack(attack);
+		super.setSpeed(attackSpeed);
 	}
 	
 	public void setAttackRange(Map map) {

@@ -10,7 +10,7 @@ public abstract class Tower {
 	protected int range;
 	protected ImageView bullet;
 	protected int attack;
-
+	protected double attackSpeed;
 	protected ImageView img;
 	private ArrayList<Point> attackRange;
 	
@@ -26,12 +26,19 @@ public abstract class Tower {
 	public Point getPoint() {
 		return point;
 	}
-	
-	public int getRange() {
-		return range;
+	public ImageView getBullet() {
+		return bullet;
+	}
+	public void setBullet(ImageView img) {
+		this.bullet = img;
 	}
 	
-	
+	public void setSpeed(double speed) {
+		this.attackSpeed = speed;
+	}
+	public double getSpeed() {
+		return attackSpeed;
+	}
 	public ImageView getImg() {
 		return img;
 	}
@@ -46,8 +53,6 @@ public abstract class Tower {
 	public int getAttack() {
 		return attack;
 	}
-
-	
 	
 	public void setCost(int cost) {
 		this.cost = cost;
