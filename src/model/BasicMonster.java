@@ -13,6 +13,6 @@ public class BasicMonster extends Monster {
 		super.setGold(gold);
 		super.setSpeed(speed);
 		super.setHealth(health);
-		super.setImg(new ImageView(new Image("/img/enemy4.gif")));
+		super.setImg(new ImageView(new Image("/img/giphy.gif")));
 	}
 }

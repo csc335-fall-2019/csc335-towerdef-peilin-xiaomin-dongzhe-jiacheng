@@ -12,8 +12,13 @@ import java.util.Queue;
 import model.BasicMonster;
 import model.BasicTower;
 import model.Map;
+import model.Monster3;
+import model.Monster4;
+import model.Monster5;
+import model.Monster6;
 import model.Player;
 import model.Point;
+import model.SecondMonster;
 import model.Tower;
 import model.TowerDefModel;
 import model.Turret;
@@ -77,6 +82,15 @@ public class TowerDefController {
 		for(int i =0;i<10;i++) {
 			model.addMonsters(new BasicMonster());
 		}
+		for(int i =0;i<3;i++) {
+			model.addMonsters(new SecondMonster());
+		}
+		for(int i =0;i<2;i++) {
+			model.addMonsters(new Monster3());
+		}
+		model.addMonsters(new Monster4());
+		model.addMonsters(new Monster5());
+		model.addMonsters(new Monster6());
 	}
 	
 	public void buildRoad(Map newMap, Point start) {

@@ -57,10 +57,7 @@ public class TowerDefModel extends Observable {
 	
 	
 	public void lossHealth(Monster monster) {
-		if(monster instanceof BasicMonster) {
-			map.getPlayer().lossHealth(monster.lossPlayerHealth());
-		}
-		
+		map.getPlayer().lossHealth(monster.lossPlayerHealth());
 		setChanged();
         notifyObservers(1);
 	}

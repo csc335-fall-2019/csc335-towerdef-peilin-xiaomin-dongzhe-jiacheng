@@ -9,8 +9,8 @@ public class Tower {
 	protected Point point;
 	protected int range;
 	protected ImageView bullet;
-	private int energy = 0;
-	private	ArrayList <Point> rangePoint = new ArrayList<>();
+	protected int attack;
+
 	protected ImageView img;
 	public Tower() {
 	}
@@ -38,5 +38,11 @@ public class Tower {
 	}
 	public ImageView getImg() {
 		return img;
+	}
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+	public int getAttack() {
+		return attack;
 	}
 }

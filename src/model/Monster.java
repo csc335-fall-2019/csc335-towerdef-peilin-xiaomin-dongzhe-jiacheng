@@ -4,7 +4,7 @@ import javafx.scene.image.ImageView;
 
 public class Monster {
 	protected int gold;
-	protected int speed;
+	protected double speed;
 	
 	protected int lossHealth;
 	
@@ -33,7 +33,7 @@ public class Monster {
 	public int getGold() {
 		return gold;
 	}
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 	
@@ -53,14 +53,12 @@ public class Monster {
 	public boolean dead() {
 		return health <=0;
 	}
-	public void newSpeed(int speed) {
-		this.speed = speed;
-	}
+	
 	public void setGold(int gold) {
 		this.gold = gold;
 		
 	}
-	public void setSpeed(int speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 	
