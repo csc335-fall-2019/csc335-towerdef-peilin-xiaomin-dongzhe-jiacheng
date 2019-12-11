@@ -8,7 +8,7 @@ public class TowerDefMoveMessage implements Serializable {
 	private Object obj;
 	private int money;
 	
-	public TowerDefMoveMessage(int row, int col, Object obj,int money) {
+	public TowerDefMoveMessage(int row, int col, Tower obj,int money) {
 		this.row = row;
 		this.col = col;
 		this.obj = obj;
