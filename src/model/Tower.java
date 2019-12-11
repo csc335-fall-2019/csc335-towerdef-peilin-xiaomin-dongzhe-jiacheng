@@ -8,12 +8,10 @@ public class Tower {
 	protected int cost;
 	protected Point point;
 	protected int range;
-	protected Bullets bullet;
-	private int energy = 0;
+	protected ImageView bullet;
 	protected ImageView img;
 	
 	public Tower() {
-		this.bullet = new Bullets();
 	}
 	
 	public int getCost() {
@@ -28,29 +26,6 @@ public class Tower {
 		return range;
 	}
 	
-	public Bullets getBullet() {
-		return bullet;
-	}
-	
-	public int getAttack() {
-		return this.bullet.getAttack();
-	}
-	
-	public double getattackSpeed() {
-		return this.bullet.getSpeed();
-	}
-	
-//	public ArrayList <Point> getRangePoint(){
-//		return rangePoints;
-//	}
-//	
-//	public String getType() {
-//		return type;
-//	}
-	
-	public int getEnergy() {
-		return this.energy;
-	}
 	
 	public ImageView getImg() {
 		return img;
@@ -68,40 +43,9 @@ public class Tower {
 	public void setRange(int range) {
 		this.range = range;
 	}
-	
-	public void setBullet(Bullets bullet) {
-		this.bullet = bullet;
-	}
-	
-	public void setAttack(int attack) {
-		this.bullet.setAttack(attack);
-	}
-	
-	public void setAttackSpeed(double attackSpeed) {
-		this.bullet.setSpeed(attackSpeed);
-	}
-	
-//	public void setRangePoint(ArrayList<Point> rangePoints) {
-//		this.rangePoints = rangePoints;
-//	}
-//	
-//	public void setType(String type) {
-//		this.type = type;
-//	}
-	
-	public void EnergyUP(int amount) {
-		this.energy += amount;	
-	}
-	
-	public boolean checkUltimate() {
-		if(this.energy >= 100) {
-			return true;
-		}
-		return false;
-	}
-	
-	public void EnergyClear() {
-		this.energy = 0;
+
+	public void setPos(Point point) {
+		this.point = point;
 	}
 	
 	public void setImg(ImageView img) {

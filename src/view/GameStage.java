@@ -54,7 +54,6 @@ import javafx.util.Duration;
 import model.BasicMonster;
 import model.BasicTower;
 import model.Images;
-import model.LoseHealthMessage;
 import model.Monster;
 import model.Player;
 import model.Point;
@@ -146,83 +145,50 @@ public class GameStage implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		if (arg instanceof TowerDefMoveMessage) {
-			try {
-				TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
-				if (msg instanceof TowerMessage) {
+		try {
+			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
+			if (msg instanceof TowerMessage) {
 
-					Tower tower = (Tower) msg.getObj();;
-					Point point = tower.getPoint();
-					// Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
-					if(msg.getMoney()> 0) {
-						System.out.println("aaa");
-						rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
-						Timeline BulletTime = BulletsTimeline.get(point);
-						ImageView img = BulletsImageView.get(point);
-						BulletTime.stop();
-						BulletTime = null;
-						img.setVisible(false);
-						
-						img = null;
-						BulletsTimeline.remove(point);
-						BulletsImageView.remove(point);
-					} else if(msg.getMoney()< 0) {
-						rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
-						Image bImg = new Image("/img/bullet1.JPG");
-						ImageView bulletImg = new ImageView(bImg);
-						bulletImg.setFitHeight((int) RECTSIZE / 4);
-						bulletImg.setFitWidth((int) RECTSIZE / 4);
-
-						BulletHandler move = new BulletHandler(bulletImg,point);
-						KeyFrame BulletKey = new KeyFrame(Duration.millis(5),move);
-						
-						Timeline BulletTimeline = new Timeline(BulletKey);
-						BulletTimeline.setAutoReverse(true);
-						BulletTimeline.setCycleCount(Timeline.INDEFINITE);
-						move.addTimeline(BulletTimeline);
-						BulletTimeline.play();
-						BulletsTimeline.put(point, BulletTimeline);
-						BulletsImageView.put(point,bulletImg);
-						//SLEEP = 500;
-
-					}
-					//System.out.println(model.getMap().getPlayer().getMoney());
-					model.getMap().getPlayer().changeMoney(msg.getMoney());
-					totalGold = model.getMap().getPlayer().getMoney();
-					System.out.println(totalGold);
-					
-					goldL = new Label(String.valueOf(totalGold));
-					goldL.setTextFill(Color.ORANGE);
-					goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-					
-					
-					
-					grid3.getChildren().clear();
-					hb = new HBox();
-					hb2 = new HBox();
-					hb.getChildren().addAll(images.getHealth(), number, healL);
-					hb2.getChildren().addAll(images.getGold(), number2, goldL);
-					grid3.add(hb, 0, 0);
-					grid3.add(hb2, 1, 0);
-					grid3.setHgap(30);
-					
+				Tower tower = (Tower) msg.getObj();;
+				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
+				if(msg.getMoney()> 0) {
+					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
+					Timeline BulletTime = BulletsTimeline.get(point);
+					ImageView img = BulletsImageView.get(point);
+					BulletTime.stop();
+					BulletTime = null;
+					img.setVisible(false);
+			     
+					img = null;
+					BulletsTimeline.remove(point);
+					BulletsImageView.remove(point);
 				}
-			} catch (Exception e) {
-				//
+				else if(msg.getMoney()< 0) {
+					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
+					Image bImg = new Image("/img/bullet1.JPG");
+					ImageView bulletImg = new ImageView(bImg);
+					bulletImg.setFitHeight((int) RECTSIZE / 4);
+					bulletImg.setFitWidth((int) RECTSIZE / 4);
+					BulletHandler move = new BulletHandler(bulletImg,point);
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(5),move);
+					Timeline BulletTimeline = new Timeline(BulletKey);
+					BulletTimeline.setAutoReverse(true);
+					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
+					move.addTimeline(BulletTimeline);
+					BulletTimeline.play();
+					BulletsTimeline.put(point, BulletTimeline);
+					BulletsImageView.put(point,bulletImg);
+					//SLEEP = 500;
+				}
+			    changeGold(msg.getMoney());
 			}
-		}
-		else if (arg instanceof LoseHealthMessage) {
-			LoseHealthMessage msg = (LoseHealthMessage) arg;
-			Player player = msg.getPlayer();
-			
-			heal = player.getHealth();
-			healL.setText(String.valueOf(heal));	
+		} catch (Exception e) {
+			heal = model.getMap().getPlayer().getHealth();
+			healL.setText(String.valueOf(heal)); 
 			if(heal == 0) {
 				gameOver(stage);
 			}
 		}
-		
-		
 		
 		
 	}
@@ -387,11 +353,11 @@ public class GameStage implements Observer {
 		});
 		
 		
-//		exit.setOnAction(new EventHandler<ActionEvent>() {
-//			public void handle(ActionEvent event) {
-//				stage.close();
-//			}
-//		});
+		exit.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				stage.close();
+			}
+		});
 		
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -423,7 +389,7 @@ public class GameStage implements Observer {
 			monsterImg.setFitHeight((int) RECTSIZE / 2);
 			monsterImg.setFitWidth((int) RECTSIZE / 2);
 			MonsterHandler move = new MonsterHandler(monsterImg,monster, stage);
-			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60),move);
+			KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60*monster.getSpeed()),move);
 			Timeline monsterTimeline = new Timeline(monsterKey);
 			monsterTimeline.setAutoReverse(false);
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -585,11 +551,6 @@ public class GameStage implements Observer {
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 						System.out.println("you win");
-		
-						
-//						stage.close();
-//						level2.createLevel2();
-						
 					}
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
@@ -598,11 +559,11 @@ public class GameStage implements Observer {
 				//time.setRate(value);
 				//System.out.println(1);
 			}else if(heal == 0){
-				time.stop();
 				monstersTimeline.remove(time);
 
 			}else if(monster.dead()){
-				//monsters.remove(monster);
+				changeGold(monster.getGold());
+				time.stop();
 				deadMonsters++; 
 				monsterLeft++;
 				road.get(currentRoad).clearMonster(monster);
@@ -690,6 +651,7 @@ public class GameStage implements Observer {
 		
 		
 
+	
 	
 	/**
 	 * this class is used to draw circles
@@ -853,7 +815,27 @@ public class GameStage implements Observer {
 		ret.setFill(new ImagePattern(image));
 	}
 	
-	
+	private void changeGold(int gold) {
+		model.getMap().getPlayer().changeMoney(gold);
+		totalGold = model.getMap().getPlayer().getMoney();
+		System.out.println(totalGold);
+		
+		goldL = new Label(String.valueOf(totalGold));
+		goldL.setTextFill(Color.ORANGE);
+		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+		
+		
+		
+		grid3.getChildren().clear();
+		hb = new HBox();
+		hb2 = new HBox();
+		hb.getChildren().addAll(images.getHealth(), number, healL);
+		hb2.getChildren().addAll(images.getGold(), number2, goldL);
+		grid3.add(hb, 0, 0);
+		grid3.add(hb2, 1, 0);
+		grid3.setHgap(30);
+		
+	}
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
@@ -893,7 +875,9 @@ public class GameStage implements Observer {
 		});
 		
 		exit.setOnAction(new EventHandler<ActionEvent>() {
+			@SuppressWarnings("deprecation")
 			public void handle(ActionEvent event) {
+				
 				newStage.close();
 			}
 		});
