@@ -48,12 +48,6 @@ public class Images {
 		
 		pause = new Image("/img/pause.png");
 		pauseV = new ImageView(pause);
-		
-		
-		
-		
-		
-		
 	}
 	
 	public Image getPause() {
