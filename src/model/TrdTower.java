@@ -1,16 +1,13 @@
 package model;
 
-import java.util.ArrayList;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class BasicTower extends Tower {
+public class TrdTower extends Tower {
 	private int cost =10;
 	private int attack = 1;
-	public BasicTower() {
+	public TrdTower() {
 		super.setCost(cost);
 		super.setImg(new ImageView(new Image("/img/TOWER.png")));
 	}
-	
 }
