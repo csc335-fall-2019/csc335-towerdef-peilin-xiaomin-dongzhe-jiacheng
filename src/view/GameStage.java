@@ -11,6 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -85,29 +86,23 @@ public class GameStage implements Observer {
 	private Label goldL;
 	private HBox hb;
 	private HBox hb2;
-//	private Image sell;
-//	private Image health;
-//	private ImageView healthImg;
+
 	private Label number;
 	private Label healL;
 	private int heal;
-//	private Image gold;
-//	private ImageView goldImg;
+
 	private Label number2;
 	private GridPane grid2;
 	private GridPane grid3;
-	//private int getRoad = 0;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
-//	private Label currName;
-//	private String towername;
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
 	private Stage stage; 
 
 	private VBox vb;
-	//private GameStage2 level2;
+	private boolean isPause = false;
 	private ArrayList<Timeline> monstersTimeline;
 	
 
@@ -204,7 +199,6 @@ public class GameStage implements Observer {
 				gameOver(stage);
 			}
 		}
-		
 		
 	}
 	
@@ -347,7 +341,7 @@ public class GameStage implements Observer {
 		hb4.getChildren().add(vbTime);
 		
 		
-	
+		
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.add(hb3, 2, 0);
@@ -356,26 +350,42 @@ public class GameStage implements Observer {
 		
 		hbGrid.getChildren().addAll(grid3,grid4);
 
-
+		//images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
-				deadMonsters = 0; 
+				deadMonsters = 0;
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
-					//System.out.println(1);
-					createMonster(monsters.get(count), stageA);
-					count++;
+					//System.out.println(1);	
+					if(isPause) {
+						pause();
+					}
 					try {
+						createMonster(monsters.get(count), stageA);
+						count++;
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					
+					
+					
 				}
 			}
+			private void pause() {
+				synchronized (this) {
+		            try {
+		                wait();
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		        }
+			}
 		};
+		doPause(images.getPauseV());
 		
+		//
 		MenuBar menuBar = new MenuBar();
 		Menu menu = new Menu("File"); 
 		MenuItem newgame = new MenuItem("New Game");
@@ -405,6 +415,7 @@ public class GameStage implements Observer {
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				gameThread.start();
+				
 				
 			}
 		});
@@ -574,6 +585,7 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			//System.out.println(1000);
+			
 			if(one.isSelected()){
 				time.setRate(1.0);
 			} else if(two.isSelected()){
@@ -743,6 +755,30 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+				if(isPause) {
+					isPause = false;
+					synchronized (gameThread) {
+			            try {
+			                gameThread.notify();
+			            } catch(Exception e) {	
+			            }
+			        }
+					
+				}else {
+					isPause = true;
+				}
+				
+				if(isPause) {
+					for(Timeline monster:monstersTimeline) {
+						
+						monster.stop();
+					}
+				}else {
+					for(Timeline monster:monstersTimeline) {
+						monster.play();
+					}
+				}
+				
 				
 				
 			}
@@ -750,15 +786,7 @@ public class GameStage implements Observer {
 		});
 	}
 	
-	
-	private void doTime(RadioButton button) {
-		button.setOnMouseClicked((eventE)->{
-			
-		});
-	}
-	
-	
-	
+
 	
 	
 	private void doImg(ImageView image, Tower currTower) {
@@ -934,4 +962,5 @@ public class GameStage implements Observer {
 		
 		
 	}
+	
 }
