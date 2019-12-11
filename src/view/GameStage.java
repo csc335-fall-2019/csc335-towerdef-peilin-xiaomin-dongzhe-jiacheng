@@ -490,42 +490,22 @@ public class GameStage implements Observer {
 			if(heal == 0) {
 				time.stop();
 			}
-			if(moveLeft()) {
+			
+			
+			
+			
+			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateX(img.getTranslateX()-2.0);
+					attackLeft();
+				}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
+					attackRight();
+				}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
+					attackUp();
+				}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
+					attackDown();
 				}else {
 					img.setVisible(false);
 				}
-				
-			} else if(moveRight()) {
-				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateX(img.getTranslateX()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
-			}else if (moveUp()) {
-				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateY(img.getTranslateY()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-	
-			}else if(moveDown()) {
-				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateY(img.getTranslateY()-2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
 			}
 			
 			if(count >=RECTSIZE) {
@@ -536,8 +516,37 @@ public class GameStage implements Observer {
 			grid.getChildren().add(img);
 			count++;
 		}
-		public void sell() {
-			img.setVisible(false);
+		
+		private void attackLeft() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateX(img.getTranslateX()-2.0);
+			
+			
+		}
+		
+		private void attackRight() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateX(img.getTranslateX()+2.0);
+		
+			
+		}
+		private void attackUp() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateY(img.getTranslateY()+2.0);
+			
+		}
+		private void attackDown() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateY(img.getTranslateY()-2.0);
+			
 		}
 		private boolean moveDown() {
 			try {
