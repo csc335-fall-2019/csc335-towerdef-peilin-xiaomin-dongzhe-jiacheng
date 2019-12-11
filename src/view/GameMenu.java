@@ -30,7 +30,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.BasicTower;
-import model.Images;
 
 public class GameMenu{
 

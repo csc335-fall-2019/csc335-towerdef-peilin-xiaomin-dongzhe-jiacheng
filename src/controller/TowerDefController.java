@@ -69,16 +69,14 @@ public class TowerDefController {
 		}
 		System.out.println(newMap.getRoads());
 		model.setMap(newMap);
-		
-		//this.disablePoint();
-		
+		this.disablePoint();
+
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
+
 		model.addTowers(new Tower3());
 		model.addTowers(new Tower4());
 		model.addTowers(new Tower5());
-		
-		
 		
 	}
 	
@@ -263,33 +261,34 @@ public class TowerDefController {
 	}
 	
 	
-//	public void disablePoint() {
-//		ArrayList<Point> road = this.getModel().getMap().getRoads();
-//		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size();
-//		// random a number at most with the number of available non-road points minus 5; 
-//		int random = (int) (Math.random() * ((maxAvailPoints - MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
-//		int disabled = 0;
-//		while (disabled < random) {
-//			this.disableOnePoint();
-//			disabled++;
-//		}
-//	}
-//	
-//	/**
-//	 * helper method for disablePoint method, this function will disable
-//	 * one random point, which is not disabled and not a road.
-//	 * 
-//	 */
-//	private void disableOnePoint() {
-//		int randX = (int) (Math.random() * HEIGHT);
-//		int randY = (int) (Math.random() * WIDTH);
-//		Point randPoint = model.getMap().getGraph()[randX][randY];
-//		while (randPoint.isdisabled() && randPoint.isRoad()) {
-//			randX = (int) (Math.random() * HEIGHT);
-//			randY = (int) (Math.random() * WIDTH);
-//			randPoint = model.getMap().getGraph()[randX][randY];
-//		}
-//		randPoint.setDisable();
-//	}
+
+	public void disablePoint() {
+		ArrayList<Point> road = this.getModel().getMap().getRoads();
+		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size();
+		// random a number at most with the number of available non-road points minus 5; 
+		int random = (int) (Math.random() * ((maxAvailPoints - MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
+		int disabled = 0;
+		while (disabled < random) {
+			this.disableOnePoint();
+			disabled++;
+		}
+	}
+	
+	/**
+	 * helper method for disablePoint method, this function will disable
+	 * one random point, which is not disabled and not a road.
+	 * 
+	 */
+	private void disableOnePoint() {
+		int randX = (int) (Math.random() * HEIGHT);
+		int randY = (int) (Math.random() * WIDTH);
+		Point randPoint = model.getMap().getGraph()[randX][randY];
+		while (randPoint.isdisabled() && randPoint.isRoad()) {
+			randX = (int) (Math.random() * HEIGHT);
+			randY = (int) (Math.random() * WIDTH);
+			randPoint = model.getMap().getGraph()[randX][randY];
+		}
+		randPoint.setDisable();
+	}
 	
 }
