@@ -55,7 +55,7 @@ public class TowerDefController {
 	  * This method is used to build the map
 	  */
 	public void buildBasicStage(int stageNum) {
-		Player newPlayer = new Player(20);
+		Player newPlayer = new Player(50);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
 		if (stageNum == 1) {
 			this.buildFirstPath(newMap);

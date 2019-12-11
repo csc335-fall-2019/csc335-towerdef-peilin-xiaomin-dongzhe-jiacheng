@@ -123,10 +123,12 @@ public class GameStage implements Observer {
 	private GridPane grid4;
 	private HBox hbGrid;
 	private int stageNum;
+	private String language;
 	
 	
 	
-	public GameStage(int stageNum) {
+	public GameStage(int stageNum, String choice) {
+		this.language = choice;
 		this.stage = new Stage();
 		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
@@ -204,7 +206,7 @@ public class GameStage implements Observer {
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal)); 
-			if(heal == 0) {
+			if(heal <= 0) {
 				gameOver(stage);
 			}
 		}
@@ -216,7 +218,12 @@ public class GameStage implements Observer {
 	public void createNewGame() {
 //		Stage stage = new Stage();
 //		stage = stageA;
-		stage.setTitle("Tower Defense");
+		if(language.equals("English")) {
+			stage.setTitle("Protect Earth");
+		}
+		else {
+			stage.setTitle("保卫地球大作战");
+		}
 		
 		BorderPane window = new BorderPane();
 		
@@ -381,24 +388,25 @@ public class GameStage implements Observer {
 			}
 		};
 		
-		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
-		MenuItem newgame = new MenuItem("New Game");
-		MenuItem exit = new MenuItem("Exit");
-		MenuItem start = new MenuItem("Start");
-		menu.getItems().addAll(start, newgame, exit);  // add menu bar and menu items
-		menuBar.getMenus().add(menu);
 		
-		newgame.setOnAction(new EventHandler<ActionEvent>() {
+		MenuBar menuBar = new MenuBar();
+		Menu menu;
+		MenuItem newgame;
+		MenuItem start;
+		MenuItem exit;
+		if(language.equals("English")) {
+			menu = new Menu("File"); 
+			exit = new MenuItem("Exit");
+			start = new MenuItem("Start");
+		}
+		else {
+			menu = new Menu("文件"); 
+			exit = new MenuItem("退出");
+			start = new MenuItem("开始");
+		}
+		menu.getItems().addAll(start, exit);  // add menu bar and menu items
+		menuBar.getMenus().add(menu);
 
-			@Override
-			public void handle(ActionEvent event) {
-//				stage.close();
-//				Stage stageB = new Stage();
-//				BorderPane window = new BorderPane();
-//				GameMenu menu = new GameMenu(stageB, window);
-			}
-		});
 		
 		
 		exit.setOnAction(new EventHandler<ActionEvent>() {
@@ -566,6 +574,7 @@ public class GameStage implements Observer {
 		ImageView img;
 		Timeline time;
 		Monster monster;
+		Point currPoint;
 //		private Rectangle[][] rectangles;
 		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) {
 			nextPoint  = road.get(currentRoad+1);
@@ -590,28 +599,31 @@ public class GameStage implements Observer {
 				time.stop();
 				monstersTimeline.remove(time);
 				img.setVisible(false);
+				currPoint = road.get(currentRoad);
 //				images.getHomeV().setVisible(false);
-				if(nextPoint.isEnd()) {
+				if(currPoint.isEnd()) {
 					deadMonsters++;
 					System.out.println(nextPoint.getX()+" "+nextPoint.getY());
 					System.out.println("getend");
 					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
-					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-						if(stageNum < 3) {
-							stageNum++;			
-							askNext();
-	
-						}
-						else {
-							stage.close();
-							System.out.println("you win");
-						}
-					}
+				
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
 				
 				model.lossHealth(monster);
+				
+				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+					if(stageNum < 3) {
+						stageNum++;			
+						askNext();
+
+					}
+					else {
+						stage.close();
+						System.out.println("you win");
+					}
+				}
 				//time.setRate(value);
 				//System.out.println(1);
 			}else if(heal == 0){
@@ -894,7 +906,12 @@ public class GameStage implements Observer {
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
-		newStage.setTitle("Tower Defense");
+		if(language.equals("English")) {
+			newStage.setTitle("Protect Earth");
+		}
+		else {
+			newStage.setTitle("保卫地球大作战");
+		}
 		BorderPane window = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 450);
@@ -912,9 +929,21 @@ public class GameStage implements Observer {
 		
 		
 		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
-		MenuItem newgame = new MenuItem("New Game");
-		MenuItem exit = new MenuItem("Exit");
+		Menu menu;
+		MenuItem newgame;
+		MenuItem exit;
+		
+		
+		if(language.equals("English")) {
+			menu = new Menu("File"); 
+			newgame = new MenuItem("New Game");
+			exit = new MenuItem("Exit");
+		}
+		else {
+			menu = new Menu("文件"); 
+			newgame = new MenuItem("新游戏");
+			exit = new MenuItem("退出");
+		}
 		menu.getItems().addAll(newgame, exit);  // add menu bar and menu items
 		menuBar.getMenus().add(menu);
 		
@@ -969,7 +998,7 @@ public class GameStage implements Observer {
 			
 			newStage.close();
 			stage.close();
-			GameStage newGame = new GameStage(stageNum);
+			GameStage newGame = new GameStage(stageNum, language);
 			newGame.createNewGame();
 			
 		});
