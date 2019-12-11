@@ -23,6 +23,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,7 +72,7 @@ public class GameStage implements Observer {
 
 	private ImageView sellImg;
 	private int monsterLeft = 1;
-
+	private int SLEEP = 2000;
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -100,11 +102,23 @@ public class GameStage implements Observer {
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
 	private Stage stage; 
+
 	private VBox vb;
-	private GameStage2 level2;
+	//private GameStage2 level2;
+	private ArrayList<Timeline> monstersTimeline;
 	
+
+	private VBox vbTime;
+	private HBox hb3;
+	private HBox hb4;
+	private ToggleGroup group;
+	private RadioButton two;
+	private RadioButton one;
+
 	private int deadMonsters;
 	// private ImageView[][] images;
+	private GridPane grid4;
+	private HBox hbGrid;
 	
 	
 	public GameStage() {
@@ -119,6 +133,7 @@ public class GameStage implements Observer {
 		BulletsTimeline = new HashMap<Point,Timeline>();
 		BulletsImageView = new HashMap<Point,ImageView>();
 		images = new Images();
+		monstersTimeline = new ArrayList<Timeline>();
 		
 	}
 	
@@ -154,8 +169,9 @@ public class GameStage implements Observer {
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
 
 					BulletHandler move = new BulletHandler(bulletImg,point);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(1000/70),move);
 
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(5),move);
+					
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
 					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -163,7 +179,8 @@ public class GameStage implements Observer {
 					BulletTimeline.play();
 					BulletsTimeline.put(point, BulletTimeline);
 					BulletsImageView.put(point,bulletImg);
-					
+					//SLEEP = 500;
+
 				}
 				//System.out.println(model.getMap().getPlayer().getMoney());
 				model.getMap().getPlayer().changeMoney(msg.getMoney());
@@ -219,9 +236,15 @@ public class GameStage implements Observer {
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
+		
+		
 		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		
+		grid4 = new GridPane();
+		grid4.setPrefSize(180, 50);
+		grid4.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
@@ -237,13 +260,6 @@ public class GameStage implements Observer {
 		healL.setTextFill(Color.ORANGE);
 		healL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 		
-		
-		
-		
-//		gold = new Image("/img/gold.png");
-//		goldImg = new ImageView(gold);
-		
-		
 		number2 = new Label("X");
 		number2.setTextFill(Color.ORANGE);
 		number2.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
@@ -253,9 +269,6 @@ public class GameStage implements Observer {
 		goldL = new Label(String.valueOf(totalGold));
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
-			
-		
 
 
 		BasicTower firstImg = new BasicTower();
@@ -287,17 +300,48 @@ public class GameStage implements Observer {
 		doImg(secondImg.getImg(), availTowers.get(1));
 		doImg(images.getSell(), null);
 		
+		images.getPauseV().setFitHeight(80);
+		images.getPauseV().setFitWidth(100);
 		
+		group = new ToggleGroup();
+		one = new RadioButton("X1");
+		two = new RadioButton("X2");
+		
+		one.setToggleGroup(group);
+		two.setToggleGroup(group);
+		
+		vbTime = new VBox();
+		vbTime.getChildren().addAll(one,two);
+		
+		one.setOnMouseClicked((event)->{
+			SLEEP = 2000;
+		});
+		
+		two.setOnMouseClicked((event)->{
+			SLEEP = 1000;
+		});
 		hb = new HBox();
 		hb2 = new HBox();
+		hb3 = new HBox();
+		hb4 = new HBox();
+		hbGrid = new HBox();
+		
 		hb.getChildren().addAll(images.getHealth(), number, healL);
 		hb2.getChildren().addAll(images.getGold(), number2, goldL);
+		hb4.getChildren().add(images.getPauseV());
+		hb4.getChildren().add(vbTime);
+		
+		
+	
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
+		grid3.add(hb3, 2, 0);
+		grid4.add(hb4, 0, 0);
 		grid3.setHgap(30);
 		
-		
-		
+		hbGrid.getChildren().addAll(grid3,grid4);
+
+
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
@@ -307,7 +351,7 @@ public class GameStage implements Observer {
 					createMonster(monsters.get(count), stageA);
 					count++;
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(SLEEP);
 						System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -315,26 +359,6 @@ public class GameStage implements Observer {
 				}
 			}
 		};
-		
-
-//		gameThread.start();
-		//monsterImg.setTranslateX(2*RECTSIZE);
-		//monsterImg.setTranslateY(1*RECTSIZE);
-//		Image monster = new Image("/img/monster1.JPG");
-//		ImageView monsterImg = new ImageView(monster);
-//		monsterImg.setFitHeight((int) RECTSIZE / 2);
-//		monsterImg.setFitWidth((int) RECTSIZE / 2);
-//		this.enemyWave(monsterImg);
-		
-		
-
-		// this.enemyWave(monsterImg);
-		//grid.getChildren().add(monsterImg);
-		
-		
-//		Timeline timeline = new Timeline(
-//				new KeyFrame(Duration.millis(100),
-//				new AnimationHandler()));
 		
 		MenuBar menuBar = new MenuBar();
 		Menu menu = new Menu("File"); 
@@ -370,7 +394,7 @@ public class GameStage implements Observer {
 		});
 		
 		VBox vb = new VBox();
-		vb.getChildren().addAll(menuBar, grid3);
+		vb.getChildren().addAll(menuBar, hbGrid);
 
 		window.setTop(vb);
 		window.setCenter(grid);
@@ -398,6 +422,7 @@ public class GameStage implements Observer {
 			monsterTimeline.setCycleCount(Timeline.INDEFINITE);
 			move.addTimeline(monsterTimeline);
 			monsterTimeline.play();
+			monstersTimeline.add(monsterTimeline);
 			//System.out.println(monsterImg.getTranslateX());
 		}
 		
@@ -422,6 +447,11 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub]
+			if(one.isSelected()){
+				time.setRate(1.0);
+			} else if(two.isSelected()){
+				time.setRate(2.0);
+			}
 			grid.getChildren().remove(img);
 			if(heal == 0) {
 				time.stop();
@@ -429,7 +459,7 @@ public class GameStage implements Observer {
 			if(moveLeft()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.2);
+					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.05);
 					img.setTranslateX(img.getTranslateX()-2.0);
 				}else {
 					img.setVisible(false);
@@ -438,7 +468,7 @@ public class GameStage implements Observer {
 			}else if(moveRight()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.2);
+					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.05);
 					img.setTranslateX(img.getTranslateX()+2.0);
 				}else {
 					img.setVisible(false);
@@ -447,7 +477,7 @@ public class GameStage implements Observer {
 			}else if (moveUp()) {
 				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.2);
+					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.05);
 					img.setTranslateY(img.getTranslateY()+2.0);
 				}else {
 					img.setVisible(false);
@@ -456,7 +486,7 @@ public class GameStage implements Observer {
 			}else if(moveDown()) {
 				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
 					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.2);
+					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.05);
 					img.setTranslateY(img.getTranslateY()-2.0);
 				}else {
 					img.setVisible(false);
@@ -539,10 +569,16 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			//System.out.println(1000);
+			if(one.isSelected()){
+				time.setRate(1.0);
+			} else if(two.isSelected()){
+				time.setRate(2.0);
+			} 
 			grid.getChildren().remove(img);
 			
 			if(currentRoad == road.size()-1) {
 				time.stop();
+				monstersTimeline.remove(time);
 				img.setVisible(false);
 //				images.getHomeV().setVisible(false);
 				if(nextPoint.isEnd()) {
@@ -553,7 +589,9 @@ public class GameStage implements Observer {
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 						System.out.println("you win");
-						stage.close();
+		
+						
+//						stage.close();
 //						level2.createLevel2();
 						
 					}
@@ -565,7 +603,7 @@ public class GameStage implements Observer {
 				//System.out.println(1);
 			}else if(heal == 0){
 				time.stop();
-
+				monstersTimeline.remove(time);
 
 			}else if(monster.dead()){
 				//monsters.remove(monster);
@@ -577,20 +615,25 @@ public class GameStage implements Observer {
 				
 				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 					System.out.println("you win");
-					stage.close();
+					
+//					stage.close();
 //					level2.createLevel2();
 					
 				}
 
 			}else {
 				if(moveLeft()) {
+					
 					img.setTranslateX(img.getTranslateX()-1.0);
 				}else if(moveRight()) {
+					
 					img.setTranslateX(img.getTranslateX()+1.0);
 				}else if (moveUp()) {
+					//time.setRate(2.0);
 					img.setTranslateY(img.getTranslateY()+1.0);
 				}else if(moveDown()) {
 					img.setTranslateY(img.getTranslateY()-1.0);
+					
 				}
 				
 				if(count >=RECTSIZE) {
@@ -690,6 +733,27 @@ public class GameStage implements Observer {
 				grid.add(rectangle, j, i);
 			}
 		}
+	}
+	
+	
+	private void doPause(ImageView image) {
+		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+			
+		});
+	}
+	
+	
+	private void doTime(RadioButton button) {
+		button.setOnMouseClicked((eventE)->{
+			
+		});
 	}
 	
 	
