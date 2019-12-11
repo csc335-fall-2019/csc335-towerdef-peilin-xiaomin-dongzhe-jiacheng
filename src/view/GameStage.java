@@ -99,15 +99,14 @@ public class GameStage implements Observer {
 	private GridPane grid3;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
-	private HashMap<Point,Timeline> BulletsTimeline;
-	private HashMap<Point,ImageView> BulletsImageView;
+	private HashMap<Point, Timeline> BulletsTimeline;
+	private HashMap<Point, ImageView> BulletsImageView;
 	private Images images;
-	private Stage stage; 
+	private Stage stage;
 
 	private VBox vb;
 	private boolean isPause = false;
 	private ArrayList<Timeline> monstersTimeline;
-	
 
 	private VBox vbTime;
 	private HBox hb3;
@@ -122,17 +121,18 @@ public class GameStage implements Observer {
 	private HBox hbGrid;
 	private int stageNum;
 //---------------------------------------------------------//	
-	
-/**
- * This function is to construct the game board
- * @param stageNum, the level selection.
- */
+
+	/**
+	 * This function is to construct the game board
+	 * 
+	 * @param stageNum, the level selection.
+	 */
 	public GameStage(int stageNum) {
 		this.stage = new Stage();
 		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
-		if (stageNum == 1) {                  // set the game board base on the level
+		if (stageNum == 1) { // set the game board base on the level
 			controller.buildBasicStage(1);
 		} else if (stageNum == 2) {
 			controller.buildBasicStage(2);
@@ -142,13 +142,14 @@ public class GameStage implements Observer {
 		controller.getModel().addObserver(this);
 		this.rectangles = new Rectangle[controller.HEIGHT][controller.WIDTH]; // one grid in the game board
 		// this.images = new ImageView[controller.HEIGHT][controller.WIDTH];
-		road = controller.getModel().getMap().getRoads();  // get the list of road locations 
-		monsters = controller.getModel().getMonsters();  // get all the monster on the board now
-		BulletsTimeline = new HashMap<Point,Timeline>();
-		BulletsImageView = new HashMap<Point,ImageView>();
+		road = controller.getModel().getMap().getRoads(); // get the list of road locations
+		monsters = controller.getModel().getMonsters(); // get all the monster on the board now
+		BulletsTimeline = new HashMap<Point, Timeline>();
+		BulletsImageView = new HashMap<Point, ImageView>();
 		images = new Images();
 		monstersTimeline = new ArrayList<Timeline>();
 	}
+
 	/**
 	 * This function is to update the game board
 	 */
@@ -159,257 +160,248 @@ public class GameStage implements Observer {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
 			if (msg instanceof TowerMessage) {
 
-				Tower tower =msg.getTower();  // get the kind of tower
-				
-				if(tower instanceof BasicTower) {  
+				Tower tower = msg.getTower(); // get the kind of tower
+
+				if (tower instanceof BasicTower) {
 					tower = new BasicTower();
-				}else if (tower instanceof Turret) {
+				} else if (tower instanceof Turret) {
 					tower = new Turret();
-				}else if(tower instanceof Tower3) {
+				} else if (tower instanceof Tower3) {
 					tower = new Tower3();
-				}else if(tower instanceof Tower4) {
+				} else if (tower instanceof Tower4) {
 					tower = new Tower4();
-				}else if (tower instanceof Tower5) {
+				} else if (tower instanceof Tower5) {
 					tower = new Tower5();
 				}
-				
-				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()]; 
-				if(msg.getMoney()> 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback())); // set the image 
+
+				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
+				if (msg.getMoney() > 0) {
+					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback())); // set
+																													// the
+																													// image
 					Timeline BulletTime = BulletsTimeline.get(point); // bullet movement
 					ImageView img = BulletsImageView.get(point);
 					BulletTime.stop();
 					BulletTime = null;
 					img.setVisible(false);
-			     
+
 					img = null;
 					BulletsTimeline.remove(point);
 					BulletsImageView.remove(point);
-				}
-				else if(msg.getMoney()< 0) {
+				} else if (msg.getMoney() < 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
 					ImageView bulletImg = tower.getBullet();
 					bulletImg.setFitHeight((int) RECTSIZE / 4);
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point,tower);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
+					BulletHandler move = new BulletHandler(bulletImg, point, tower);
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(5 * tower.getSpeed()), move);
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
 					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
 					move.addTimeline(BulletTimeline);
 					BulletTimeline.play();
 					BulletsTimeline.put(point, BulletTimeline);
-					BulletsImageView.put(point,bulletImg);
-					//SLEEP = 500;
+					BulletsImageView.put(point, bulletImg);
+					// SLEEP = 500;
 				}
-			    changeGold(msg.getMoney());
+				changeGold(msg.getMoney());
 			}
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
-			healL.setText(String.valueOf(heal)); 
-			if(heal == 0) {             // this is when the game end, no life left
+			healL.setText(String.valueOf(heal));
+			if (heal == 0) { // this is when the game end, no life left
 				gameOver(stage);
 			}
 		}
-		
+
 	}
-	
-/**
- * This function is to start a game.
- */
+
+	/**
+	 * This function is to start a game.
+	 */
 	public void createNewGame() {
 //		Stage stage = new Stage();
 //		stage = stageA;
-		
-		stage.setTitle("Tower Defense");  // set up the window 
-		
+
+		stage.setTitle("Tower Defense"); // set up the window
+
 		BorderPane window = new BorderPane();
-		
-		grid = new GridPane();     // style the grid
+
+		grid = new GridPane(); // style the grid
 		grid.setPrefSize(520, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
 		setGridPane(grid);
-		
-		grid2 = new GridPane();    //style the top 
-		grid2.setPrefSize(520, 75); 
+
+		grid2 = new GridPane(); // style the top
+		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		
-		
-		
-		grid3 = new GridPane();  // style the bottom
+
+		grid3 = new GridPane(); // style the bottom
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		
-		grid4 = new GridPane();  // a smaller pane on top
+
+		grid4 = new GridPane(); // a smaller pane on top
 		grid4.setPrefSize(180, 50);
 		grid4.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		
+
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers(); // get the list of tower in used
 
-		
-		//------------------------------------------------------------// set up label and style
+		// ------------------------------------------------------------// set up label
+		// and style
 		number = new Label("X");
 		number.setTextFill(Color.ORANGE);
 		number.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
-		
+
 		heal = model.getMap().getPlayer().getHealth();
 		healL = new Label(String.valueOf(heal));
 		healL.setTextFill(Color.ORANGE);
 		healL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
+
 		number2 = new Label("X");
 		number2.setTextFill(Color.ORANGE);
 		number2.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
-		
+
 		totalGold = model.getMap().getPlayer().getMoney();
 		goldL = new Label(String.valueOf(totalGold));
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		//------------------------------------------------------------//
+		// ------------------------------------------------------------//
 
-		BasicTower firstImg = new BasicTower();       //set up the bottom of the window, which are the tower menu
+		BasicTower firstImg = new BasicTower(); // set up the bottom of the window, which are the tower menu
 		Turret secondImg = new Turret();
 		Tower3 tower3 = new Tower3();
 		Tower4 tower4 = new Tower4();
 		Tower5 tower5 = new Tower5();
-		
+
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
-			
+
 		secondImg.getImg().setFitHeight(50);
 		secondImg.getImg().setFitWidth(50);
-	
-		
+
 		tower3.getImg().setFitHeight(50);
 		tower3.getImg().setFitWidth(50);
-		
+
 		tower4.getImg().setFitHeight(50);
 		tower4.getImg().setFitWidth(50);
-		
+
 		tower5.getImg().setFitHeight(50);
 		tower5.getImg().setFitWidth(50);
-		
-		
-		
+
 		images.getSell().setFitHeight(50);
 		images.getSell().setFitWidth(50);
-		
+
 		images.getHealth().setFitHeight(50);
 		images.getHealth().setFitWidth(50);
-		
+
 		images.getGold().setFitHeight(50);
 		images.getGold().setFitWidth(50);
-		//-----------------------------------------------------------// add image into the set up window
+		// -----------------------------------------------------------// add image into
+		// the set up window
 
-		grid2.add(firstImg.getImg(),0,0);
+		grid2.add(firstImg.getImg(), 0, 0);
 		grid2.add(secondImg.getImg(), 1, 0);
 		grid2.add(tower3.getImg(), 2, 0);
 		grid2.add(tower4.getImg(), 3, 0);
 		grid2.add(tower5.getImg(), 4, 0);
 		grid2.add(images.getSell(), 5, 0);
 		grid2.setHgap(10);
-		
-		
+
 		doImg(firstImg.getImg(), availTowers.get(0));
 		doImg(secondImg.getImg(), availTowers.get(1));
 		doImg(tower3.getImg(), availTowers.get(2));
 		doImg(tower4.getImg(), availTowers.get(3));
 		doImg(tower5.getImg(), availTowers.get(4));
-		
+
 		doImg(images.getSell(), null);
-		
+
 		images.getPauseV().setFitHeight(80);
 		images.getPauseV().setFitWidth(100);
-		
-		group = new ToggleGroup();   
-		one = new RadioButton("X1"); // speed up feature 
+
+		group = new ToggleGroup();
+		one = new RadioButton("X1"); // speed up feature
 		two = new RadioButton("X2");
-		
+
 		one.setToggleGroup(group);
 		two.setToggleGroup(group);
-		//----------------------------------------------------------//
+		// ----------------------------------------------------------//
 		vbTime = new VBox();
-		vbTime.getChildren().addAll(one,two);
-		
-		one.setOnMouseClicked((event)->{          //to do the 2x or 1x speed
+		vbTime.getChildren().addAll(one, two);
+
+		one.setOnMouseClicked((event) -> { // to do the 2x or 1x speed
 			SLEEP = 2000;
 		});
-		
-		two.setOnMouseClicked((event)->{
+
+		two.setOnMouseClicked((event) -> {
 			SLEEP = 1000;
 		});
-		//------------------------------------------------------------//
+		// ------------------------------------------------------------//
 		hb = new HBox();
 		hb2 = new HBox();
 		hb3 = new HBox();
 		hb4 = new HBox();
 		hbGrid = new HBox();
-		
+
 		hb.getChildren().addAll(images.getHealth(), number, healL);
 		hb2.getChildren().addAll(images.getGold(), number2, goldL);
 		hb4.getChildren().add(images.getPauseV());
 		hb4.getChildren().add(vbTime);
-		
-	
-		grid3.add(hb, 0, 0);                     //additional pane styling
+
+		grid3.add(hb, 0, 0); // additional pane styling
 		grid3.add(hb2, 1, 0);
 		grid3.add(hb3, 2, 0);
 		grid4.add(hb4, 0, 0);
 		grid3.setHgap(30);
-		
-		hbGrid.getChildren().addAll(grid3,grid4);
 
-		//------------------------------------------------------------//
+		hbGrid.getChildren().addAll(grid3, grid4);
 
+		// ------------------------------------------------------------//
 
-
-		//images.getPauseV().setDisable(true);
+		// images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
 			int count = 0;
+
 			public void run() {
 				deadMonsters = 0;
-				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
+				while (count < monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
 
-					if(isPause) {
+					if (isPause) {
 						pause();
 					}
 					try {
 						createMonster(monsters.get(count), stage);
 						count++;
 						Thread.sleep(SLEEP);
-						//System.out.println(count);
+						// System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
-					
-					
+
 				}
 			}
+
 			private void pause() {
 				synchronized (this) {
-		            try {
-		                wait();
-		            } catch (InterruptedException e) {
-		                e.printStackTrace();
-		            }
-		        }
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		};
-		//-----------------------------------------------------------//
-		MenuBar menuBar = new MenuBar();               //more styling, add menu bar
+		// -----------------------------------------------------------//
+		MenuBar menuBar = new MenuBar(); // more styling, add menu bar
 		doPause(images.getPauseV());
-		
+
 		//
-		Menu menu = new Menu("File"); 
+		Menu menu = new Menu("File");
 		MenuItem newgame = new MenuItem("New Game");
 		MenuItem exit = new MenuItem("Exit");
 		MenuItem start = new MenuItem("Start");
-		menu.getItems().addAll(start, newgame, exit);  // add menu bar and menu items
+		menu.getItems().addAll(start, newgame, exit); // add menu bar and menu items
 		menuBar.getMenus().add(menu);
-		//-----------------------------------------------------------//
+		// -----------------------------------------------------------//
 		newgame.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -420,332 +412,384 @@ public class GameStage implements Observer {
 //				GameMenu menu = new GameMenu(stageB, window);
 			}
 		});
-		
-		
+
 		exit.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {   // menu bar action, to exit the game.
+			public void handle(ActionEvent event) { // menu bar action, to exit the game.
 				stage.close();
 			}
 		});
-		
+
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				gameThread.start();                  // menu bar action, to start the game.
-				
-				
+				gameThread.start(); // menu bar action, to start the game.
+
 			}
 		});
-		
-		//---------------------------------------------------------//
-		VBox vb = new VBox();
-		vb.getChildren().addAll(menuBar, hbGrid);   
 
-		window.setTop(vb);                                  // window styling again
+		// ---------------------------------------------------------//
+		VBox vb = new VBox();
+		vb.getChildren().addAll(menuBar, hbGrid);
+
+		window.setTop(vb); // window styling again
 		window.setCenter(grid);
 		window.setBottom(grid2);
-		//--------------------------------------------------------//
+		// --------------------------------------------------------//
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
-		stage.show();             //launch the window
-		
-		
+		stage.show(); // launch the window
+
 	}
 
-
-/**
- * This function is to create monster.
- * @param monster, a type of monster.
- * @param stage, the current stage.
- */
+	/**
+	 * This function is to create monster.
+	 * 
+	 * @param monster, a type of monster.
+	 * @param stage,   the current stage.
+	 */
 	private void createMonster(Monster monster, Stage stage) {
-		
+
 		ImageView monsterImg = monster.getImg();
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
-		monsterImg.setFitWidth((int) RECTSIZE / 2);  // set the image of the monster
-		MonsterHandler move = new MonsterHandler(monsterImg,monster, stage);
-		KeyFrame monsterKey = new KeyFrame(Duration.millis(1000/60*monster.getSpeed()),move);
-		Timeline monsterTimeline = new Timeline(monsterKey);//set the movement of the monster
+		monsterImg.setFitWidth((int) RECTSIZE / 2); // set the image of the monster
+		MonsterHandler move = new MonsterHandler(monsterImg, monster, stage);
+		KeyFrame monsterKey = new KeyFrame(Duration.millis(1000 / 60 * monster.getSpeed()), move);
+		Timeline monsterTimeline = new Timeline(monsterKey);// set the movement of the monster
 		monsterTimeline.setAutoReverse(false);
 		monsterTimeline.setCycleCount(Timeline.INDEFINITE);
 		move.addTimeline(monsterTimeline);
 		monsterTimeline.play();
 		monstersTimeline.add(monsterTimeline);
 
-		
 	}
 
-/**
- * this class is a bullet handler
- * @author xiaominzhao, Dngzhe Chen, JIacheng He, Peilin feng
- *
- */
-	private class BulletHandler implements EventHandler<ActionEvent>{
+	/**
+	 * this class is a bullet handler
+	 * 
+	 * @author xiaominzhao, Dngzhe Chen, JIacheng He, Peilin feng
+	 *
+	 */
+	private class BulletHandler implements EventHandler<ActionEvent> {
 
-		
 		ImageView img;
 		Point point;
-		int count = 0 ;
+		int count = 0;
 		Timeline time;
 		Tower tower;
-		public BulletHandler(ImageView imgView,Point point,Tower tower) { //construct
+
+		public BulletHandler(ImageView imgView, Point point, Tower tower) { // construct
 			img = imgView;
 			this.point = point;
-			img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
-			img.setTranslateY(point.getX()*RECTSIZE);
+			img.setTranslateX(point.getY() * RECTSIZE + RECTSIZE / 8);
+			img.setTranslateY(point.getX() * RECTSIZE);
 			this.tower = tower;
 		}
+
 		public void addTimeline(Timeline timeline) { // this is the timeline for the bullet to move
 			time = timeline;
-			
+
 		}
+
 		@Override
-		public void handle(ActionEvent event) { 
+		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub]
-			if(one.isSelected()){   // this is for the 2x or 1x speed
+			if (one.isSelected()) { // this is for the 2x or 1x speed
 				time.setRate(1.0);
-			} else if(two.isSelected()){
+			} else if (two.isSelected()) {
 				time.setRate(2.0);
 			}
 			grid.getChildren().remove(img); // remove the first bullet image
-			if(heal == 0) {   // when game end
+			if (heal == 0) { // when game end
 				time.stop();
 			}
-			if(moveLeft()) { // bullet move to left base on the monster's position 
-				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateX(img.getTranslateX()-2.0);
-				}else {
-					img.setVisible(false);
+
+			if (moveLeft()) { // bullet move to left base on the monster's position
+
+				if (moveLeft() || moveRight() || moveUp() || moveDown()) {
+					if (model.getMap().getGraph()[point.getX()][point.getY() - 1].getMonster().size() != 0) {
+						attackLeft();
+					} else if (model.getMap().getGraph()[point.getX()][point.getY() + 1].getMonster().size() != 0) {
+						attackRight();
+					} else if (model.getMap().getGraph()[point.getX() + 1][point.getY()].getMonster().size() != 0) {
+						attackUp();
+					} else if (model.getMap().getGraph()[point.getX() - 1][point.getY()].getMonster().size() != 0) {
+						attackDown();
+					} else {
+						img.setVisible(false);
+					}
+
+				} else if (moveRight()) { // bullet move to right base on the monster's position
+					if (model.getMap().getGraph()[point.getX()][point.getY() + 1].getMonster().size() != 0) {
+						img.setVisible(true);
+						model.getMap().getGraph()[point.getX()][point.getY() + 1].getMonster().get(0)
+								.healthLoss(0.03 * tower.getAttack());
+						img.setTranslateX(img.getTranslateX() + 2.0);
+					} else {
+						img.setVisible(false);
+					}
+
+				} else if (moveUp()) { // bullet move up base on the monster's position
+					if (model.getMap().getGraph()[point.getX() + 1][point.getY()].getMonster().size() != 0) {
+						img.setVisible(true);
+						model.getMap().getGraph()[point.getX() + 1][point.getY()].getMonster().get(0)
+								.healthLoss(0.03 * tower.getAttack());
+						img.setTranslateY(img.getTranslateY() + 2.0);
+					} else {
+						img.setVisible(false);
+					}
+
+				} else if (moveDown()) { // bulletmove down base on monster's position
+					if (model.getMap().getGraph()[point.getX() - 1][point.getY()].getMonster().size() != 0) {
+						img.setVisible(true);
+						model.getMap().getGraph()[point.getX() - 1][point.getY()].getMonster().get(0)
+								.healthLoss(0.03 * tower.getAttack());
+						img.setTranslateY(img.getTranslateY() - 2.0);
+					} else {
+						img.setVisible(false);
+					}
+
 				}
-				
-			} else if(moveRight()) { //bullet move to right base on the monster's position 
-				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateX(img.getTranslateX()+2.0);
-				}else {
-					img.setVisible(false);
+
+				if (count >= RECTSIZE) { // ?
+					count = 0;
+					img.setTranslateX(point.getY() * RECTSIZE + RECTSIZE / 8);
+					img.setTranslateY(point.getX() * RECTSIZE);
 				}
-				
-			}else if (moveUp()) { // bullet move up base on the monster's position 
-				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateY(img.getTranslateY()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-	
-			}else if(moveDown()) { //bulletmove down base on monster's position 
-				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateY(img.getTranslateY()-2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
+				grid.getChildren().add(img);
+				count++;
 			}
-			 
-			if(count >=RECTSIZE) {   //?
-				count = 0;
-				img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
-				img.setTranslateY(point.getX()*RECTSIZE);
-			}
-			grid.getChildren().add(img);
-			count++;
 		}
-		public void sell() { //make the bullet unvisible
+
+		public void sell() { // make the bullet unvisible
 			img.setVisible(false);
 		}
-		private boolean moveDown() {//determine the bullet movement direction , only send bullet to road 
+
+		private void attackLeft() {
+
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY() - 1].getMonster().get(0)
+					.healthLoss(0.03 * tower.getAttack());
+			img.setTranslateX(img.getTranslateX() - 2.0);
+
+		}
+
+		private void attackRight() {
+
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY() + 1].getMonster().get(0)
+					.healthLoss(0.03 * tower.getAttack());
+			img.setTranslateX(img.getTranslateX() + 2.0);
+
+		}
+
+		private void attackUp() {
+
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX() + 1][point.getY()].getMonster().get(0)
+					.healthLoss(0.03 * tower.getAttack());
+			img.setTranslateY(img.getTranslateY() + 2.0);
+
+		}
+
+		private void attackDown() {
+
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX() - 1][point.getY()].getMonster().get(0)
+					.healthLoss(0.03 * tower.getAttack());
+			img.setTranslateY(img.getTranslateY() - 2.0);
+
+		}
+
+		private boolean moveDown() {// determine the bullet movement direction , only send bullet to road
 			try {
-				return model.getMap().getGraph()[point.getX()-1][point.getY()].isRoad();
-			}catch (Exception e) {
+				return model.getMap().getGraph()[point.getX() - 1][point.getY()].isRoad();
+			} catch (Exception e) {
 				return false;
 			}
 		}
-		private boolean moveUp() { //determine the bullet movement direction , only send bullet to road 
+
+		private boolean moveUp() { // determine the bullet movement direction , only send bullet to road
 			try {
-				return model.getMap().getGraph()[point.getX()+1][point.getY()].isRoad();
-			}catch (Exception e) {
+				return model.getMap().getGraph()[point.getX() + 1][point.getY()].isRoad();
+			} catch (Exception e) {
 				return false;
 			}
 		}
-		private boolean moveRight() {//determine the bullet movement direction, only send bullet to road 
+
+		private boolean moveRight() {// determine the bullet movement direction, only send bullet to road
 			try {
-				return model.getMap().getGraph()[point.getX()][point.getY()+1].isRoad();
-			}catch (Exception e) {
+				return model.getMap().getGraph()[point.getX()][point.getY() + 1].isRoad();
+			} catch (Exception e) {
 				return false;
 			}
 		}
-		
-		private boolean moveLeft() {//determine the bullet movement direction , only send bullet to road 
+
+		private boolean moveLeft() {// determine the bullet movement direction , only send bullet to road
 			try {
-				return model.getMap().getGraph()[point.getX()][point.getY()-1].isRoad();
-			}catch (Exception e) {
+				return model.getMap().getGraph()[point.getX()][point.getY() - 1].isRoad();
+			} catch (Exception e) {
 				return false;
 			}
 		}
 	}
-	//monster handler class
+
+	// monster handler class
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
-		double count = 0.0 ;
+		double count = 0.0;
 		Point nextPoint;
 		ImageView img;
 		Timeline time;
 		Monster monster;
+
 //		private Rectangle[][] rectangles;
-		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) { //constructor
-			nextPoint  = road.get(currentRoad+1); //get the next location for monster to walk 
+		public MonsterHandler(ImageView monsterImg, Monster monster, Stage stage) { // constructor
+			nextPoint = road.get(currentRoad + 1); // get the next location for monster to walk
 			this.img = monsterImg;
-			img.setTranslateX(road.get(currentRoad).getY()*RECTSIZE+RECTSIZE/4);
-			img.setTranslateY(road.get(currentRoad).getX()*RECTSIZE); // get the location base on window size
+			img.setTranslateX(road.get(currentRoad).getY() * RECTSIZE + RECTSIZE / 4);
+			img.setTranslateY(road.get(currentRoad).getX() * RECTSIZE); // get the location base on window size
 			this.monster = monster;
 			road.get(currentRoad).setMonster(monster);
 		}
-		
+
 		@Override
 		public void handle(ActionEvent event) {
-			//System.out.println(1000);
-			if(one.isSelected()){   //change speed when 2x or 1x selected
+			// System.out.println(1000);
+			if (one.isSelected()) { // change speed when 2x or 1x selected
 				time.setRate(1.0);
-			} else if(two.isSelected()){
+			} else if (two.isSelected()) {
 				time.setRate(2.0);
-			} 
+			}
 			grid.getChildren().remove(img);
-			
-			if(currentRoad == road.size()-1) { // if at the end of the road
+
+			if (currentRoad == road.size() - 1) { // if at the end of the road
 				time.stop();
-				monstersTimeline.remove(time); //clear the monster from the screen
+				monstersTimeline.remove(time); // clear the monster from the screen
 				img.setVisible(false);
 //				images.getHomeV().setVisible(false);
-				if(nextPoint.isEnd()) {
+				if (nextPoint.isEnd()) {
 					deadMonsters++;
-					System.out.println(nextPoint.getX()+" "+nextPoint.getY());
+					System.out.println(nextPoint.getX() + " " + nextPoint.getY());
 					System.out.println("getend");
 					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
-					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-						if(stageNum < 3) {
-							stageNum++;			
+					if (deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+						if (stageNum < 3) {
+							stageNum++;
 							askNext();
-	
-						}
-						else {
+
+						} else {
 							stage.close();
 							System.out.println("you win");
 						}
 					}
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
-				
+
 				model.lossHealth(monster);
-				//time.setRate(value);
-				//System.out.println(1);
-			}else if(heal == 0){     //clear the monster from the screen
+				// time.setRate(value);
+				// System.out.println(1);
+			} else if (heal == 0) { // clear the monster from the screen
 				monstersTimeline.remove(time);
 
-			}else if(monster.dead()){ //if killed a monster, increase money
+			} else if (monster.dead()) { // if killed a monster, increase money
 				changeGold(monster.getGold());
 				time.stop();
-				deadMonsters++; 
+				deadMonsters++;
 				monsterLeft++;
 				road.get(currentRoad).clearMonster(monster);
 				time.stop();
 				img.setVisible(false);
-				
-				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-					if(stageNum < 3) {
+
+				if (deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+					if (stageNum < 3) {
 						stageNum++;
-						
+
 						askNext();
-						
-						
-					}
-					else {
+
+					} else {
 						stage.close();
 						System.out.println("you win");
 					}
-					
+
 //					stage.close();
 //					level2.createLevel2();
-					
+
 				}
 
-			}else {
-				if(moveLeft()) {
-					
-					img.setTranslateX(img.getTranslateX()-1.0);
-				}else if(moveRight()) {
-					
-					img.setTranslateX(img.getTranslateX()+1.0);
-				}else if (moveUp()) {
-					//time.setRate(2.0);
-					img.setTranslateY(img.getTranslateY()+1.0);
-				}else if(moveDown()) {
-					img.setTranslateY(img.getTranslateY()-1.0);
-					
+			} else {
+				if (moveLeft()) {
+
+					img.setTranslateX(img.getTranslateX() - 1.0);
+				} else if (moveRight()) {
+
+					img.setTranslateX(img.getTranslateX() + 1.0);
+				} else if (moveUp()) {
+					// time.setRate(2.0);
+					img.setTranslateY(img.getTranslateY() + 1.0);
+				} else if (moveDown()) {
+					img.setTranslateY(img.getTranslateY() - 1.0);
+
 				}
-				
-				if(count >=RECTSIZE) {
+
+				if (count >= RECTSIZE) {
 					count = 0;
 					road.get(currentRoad).clearMonster(monster);
 					currentRoad++;
 					road.get(currentRoad).setMonster(monster);
-					if(currentRoad < road.size()-1) {
-						nextPoint  = road.get(currentRoad+1);
+					if (currentRoad < road.size() - 1) {
+						nextPoint = road.get(currentRoad + 1);
 					}
 				}
-				
+
 			}
 			grid.getChildren().add(img);
 			count++;
 		}
+
 		public void addTimeline(Timeline time) {
 			this.time = time;
 		}
+
 		private boolean moveLeft() {
 			Point point = road.get(currentRoad);
-			if(point.getX() == nextPoint.getX() && point.getY() > nextPoint.getY()) {
+			if (point.getX() == nextPoint.getX() && point.getY() > nextPoint.getY()) {
 				return true;
 			}
-			
+
 			return point.equals(nextPoint);
 		}
+
 		private boolean moveRight() {
 			Point point = road.get(currentRoad);
-			if(point.getX() == nextPoint.getX() && point.getY() < nextPoint.getY()) {
+			if (point.getX() == nextPoint.getX() && point.getY() < nextPoint.getY()) {
 				return true;
 			}
-			
+
 			return point.equals(nextPoint);
 		}
+
 		private boolean moveUp() {
 			Point point = road.get(currentRoad);
-			if(point.getY() == nextPoint.getY() && point.getX() < nextPoint.getX()) {
+			if (point.getY() == nextPoint.getY() && point.getX() < nextPoint.getX()) {
 				return true;
 			}
-			
+
 			return point.equals(nextPoint);
 		}
+
 		private boolean moveDown() {
 			Point point = road.get(currentRoad);
-			if(point.getY() == nextPoint.getY() && point.getX() > nextPoint.getX()) {
+			if (point.getY() == nextPoint.getY() && point.getX() > nextPoint.getX()) {
 				return true;
 			}
-			
+
 			return point.equals(nextPoint);
 		}
 	}
-	
 
-	
-	
 	/**
 	 * this class is used to draw circles
+	 * 
 	 * @param pane is the gridpane object.
 	 */
 	public void setGridPane(GridPane grid) {
@@ -755,109 +799,101 @@ public class GameStage implements Observer {
 		for (int i = 0; i < controller.HEIGHT; i++) {
 			for (int j = 0; j < controller.WIDTH; j++) {
 				Rectangle rectangle = new Rectangle();
-				
+
 				rectangle.setWidth(RECTSIZE);
 				rectangle.setHeight(RECTSIZE);
 
 				Point currentPoint = model.getMap().getGraph()[i][j];
-				if(currentPoint.isRoad()) {
-					
+				if (currentPoint.isRoad()) {
+
 					rectangle.setFill(new ImagePattern(images.getRoad2()));
-				
 
 					point = model.getMap().getGraph()[i][j];
-					if(point.isEnd()) {
+					if (point.isEnd()) {
 						System.out.println("end");
 						setHome(rectangle, images.getHome());
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
 					}
-				}else {
+				} else {
 					ImagePattern img = new ImagePattern(images.getgameOverback());
 					rectangle.setFill(img);
-					doRectangle(rectangle, img );
+					doRectangle(rectangle, img);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
 			}
 		}
 	}
-	
-	
+
 	private void doPause(ImageView image) {
 		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				if(isPause) {
+				if (isPause) {
 					isPause = false;
 					synchronized (gameThread) {
-			            try {
-			                gameThread.notify();
-			            } catch(Exception e) {	
-			            }
-			        }
-					
-				}else {
+						try {
+							gameThread.notify();
+						} catch (Exception e) {
+						}
+					}
+
+				} else {
 					isPause = true;
 				}
-				
-				if(isPause) {
-					for(Timeline monster:monstersTimeline) {
+
+				if (isPause) {
+					for (Timeline monster : monstersTimeline) {
 						monster.stop();
 					}
-					if(!BulletsTimeline.isEmpty()) {
-						for(Timeline bullet:BulletsTimeline.values()) {
+					if (!BulletsTimeline.isEmpty()) {
+						for (Timeline bullet : BulletsTimeline.values()) {
 							bullet.stop();
 						}
 					}
-					
-				}else {
-					for(Timeline monster:monstersTimeline) {
+
+				} else {
+					for (Timeline monster : monstersTimeline) {
 						monster.play();
 					}
-					if(!BulletsTimeline.isEmpty()) {
-						for(Timeline bullet:BulletsTimeline.values()) {
+					if (!BulletsTimeline.isEmpty()) {
+						for (Timeline bullet : BulletsTimeline.values()) {
 							bullet.play();
 						}
 					}
-					
+
 				}
-				
-				
-				
+
 			}
-			
+
 		});
 	}
-	
-	
+
 	private void doImg(ImageView image, Tower currTower) {
-		
+
 		image.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub 
-				if ((image == images.getSell() && currTower == null)
-					|| controller.canBuyTower(currTower)) {
+				// TODO Auto-generated method stub
+				if ((image == images.getSell() && currTower == null) || controller.canBuyTower(currTower)) {
 					image.setFitHeight(65);
 					image.setFitWidth(65);
-					if(image == images.getSell()) {
+					if (image == images.getSell()) {
 						Tooltip.install(image, new Tooltip("Sell tower: -20% of original price"));
-					}
-					else {
-						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));						
+					} else {
+						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));
 					}
 				}
 
-				
 			}
-			
+
 		});
-		
+
 		image.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -866,30 +902,27 @@ public class GameStage implements Observer {
 				image.setFitHeight(50);
 				image.setFitWidth(50);
 			}
-			
+
 		});
-		
+
 		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				if (image == images.getSell() && currTower == null 
-					|| controller.canBuyTower(currTower)) {
+				if (image == images.getSell() && currTower == null || controller.canBuyTower(currTower)) {
 					current = image;
 					currentTower = currTower;
 					System.out.println("current changed");
-				}
-				else {
+				} else {
 					System.out.println("not changed");
 				}
 			}
-			
+
 		});
-		
+
 	}
-	
-	
+
 	private void doRectangle(Rectangle ret, ImagePattern img) {
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -897,8 +930,8 @@ public class GameStage implements Observer {
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
-				if(img != roadPattern) {
-					
+				if (img != roadPattern) {
+
 					int x = 0, y = 0;
 					for (int i = 0; i < controller.HEIGHT; i++) {
 						for (int j = 0; j < controller.WIDTH; j++) {
@@ -908,40 +941,37 @@ public class GameStage implements Observer {
 							}
 						}
 					}
-					if(current == images.getSell()) {
+					if (current == images.getSell()) {
 						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 							controller.sellTower(x, y);
 							current = null;
 						}
-						//ret.setFill(Color.GREEN);
-					}
-					else if (controller.canSetTower(x,y) && currentTower != null) {
+						// ret.setFill(Color.GREEN);
+					} else if (controller.canSetTower(x, y) && currentTower != null) {
 						controller.buildTower(x, y, currentTower);
 						current = null;
 						currentTower = null;
-						//ret.setFill(new ImagePattern(current.getImage()));
+						// ret.setFill(new ImagePattern(current.getImage()));
 					}
 				}
 			}
-			
+
 		});
 	}
-	
+
 	private void setHome(Rectangle ret, Image image) {
 		ret.setFill(new ImagePattern(image));
 	}
-	
+
 	private void changeGold(int gold) {
 		model.getMap().getPlayer().changeMoney(gold);
 		totalGold = model.getMap().getPlayer().getMoney();
 		System.out.println(totalGold);
-		
+
 		goldL = new Label(String.valueOf(totalGold));
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
-		
-		
+
 		grid3.getChildren().clear();
 		hb = new HBox();
 		hb2 = new HBox();
@@ -950,8 +980,9 @@ public class GameStage implements Observer {
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.setHgap(30);
-		
+
 	}
+
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
@@ -959,26 +990,25 @@ public class GameStage implements Observer {
 		BorderPane window = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 450);
-		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
-				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT,
+				BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 		images.getgameOverbackV().setFitHeight(450);
 		images.getgameOverbackV().setFitWidth(800);
-		
+
 		grid.add(images.getgameOverbackV(), 0, 0);
 		HBox hb = new HBox();
 		hb.getChildren().add(images.getOver());
 		hb.setAlignment(Pos.CENTER);
 		grid.getChildren().add(hb);
 		grid.setAlignment(Pos.CENTER);
-		
-		
+
 		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
+		Menu menu = new Menu("File");
 		MenuItem newgame = new MenuItem("New Game");
 		MenuItem exit = new MenuItem("Exit");
-		menu.getItems().addAll(newgame, exit);  // add menu bar and menu items
+		menu.getItems().addAll(newgame, exit); // add menu bar and menu items
 		menuBar.getMenus().add(menu);
-		
+
 		newgame.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -989,27 +1019,25 @@ public class GameStage implements Observer {
 				GameMenu menu = new GameMenu(stageB, window);
 			}
 		});
-		
+
 		exit.setOnAction(new EventHandler<ActionEvent>() {
 			@SuppressWarnings("deprecation")
 			public void handle(ActionEvent event) {
-				
+
 				newStage.close();
 			}
 		});
-		
+
 		window.setTop(menuBar);
 		window.setCenter(grid);
 		Scene scene = new Scene(window);
 		newStage.setScene(scene);
 		newStage.show();
 
-		
 	}
-	
-	
+
 	private void askNext() {
-		
+
 		Stage newStage = new Stage();
 		BorderPane windowNext = new BorderPane();
 		Label moveOn = new Label("DO YOU WANT TO CONTIUNE?");
@@ -1021,26 +1049,26 @@ public class GameStage implements Observer {
 		HBox hb = new HBox();
 		hb.getChildren().addAll(moveOn, yes, no);
 		windowNext.setCenter(hb);
-		
+
 		Scene scene = new Scene(windowNext);
 		newStage.setScene(scene);
 		newStage.show();
-		
+
 		yes.setOnMouseClicked((eventY) -> {
-			
+
 			newStage.close();
 			stage.close();
 			GameStage newGame = new GameStage(stageNum);
 			newGame.createNewGame();
-			
+
 		});
-		
+
 		no.setOnMouseClicked((eventNo) -> {
-			
+
 			newStage.close();
 			stage.close();
 		});
-	
+
 	}
-	
+
 }
