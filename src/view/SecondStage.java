@@ -40,6 +40,7 @@ import model.LoseHealthMessage;
 import model.Monster;
 import model.MonsterDeadMessage;
 import model.MonsterMoveMessage;
+import model.MonsterSetMessage;
 import model.Player;
 import model.Point;
 import model.Tower;
@@ -125,39 +126,58 @@ public class SecondStage implements Observer {
 			currMonster.getImg().setVisible(false);
 			
 		}
-		else if (arg instanceof MonsterMoveMessage) {
-			MonsterMoveMessage msg = (MonsterMoveMessage) arg;
-			Point currPoint = msg.getCurrPoint();
-			Point nextRoad = msg.getNextRoad();
-			Monster monster = msg.getMonster();
-			ImageView monsterImg = monster.getImg();
-			
-			grid.getChildren().remove(monsterImg);
+		else if (arg instanceof MonsterSetMessage) {
+			MonsterSetMessage msg = (MonsterSetMessage) arg;
+			Monster currMonster = msg.getMonster();
+			Point currPoint = msg.getPoint();
+			ImageView monsterImg = currMonster.getImg();
 			
 			if (currPoint.isStart()) {
 				monsterImg.setTranslateX(currPoint.getY()*RECTSIZE+RECTSIZE/4);
+				currMonster.setCount((int) Math.floor(currPoint.getY()*RECTSIZE+RECTSIZE/4));
 				monsterImg.setTranslateY(currPoint.getX()*RECTSIZE);
-			}
-			else if (nextRoad.isEnd()) {
-				monsterImg.setVisible(false);
-				// controller.lossHealth(monster);
+				monsterImg.setFitHeight((int) RECTSIZE / 4);
+				monsterImg.setFitWidth((int) RECTSIZE / 4);
 			}
 			else {
-				double currX = monsterImg.getTranslateX();
-				double currY = monsterImg.getTranslateY();
-				if (moveLeft(currPoint, nextRoad)) {
-					monsterImg.setTranslateX(currX-1.0);
-				}
-				else if (moveRight(currPoint, nextRoad)) {
-					monsterImg.setTranslateX(currX+1.0);
-				}
-				else if (moveUp(currPoint, nextRoad)) {
-					monsterImg.setTranslateY(currY+1.0);
-				}
-				else if (moveDown(currPoint, nextRoad)) {
-					monsterImg.setTranslateY(currY-1.0);
-				}
+				int gold = currMonster.getGold();
+				monsterImg.setVisible(false);
+				grid.getChildren().remove(monsterImg);
 			}
+		}
+		else if (arg instanceof MonsterMoveMessage) {
+			MonsterMoveMessage msg = (MonsterMoveMessage) arg;
+			Point currPoint = msg.getCurrPoint();
+			System.out.println(currPoint);
+			Point nextRoad = msg.getNextRoad();
+			Monster monster = msg.getMonster();
+			ImageView monsterImg = monster.getImg();
+			int count = msg.getCount();
+			
+//			monsterImg.setFitHeight((int) RECTSIZE / 4);
+//			monsterImg.setFitWidth((int) RECTSIZE / 4);
+			
+			// System.out.println("move");
+			grid.getChildren().remove(monsterImg);
+			double currX = monsterImg.getTranslateX();
+			double currY = monsterImg.getTranslateY();
+			if (moveLeft(currPoint, nextRoad)) {
+				monsterImg.setTranslateX(currX+1.0);
+			}
+			else if (moveRight(currPoint, nextRoad)) {
+				monsterImg.setTranslateX(currX-1.0);
+			}
+			else if (moveUp(currPoint, nextRoad)) {
+				monsterImg.setTranslateY(currY+1.0);
+			}
+			else if (moveDown(currPoint, nextRoad)) {
+				monsterImg.setTranslateY(currY-1.0);
+			}
+			if (count < RECTSIZE) {
+				model.getAliveMonsters().get(model.getAliveMonsters()
+						.indexOf(monster)).setPoint(nextRoad);;
+			}
+			
 			grid.getChildren().add(monsterImg);
 		}
 		else if (arg instanceof LoseHealthMessage) {
@@ -324,7 +344,7 @@ public class SecondStage implements Observer {
 			public void handle(long now) {
 				// perform ticksPerFrame ticks
 				// by default this is 1
-				for (int i = 0; i < 60; i++) {
+				for (int i = 0; i < 1; i++) {
 					model.tick();
 				}
 			}

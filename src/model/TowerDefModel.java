@@ -89,9 +89,9 @@ public class TowerDefModel extends Observable {
 	public void tick() {
 		int num = 0;
 		// create monster (depends on number of moves)
-		System.out.println(moves);
+		// System.out.println(moves);
 		while (num < 10) {
-			if (moves % 60 == 0) {
+			if (moves % 180 == 0) {
 				createMonster(num);
 			}
 			num++;
@@ -99,7 +99,9 @@ public class TowerDefModel extends Observable {
 		
 		// move all alive monster
 		for (Monster currMonster : aliveMonsters) {
+			
 			this.moveOneMonster(currMonster);
+			// this.updatePoint(currMonster);
 		}
 		
 		for (Tower currTower : activeTowers) {
@@ -149,7 +151,7 @@ public class TowerDefModel extends Observable {
 				}
 			}	
 		}
-		System.out.println("here");
+		// System.out.println("here");
 
 		//
 		//for each tower go through tower list:
@@ -195,15 +197,16 @@ public class TowerDefModel extends Observable {
 	}
 	
 	public void createMonster(int num) {
+		System.out.println("create");
 		Point start = this.map.getStart();
-		Point next = map.getRoad().get(map.getRoad().indexOf(start));
+		// Point next = map.getRoad().get(map.getRoad().indexOf(start));
 		Monster currMonster = monsterWaves[0].get(num % 10);
 		int x = start.getX();
 		int y = start.getY();
 		currMonster.setPoint(map.getGraph()[x][y]);
 		map.getGraph()[x][y].addMonster(currMonster);
 		this.aliveMonsters.add(currMonster);
-		MonsterMoveMessage msg = new MonsterMoveMessage(start, next, currMonster);
+		MonsterSetMessage msg = new MonsterSetMessage(currMonster, start);
 		
 		setChanged();
         notifyObservers(msg);
@@ -212,25 +215,19 @@ public class TowerDefModel extends Observable {
 	public void moveOneMonster(Monster monster) {
 		Point currPoint = monster.getPoint();
 		Point nextRoad = map.getRoad().get(map.getRoad().indexOf(currPoint));
-		MonsterMoveMessage msg = new MonsterMoveMessage(currPoint, nextRoad, monster);
+		monster.countPlus();
+		int count = monster.getCount();
+		MonsterMoveMessage msg = new MonsterMoveMessage(currPoint, nextRoad, monster, count);
 		
 		setChanged();
 		notifyObservers(msg);
 	}
 	
-	public void updateMonster(Monster monster) {
-		double monsterX = monster.getImg().getTranslateY();
-		double monsterY = monster.getImg().getTranslateX();
-		
-		
-	}
-	
 
 	public void monsterDead(Monster monster) {
-		//int row = monster.getPoint().getX();
-		// int col = monster.getPoint().getY();
-		int gold = monster.getGold();
-		MonsterDeadMessage msg = new MonsterDeadMessage(monster, gold);
+		Point currPoint = monster.getPoint();
+		this.aliveMonsters.remove(monster);
+		MonsterSetMessage msg = new MonsterSetMessage(monster, currPoint);
 		
 		setChanged();
 		notifyObservers(msg);

@@ -18,7 +18,7 @@ public class Tower {
 
 	
 	public Tower() {
-		
+		availMonsters = new ArrayList<Monster>();
 	}
 	
 	public int getCost() {

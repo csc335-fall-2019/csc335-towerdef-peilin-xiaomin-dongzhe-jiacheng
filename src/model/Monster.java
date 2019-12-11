@@ -11,6 +11,8 @@ public class Monster {
 	protected int energy;
 	private Point point;
 	private ImageView img;
+	
+	private int count;
 
 	public Monster() {
 		
@@ -50,6 +52,10 @@ public class Monster {
 		return img;
 	}
 	
+	public int getCount() {
+		return count;
+	}
+	
 	
 	
 	public void setGold(int gold) {
@@ -75,6 +81,15 @@ public class Monster {
 	}
 	public void setImg(ImageView img) {
 		this.img = img;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public void countPlus() {
+		this.count++;
+	}
+	public void resetCount() {
+		this.count = 0;
 	}
 	
 	public boolean isDead() {

@@ -181,6 +181,10 @@ public class TowerDefController {
 		model.sellTower(x, y);
 	}
 	
+	public void updateMonsterPoint(Point nextPoint) {
+		
+	}
+	
 	public void monsterWaves() {
 		
 	}
