@@ -650,7 +650,7 @@ public class GameStage implements Observer {
 				img.setVisible(false);
 				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 				model.lossHealth(monster);
-				if(count > 0&&monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
+				if(count > 0 && monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
 					if(stageNum < 3) {
 						stageNum++;
 						askNext();	
