@@ -25,7 +25,9 @@ public class View extends Application{
 		
 	}
 
-
+	/**
+	 * start method which launch the menu stage directly
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub

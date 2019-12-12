@@ -8,7 +8,9 @@ package model;
  * CSC 335, Fall 2019
  * team project, TowerDefMoveMessage.java
  * 
- * purpose: 
+ * purpose: this is a TowerDefMoveMessage which send the information about
+ * 			current changed Tower and money to GUI which allow the GUI know
+ * 			where to show the tower and when money will changed
  */
 
 import java.io.Serializable;
