@@ -1,6 +1,14 @@
 /**
- * This is a controller class.
- * @author xiaominzhao, JiachengHe,PeilinFeng, DongzheChen
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, TowerDefController.java
+ * 
+ * purpose: this is controller class which defines controller methods allows
+ * 			the game build new stage, set up game, check tower and set 
+ * 			randomly disabled points
  */
 package controller;
 

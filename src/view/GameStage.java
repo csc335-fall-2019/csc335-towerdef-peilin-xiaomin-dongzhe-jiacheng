@@ -5,8 +5,10 @@ package view;
  * @author Xiaomin Zhao
  * @author Dongzhe Chen
  * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, GameStage.java
  * 
- * purpose:
+ * purpose: define main game stage
  */
 
 import java.util.ArrayList;

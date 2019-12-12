@@ -1,5 +1,17 @@
 package model;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, TowerDefModel.java
+ * 
+ * purpose: this is the towerDefModel which defines the model for this project
+ * 			and 
+ */
+
 import java.util.ArrayList;
 import java.util.Observable;
 

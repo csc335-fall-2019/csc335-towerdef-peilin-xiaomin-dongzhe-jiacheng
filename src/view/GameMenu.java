@@ -1,4 +1,15 @@
 package view;
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, GameMenu.java
+ * 
+ * purpose: define the game menu stage which allows us to start a new game,
+ * 			select languages, and select levels.
+ */
 
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -78,7 +89,6 @@ public class GameMenu{
 				English = new RadioButton("英语");
 				Chinese = new RadioButton("中文");
 			} 
-			
 			
 			English.setToggleGroup(group);
 			Chinese.setToggleGroup(group);
