@@ -66,13 +66,13 @@ import model.Tower;
 import model.Tower3;
 import model.Tower4;
 import model.Tower5;
+import model.Tower6;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
-import model.TowerMessage;
 import model.Turret;
 
 public class GameStage implements Observer {
-	
+	private int count = 0;
 	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 	private ImageView current;
@@ -80,7 +80,7 @@ public class GameStage implements Observer {
 	private int stageNum;
 
 	private ImageView sellImg;
-	private int SLEEP = 2000;
+	private int SLEEP = 1000;
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -119,13 +119,15 @@ public class GameStage implements Observer {
 
 	// private ImageView[][] images;
 	private GridPane grid4;
+	
 	private HBox hbGrid;
-	//private int stageNum;
+	private String language;
+
 	
 	
 	
-	
-	public GameStage(int stageNum) {
+	public GameStage(int stageNum, String choice) {
+		this.language = choice;
 		this.stage = new Stage();
 
 		this.stageNum = stageNum;
@@ -154,62 +156,69 @@ public class GameStage implements Observer {
 		// TODO Auto-generated method stub
 		try {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
-			if (msg instanceof TowerMessage) {
 
-				Tower tower =msg.getTower();
-				
-				if(tower instanceof BasicTower) {
-					tower = new BasicTower();
-					tower.setImg(new ImageView(new Image("/img/TOWER.png")));
-					tower.setBullet(new ImageView(new Image("/img/bullet.png")));
-				}else if (tower instanceof Turret) {
-					tower = new Turret();
-					tower.setImg(new ImageView(new Image("/img/tower2.png")));
-					tower.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
-				}else if(tower instanceof Tower3) {
-					tower = new Tower3();
-					tower.setImg(new ImageView(new Image("/img/turret1.jpg")));
-					tower.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
-				}else if(tower instanceof Tower4) {
-					tower = new Tower4();
-					tower.setImg(new ImageView(new Image("/img/turret2.jpg")));
-					tower.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
-				}else if (tower instanceof Tower5) {
-					tower = new Tower5();
-					tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
-					tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
-				}
-				
-				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
-				if(msg.getMoney()> 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
-					Timeline BulletTime = BulletsTimeline.get(point);
-					ImageView img = BulletsImageView.get(point);
-					BulletTime.stop();
-					BulletTime = null;
-					img.setVisible(false);
-					img = null;
-					BulletsTimeline.remove(point);
-					BulletsImageView.remove(point);
-				}
-				else if(msg.getMoney()< 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
-					ImageView bulletImg = tower.getBullet();
-					bulletImg.setFitHeight((int) RECTSIZE / 4);
-					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point,tower);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
-					Timeline BulletTimeline = new Timeline(BulletKey);
-					BulletTimeline.setAutoReverse(true);
-					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
-					move.addTimeline(BulletTimeline);
-					BulletTimeline.play();
-					BulletsTimeline.put(point, BulletTimeline);
-					BulletsImageView.put(point,bulletImg);
-					//SLEEP = 500;
-				}
-			    changeGold(msg.getMoney());
+			
+
+			Tower tower =msg.getTower();
+			
+			if(tower instanceof BasicTower) {
+				tower = new BasicTower();
+				tower.setImg(new ImageView(new Image("/img/TOWER.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet.png")));
+			}else if (tower instanceof Turret) {
+				tower = new Turret();
+				tower.setImg(new ImageView(new Image("/img/tower2.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
+			}else if(tower instanceof Tower3) {
+				tower = new Tower3();
+				tower.setImg(new ImageView(new Image("/img/turret1.jpg")));
+				tower.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
+			}else if(tower instanceof Tower4) {
+				tower = new Tower4();
+				tower.setImg(new ImageView(new Image("/img/turret2.jpg")));
+				tower.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
+			}else if (tower instanceof Tower5) {
+				tower = new Tower5();
+				tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
+				tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
+			}else if (tower instanceof Tower6) {
+				tower = new Tower6();
+				tower.setImg(new ImageView(new Image("/img/turret6.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet6.png")));
 			}
+			
+				
+
+			
+			Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
+			if(msg.getMoney()> 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
+				Timeline BulletTime = BulletsTimeline.get(point);
+				ImageView img = BulletsImageView.get(point);
+				BulletTime.stop();
+				BulletTime = null;
+				img.setVisible(false);
+				img = null;
+				BulletsTimeline.remove(point);
+				BulletsImageView.remove(point);
+			}
+			else if(msg.getMoney()< 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
+				ImageView bulletImg = tower.getBullet();
+				bulletImg.setFitHeight((int) RECTSIZE / 4);
+				bulletImg.setFitWidth((int) RECTSIZE / 4);
+				BulletHandler move = new BulletHandler(bulletImg,point,tower);
+				KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
+				Timeline BulletTimeline = new Timeline(BulletKey);
+				BulletTimeline.setAutoReverse(true);
+				BulletTimeline.setCycleCount(Timeline.INDEFINITE);
+				move.addTimeline(BulletTimeline);
+				BulletTimeline.play();
+				BulletsTimeline.put(point, BulletTimeline);
+				BulletsImageView.put(point,bulletImg);
+				//SLEEP = 500;
+			}
+		    changeGold(msg.getMoney());	
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal)); 
@@ -224,13 +233,18 @@ public class GameStage implements Observer {
 	public void createNewGame() {
 //		Stage stage = new Stage();
 //		stage = stageA;
-		stage.setTitle("Tower Defense");
+		if(language.equals("English")) {
+			stage.setTitle("Protect Earth");
+		}
+		else {
+			stage.setTitle("保卫地球大作战");
+		}
 		
 		BorderPane window = new BorderPane();
 		
 		grid = new GridPane();
 		grid.setPrefSize(520, 350);
-		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
+		grid.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		setGridPane(grid);
 		
 		grid2 = new GridPane();
@@ -277,6 +291,7 @@ public class GameStage implements Observer {
 		Tower3 tower3 = new Tower3();
 		Tower4 tower4 = new Tower4();
 		Tower5 tower5 = new Tower5();
+		Tower6 tower6 = new Tower6();
 		firstImg.setImg(new ImageView(new Image("/img/TOWER.png")));
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
@@ -293,6 +308,9 @@ public class GameStage implements Observer {
 		tower5.setImg(new ImageView(new Image("/img/turret3.jpg")));
 		tower5.getImg().setFitHeight(50);
 		tower5.getImg().setFitWidth(50);
+		tower6.setImg(new ImageView(new Image("/img/turret6.png")));
+		tower6.getImg().setFitHeight(50);
+		tower6.getImg().setFitWidth(50);
 		
 		
 		
@@ -316,8 +334,9 @@ public class GameStage implements Observer {
 		grid2.add(tower3.getImg(), 2, 0);
 		grid2.add(tower4.getImg(), 3, 0);
 		grid2.add(tower5.getImg(), 4, 0);
-		grid2.add(images.getSell(), 5, 0);
-		grid2.setHgap(10);
+		grid2.add(tower6.getImg(), 5, 0);
+		grid2.add(images.getSell(), 6, 0);
+		grid2.setHgap(20);
 		
 		
 		doImg(firstImg.getImg(), availTowers.get(0));
@@ -325,6 +344,7 @@ public class GameStage implements Observer {
 		doImg(tower3.getImg(), availTowers.get(2));
 		doImg(tower4.getImg(), availTowers.get(3));
 		doImg(tower5.getImg(), availTowers.get(4));
+		doImg(tower6.getImg(), availTowers.get(5));
 		
 		doImg(images.getSell(), null);
 		
@@ -342,11 +362,11 @@ public class GameStage implements Observer {
 		vbTime.getChildren().addAll(one,two);
 		
 		one.setOnMouseClicked((event)->{
-			SLEEP = 2000;
+			SLEEP = 1000;
 		});
 		
 		two.setOnMouseClicked((event)->{
-			SLEEP = 1000;
+			SLEEP = 500;
 		});
 		hb = new HBox();
 		hb2 = new HBox();
@@ -371,16 +391,17 @@ public class GameStage implements Observer {
 
 		//images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
-			int count = 0;
+
 			public void run() {
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 
-					if(isPause) {
+					while(isPause) {
 						pause();
 					}
+					createMonster(monsters.get(count), stage);
+					count++;
 					try {
-						createMonster(monsters.get(count), stage);
-						count++;
+						
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
 					} catch (InterruptedException e) {
@@ -403,25 +424,25 @@ public class GameStage implements Observer {
 		};
 		doPause(images.getPauseV());
 		
-		//
-		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
-		MenuItem newgame = new MenuItem("New Game");
-		MenuItem exit = new MenuItem("Exit");
-		MenuItem start = new MenuItem("Start");
-		menu.getItems().addAll(start, newgame, exit);  // add menu bar and menu items
-		menuBar.getMenus().add(menu);
 		
-		newgame.setOnAction(new EventHandler<ActionEvent>() {
+		MenuBar menuBar = new MenuBar();
+		Menu menu;
+		MenuItem newgame;
+		MenuItem start;
+		MenuItem exit;
+		if(language.equals("English")) {
+			menu = new Menu("File"); 
+			exit = new MenuItem("Exit");
+			start = new MenuItem("Start");
+		}
+		else {
+			menu = new Menu("文件"); 
+			exit = new MenuItem("退出");
+			start = new MenuItem("开始");
+		}
+		menu.getItems().addAll(start, exit);  // add menu bar and menu items
+		menuBar.getMenus().add(menu);
 
-			@Override
-			public void handle(ActionEvent event) {
-//				stage.close();
-//				Stage stageB = new Stage();
-//				BorderPane window = new BorderPane();
-//				GameMenu menu = new GameMenu(stageB, window);
-			}
-		});
 		
 		
 		exit.setOnAction(new EventHandler<ActionEvent>() {
@@ -458,7 +479,7 @@ public class GameStage implements Observer {
 		if(monster instanceof BasicMonster) {
 			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
 		}else if (monster instanceof SecondMonster) {
-			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));	
 		}else if(monster instanceof Monster3) {
 			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
 		}else if (monster instanceof Monster4) {
@@ -490,7 +511,7 @@ public class GameStage implements Observer {
 		
 		ImageView img;
 		Point point;
-		int count = 0 ;
+		int Bcount = 0 ;
 		Timeline time;
 		Tower tower;
 		public BulletHandler(ImageView imgView,Point point,Tower tower) {
@@ -537,13 +558,13 @@ public class GameStage implements Observer {
 				
 			}
 			
-			if(count >=RECTSIZE) {
-				count = 0;
+			if(Bcount >=RECTSIZE) {
+				Bcount = 0;
 				img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
 				img.setTranslateY(point.getX()*RECTSIZE);
 			}
 			grid.getChildren().add(img);
-			count++;
+			Bcount++;
 		}
 		
 		private void attackLeft() {
@@ -610,11 +631,12 @@ public class GameStage implements Observer {
 
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
-		double count = 0.0 ;
+		double mcount = 0.0 ;
 		Point nextPoint;
 		ImageView img;
 		Timeline time;
 		Monster monster;
+		Point currPoint;
 //		private Rectangle[][] rectangles;
 		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) {
 			nextPoint  = road.get(currentRoad+1);
@@ -640,28 +662,44 @@ public class GameStage implements Observer {
 				time.stop();
 				monstersTimeline.remove(time);
 				img.setVisible(false);
-				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));				
+				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 				model.lossHealth(monster);
+
+				if(count >= monsters.size()-1&& monstersTimeline.isEmpty()) {
+
+					if(stageNum < 3) {
+						stageNum++;
+						askNext();	
+					}
+					else {
+						System.out.println("Win1");
+//						stage.close();
+						youWin(stage);
+						System.out.println("you win");
+					}
+	
+				}
+		
+
 			}else if(monster.dead()){
 				changeGold(monster.getGold());
 				time.stop();
 				monstersTimeline.remove(time);
 				road.get(currentRoad).clearMonster(monster);
 				img.setVisible(false);
-				
-				if(monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
+	
+				if(count >= monsters.size()-1&&monstersTimeline.isEmpty() ) {
 					if(stageNum < 3) {
 						stageNum++;
-						
-						askNext();
-						
-						
+						askNext();	
 					}
 					else {
-						stage.close();
+						System.out.println("Win2");
+						youWin(stage);
+//						stage.close();
 						System.out.println("you win");
 					}
-			
+	
 				}
 
 			}else {
@@ -679,8 +717,8 @@ public class GameStage implements Observer {
 					
 				}
 				
-				if(count >=RECTSIZE) {
-					count = 0;
+				if(mcount >=RECTSIZE) {
+					mcount = 0;
 					road.get(currentRoad).clearMonster(monster);
 					currentRoad++;
 					road.get(currentRoad).setMonster(monster);
@@ -691,7 +729,7 @@ public class GameStage implements Observer {
 				
 			}
 			grid.getChildren().add(img);
-			count++;
+			mcount++;
 		}
 		public void addTimeline(Timeline time) {
 			this.time = time;
@@ -753,19 +791,25 @@ public class GameStage implements Observer {
 					
 					rectangle.setFill(new ImagePattern(images.getRoad2()));
 				
-
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						rectangle.setFill(new ImagePattern(image));
+						rectangle.setFill(new ImagePattern(images.getHome()));
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
 					}
 				}else {
-					ImagePattern img = new ImagePattern(images.getgameOverback());
+					ImagePattern img = null;
+					if (currentPoint.isdisabled()) {
+						img = new ImagePattern(new Image("/img/obstacle.png"));
+					}
+					else {
+						img = new ImagePattern(images.getgameOverback());
+						
+					}
 					rectangle.setFill(img);
-					doRectangle(rectangle, img );
+					doRectangle(rectangle, img, i, j);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
@@ -879,40 +923,34 @@ public class GameStage implements Observer {
 	}
 	
 	
-	private void doRectangle(Rectangle ret, ImagePattern img) {
+	private void doRectangle(Rectangle ret, ImagePattern img, int x, int y) {
+		
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
 				if(img != roadPattern) {
 					
-					int x = 0, y = 0;
-					for (int i = 0; i < controller.HEIGHT; i++) {
-						for (int j = 0; j < controller.WIDTH; j++) {
-							if (rectangles[i][j].equals(ret)) {
-								x = i;
-								y = j;
-							}
-						}
-					}
 					if(current == images.getSell()) {
 						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 							controller.sellTower(x, y);
 							current = null;
 						}
-						//ret.setFill(Color.GREEN);
+						
 					}
-					else if (controller.canSetTower(x,y) && currentTower != null) {
-						controller.buildTower(x, y, currentTower);
-						current = null;
-						currentTower = null;
-						//ret.setFill(new ImagePattern(current.getImage()));
-					}
+					else {
+						//System.out.println("here, "+ controller.canSetTower(x, y));
+						if (controller.canSetTower(x,y) && currentTower != null) {
+							controller.buildTower(x, y, currentTower);
+							current = null;
+							currentTower = null;
+						}
+					}	
 				}
 			}
 			
+
 		});
 		
 		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -920,7 +958,9 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
+				if (controller.canSetTower(x,y)) {
+					
+				}
 			}
 			
 		});
@@ -930,7 +970,9 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
+				if (controller.canSetTower(x,y)) {
+					
+				}
 			}
 			
 		});
@@ -961,7 +1003,12 @@ public class GameStage implements Observer {
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
-		newStage.setTitle("Tower Defense");
+		if(language.equals("English")) {
+			newStage.setTitle("Protect Earth");
+		}
+		else {
+			newStage.setTitle("保卫地球大作战");
+		}
 		BorderPane window = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 450);
@@ -979,9 +1026,21 @@ public class GameStage implements Observer {
 		
 		
 		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
-		MenuItem newgame = new MenuItem("New Game");
-		MenuItem exit = new MenuItem("Exit");
+		Menu menu;
+		MenuItem newgame;
+		MenuItem exit;
+		
+		
+		if(language.equals("English")) {
+			menu = new Menu("File"); 
+			newgame = new MenuItem("New Game");
+			exit = new MenuItem("Exit");
+		}
+		else {
+			menu = new Menu("文件"); 
+			newgame = new MenuItem("新游戏");
+			exit = new MenuItem("退出");
+		}
 		menu.getItems().addAll(newgame, exit);  // add menu bar and menu items
 		menuBar.getMenus().add(menu);
 		
@@ -1015,7 +1074,6 @@ public class GameStage implements Observer {
 	
 	
 	private void askNext() {
-		
 		Stage newStage = new Stage();
 		BorderPane windowNext = new BorderPane();
 		Label moveOn = new Label("DO YOU WANT TO CONTIUNE?");
@@ -1026,7 +1084,13 @@ public class GameStage implements Observer {
 		no.setToggleGroup(groupN);
 		HBox hb = new HBox();
 		hb.getChildren().addAll(moveOn, yes, no);
-		windowNext.setCenter(hb);
+		
+		GridPane grid = new GridPane();
+		grid.add(hb, 0, 0);
+		grid.setAlignment(Pos.CENTER);
+		grid.setPrefSize(300, 150);
+		
+		windowNext.setCenter(grid);
 		
 		Scene scene = new Scene(windowNext);
 		newStage.setScene(scene);
@@ -1036,7 +1100,7 @@ public class GameStage implements Observer {
 			
 			newStage.close();
 			stage.close();
-			GameStage newGame = new GameStage(stageNum);
+			GameStage newGame = new GameStage(stageNum, language);
 			newGame.createNewGame();
 			
 		});
@@ -1046,7 +1110,32 @@ public class GameStage implements Observer {
 			newStage.close();
 			stage.close();
 		});
+	}
 	
+	private void youWin(Stage stage) {
+		stage.close();
+		Stage newStage = new Stage();
+		BorderPane windowWin = new BorderPane();
+		GridPane grid = new GridPane();
+		grid.setPrefSize(800, 450);
+		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		images.getgameOverbackV().setFitHeight(450);
+		images.getgameOverbackV().setFitWidth(800);
+		
+		grid.add(images.getgameOverbackV(), 0, 0);
+		HBox hb = new HBox();
+		hb.getChildren().add(images.getWinV());
+		hb.setAlignment(Pos.CENTER);
+		grid.getChildren().add(hb);
+		grid.setAlignment(Pos.CENTER);
+		
+		windowWin.setCenter(grid);
+		Scene scene = new Scene(windowWin);
+		newStage.setScene(scene);
+		newStage.show();
+		
+		
 	}
 	
 }
