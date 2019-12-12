@@ -139,18 +139,20 @@ public class TowerDefController {
 			}
 		}
 		this.buildRoad(newMap, start);
-		for(int i =0;i<10;i++) {
+		model.addMonsters(new Monster3());
+		for(int i =0;i<4;i++) {
+			model.addMonsters(new SecondMonster());
 			model.addMonsters(new BasicMonster());
 		}
+		
+		for(int i =0;i<4;i++) {
+			model.addMonsters(new Monster5());
+			model.addMonsters(new Monster4());
+		}
 		for(int i =0;i<3;i++) {
-			model.addMonsters(new SecondMonster());
+			model.addMonsters(new Monster6());
 		}
-		for(int i =0;i<2;i++) {
-			model.addMonsters(new Monster3());
-		}
-		model.addMonsters(new Monster4());
-		model.addMonsters(new Monster5());
-		model.addMonsters(new Monster6());
+		
 	}
 	
 	
@@ -177,18 +179,21 @@ public class TowerDefController {
 			}
 		}
 		this.buildRoad(newMap, start);
-		for(int i =0;i<10;i++) {
-			model.addMonsters(new BasicMonster());
-		}
-		for(int i =0;i<3;i++) {
+		model.addMonsters(new Monster3());
+		for(int i =0;i<6;i++) {
 			model.addMonsters(new SecondMonster());
+			model.addMonsters(new BasicMonster());
+			model.addMonsters(new Monster5());
 		}
-		for(int i =0;i<2;i++) {
+		
+		for(int i =0;i<7;i++) {
 			model.addMonsters(new Monster3());
+			model.addMonsters(new Monster5());
+			model.addMonsters(new Monster4());
 		}
-		model.addMonsters(new Monster4());
-		model.addMonsters(new Monster5());
-		model.addMonsters(new Monster6());
+		for(int i =0;i<4;i++) {
+			model.addMonsters(new Monster6());
+		}
 	}
 	
 	

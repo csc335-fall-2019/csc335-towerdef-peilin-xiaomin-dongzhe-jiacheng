@@ -80,7 +80,7 @@ public class GameStage implements Observer {
 	private int stageNum;
 
 	private ImageView sellImg;
-	private int SLEEP = 2000;
+	private int SLEEP = 1000;
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -349,11 +349,11 @@ public class GameStage implements Observer {
 		vbTime.getChildren().addAll(one,two);
 		
 		one.setOnMouseClicked((event)->{
-			SLEEP = 2000;
+			SLEEP = 1000;
 		});
 		
 		two.setOnMouseClicked((event)->{
-			SLEEP = 1000;
+			SLEEP = 500;
 		});
 		hb = new HBox();
 		hb2 = new HBox();
