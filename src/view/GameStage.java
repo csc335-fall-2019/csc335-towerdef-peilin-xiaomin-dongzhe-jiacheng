@@ -466,7 +466,7 @@ public class GameStage implements Observer {
 		if(monster instanceof BasicMonster) {
 			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
 		}else if (monster instanceof SecondMonster) {
-			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));	
 		}else if(monster instanceof Monster3) {
 			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
 		}else if (monster instanceof Monster4) {
