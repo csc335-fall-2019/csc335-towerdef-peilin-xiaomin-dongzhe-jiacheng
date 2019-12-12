@@ -24,8 +24,8 @@ public class Images {
 	private Image pause;
 	private ImageView pauseV;
 	
-	private Image enemy2;
-	private ImageView enemy2V;
+	private Image win;
+	private ImageView winV;
 	
 	
 	public Images() {
@@ -48,6 +48,18 @@ public class Images {
 		
 		pause = new Image("/img/pause.png");
 		pauseV = new ImageView(pause);
+		
+		win = new Image("/img/win.png");
+		winV = new ImageView(win);
+		
+	}
+	
+	public Image getWin() {
+		return win;
+	}
+	
+	public ImageView getWinV() {
+		return winV;
 	}
 	
 	public Image getPause() {

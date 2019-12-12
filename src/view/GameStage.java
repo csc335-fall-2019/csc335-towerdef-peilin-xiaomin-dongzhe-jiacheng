@@ -72,7 +72,7 @@ import model.TowerMessage;
 import model.Turret;
 
 public class GameStage implements Observer {
-	
+	private int count = 0;
 	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 	private ImageView current;
@@ -80,7 +80,7 @@ public class GameStage implements Observer {
 	private int stageNum;
 
 	private ImageView sellImg;
-	private int SLEEP = 2000;
+	private int SLEEP = 1000;
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -119,13 +119,15 @@ public class GameStage implements Observer {
 
 	// private ImageView[][] images;
 	private GridPane grid4;
+	
 	private HBox hbGrid;
-	//private int stageNum;
+	private String language;
+
 	
 	
 	
-	
-	public GameStage(int stageNum) {
+	public GameStage(int stageNum, String choice) {
+		this.language = choice;
 		this.stage = new Stage();
 
 		this.stageNum = stageNum;
@@ -224,13 +226,18 @@ public class GameStage implements Observer {
 	public void createNewGame() {
 //		Stage stage = new Stage();
 //		stage = stageA;
-		stage.setTitle("Tower Defense");
+		if(language.equals("English")) {
+			stage.setTitle("Protect Earth");
+		}
+		else {
+			stage.setTitle("保卫地球大作战");
+		}
 		
 		BorderPane window = new BorderPane();
 		
 		grid = new GridPane();
 		grid.setPrefSize(520, 350);
-		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
+		grid.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		setGridPane(grid);
 		
 		grid2 = new GridPane();
@@ -342,11 +349,11 @@ public class GameStage implements Observer {
 		vbTime.getChildren().addAll(one,two);
 		
 		one.setOnMouseClicked((event)->{
-			SLEEP = 2000;
+			SLEEP = 1000;
 		});
 		
 		two.setOnMouseClicked((event)->{
-			SLEEP = 1000;
+			SLEEP = 500;
 		});
 		hb = new HBox();
 		hb2 = new HBox();
@@ -371,16 +378,17 @@ public class GameStage implements Observer {
 
 		//images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
-			int count = 0;
+
 			public void run() {
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 
-					if(isPause) {
+					while(isPause) {
 						pause();
 					}
+					createMonster(monsters.get(count), stage);
+					count++;
 					try {
-						createMonster(monsters.get(count), stage);
-						count++;
+						
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
 					} catch (InterruptedException e) {
@@ -403,25 +411,25 @@ public class GameStage implements Observer {
 		};
 		doPause(images.getPauseV());
 		
-		//
-		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
-		MenuItem newgame = new MenuItem("New Game");
-		MenuItem exit = new MenuItem("Exit");
-		MenuItem start = new MenuItem("Start");
-		menu.getItems().addAll(start, newgame, exit);  // add menu bar and menu items
-		menuBar.getMenus().add(menu);
 		
-		newgame.setOnAction(new EventHandler<ActionEvent>() {
+		MenuBar menuBar = new MenuBar();
+		Menu menu;
+		MenuItem newgame;
+		MenuItem start;
+		MenuItem exit;
+		if(language.equals("English")) {
+			menu = new Menu("File"); 
+			exit = new MenuItem("Exit");
+			start = new MenuItem("Start");
+		}
+		else {
+			menu = new Menu("文件"); 
+			exit = new MenuItem("退出");
+			start = new MenuItem("开始");
+		}
+		menu.getItems().addAll(start, exit);  // add menu bar and menu items
+		menuBar.getMenus().add(menu);
 
-			@Override
-			public void handle(ActionEvent event) {
-//				stage.close();
-//				Stage stageB = new Stage();
-//				BorderPane window = new BorderPane();
-//				GameMenu menu = new GameMenu(stageB, window);
-			}
-		});
 		
 		
 		exit.setOnAction(new EventHandler<ActionEvent>() {
@@ -490,7 +498,7 @@ public class GameStage implements Observer {
 		
 		ImageView img;
 		Point point;
-		int count = 0 ;
+		int Bcount = 0 ;
 		Timeline time;
 		Tower tower;
 		public BulletHandler(ImageView imgView,Point point,Tower tower) {
@@ -537,13 +545,13 @@ public class GameStage implements Observer {
 				
 			}
 			
-			if(count >=RECTSIZE) {
-				count = 0;
+			if(Bcount >=RECTSIZE) {
+				Bcount = 0;
 				img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
 				img.setTranslateY(point.getX()*RECTSIZE);
 			}
 			grid.getChildren().add(img);
-			count++;
+			Bcount++;
 		}
 		
 		private void attackLeft() {
@@ -610,11 +618,12 @@ public class GameStage implements Observer {
 
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
-		double count = 0.0 ;
+		double mcount = 0.0 ;
 		Point nextPoint;
 		ImageView img;
 		Timeline time;
 		Monster monster;
+		Point currPoint;
 //		private Rectangle[][] rectangles;
 		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) {
 			nextPoint  = road.get(currentRoad+1);
@@ -640,28 +649,44 @@ public class GameStage implements Observer {
 				time.stop();
 				monstersTimeline.remove(time);
 				img.setVisible(false);
-				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));				
+				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 				model.lossHealth(monster);
+
+				if(count >= monsters.size()-1&& monstersTimeline.isEmpty()) {
+
+					if(stageNum < 3) {
+						stageNum++;
+						askNext();	
+					}
+					else {
+						System.out.println("Win1");
+//						stage.close();
+						youWin(stage);
+						System.out.println("you win");
+					}
+	
+				}
+		
+
 			}else if(monster.dead()){
 				changeGold(monster.getGold());
 				time.stop();
 				monstersTimeline.remove(time);
 				road.get(currentRoad).clearMonster(monster);
 				img.setVisible(false);
-				
-				if(monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
+	
+				if(count >= monsters.size()-1&&monstersTimeline.isEmpty() ) {
 					if(stageNum < 3) {
 						stageNum++;
-						
-						askNext();
-						
-						
+						askNext();	
 					}
 					else {
-						stage.close();
+						System.out.println("Win2");
+						youWin(stage);
+//						stage.close();
 						System.out.println("you win");
 					}
-			
+	
 				}
 
 			}else {
@@ -679,8 +704,8 @@ public class GameStage implements Observer {
 					
 				}
 				
-				if(count >=RECTSIZE) {
-					count = 0;
+				if(mcount >=RECTSIZE) {
+					mcount = 0;
 					road.get(currentRoad).clearMonster(monster);
 					currentRoad++;
 					road.get(currentRoad).setMonster(monster);
@@ -691,7 +716,7 @@ public class GameStage implements Observer {
 				
 			}
 			grid.getChildren().add(img);
-			count++;
+			mcount++;
 		}
 		public void addTimeline(Timeline time) {
 			this.time = time;
@@ -756,7 +781,7 @@ public class GameStage implements Observer {
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						rectangle.setFill(new ImagePattern(image));
+						rectangle.setFill(new ImagePattern(images.getHome()));
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
@@ -967,7 +992,12 @@ public class GameStage implements Observer {
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
-		newStage.setTitle("Tower Defense");
+		if(language.equals("English")) {
+			newStage.setTitle("Protect Earth");
+		}
+		else {
+			newStage.setTitle("保卫地球大作战");
+		}
 		BorderPane window = new BorderPane();
 		GridPane grid = new GridPane();
 		grid.setPrefSize(800, 450);
@@ -985,9 +1015,21 @@ public class GameStage implements Observer {
 		
 		
 		MenuBar menuBar = new MenuBar();
-		Menu menu = new Menu("File"); 
-		MenuItem newgame = new MenuItem("New Game");
-		MenuItem exit = new MenuItem("Exit");
+		Menu menu;
+		MenuItem newgame;
+		MenuItem exit;
+		
+		
+		if(language.equals("English")) {
+			menu = new Menu("File"); 
+			newgame = new MenuItem("New Game");
+			exit = new MenuItem("Exit");
+		}
+		else {
+			menu = new Menu("文件"); 
+			newgame = new MenuItem("新游戏");
+			exit = new MenuItem("退出");
+		}
 		menu.getItems().addAll(newgame, exit);  // add menu bar and menu items
 		menuBar.getMenus().add(menu);
 		
@@ -1041,7 +1083,7 @@ public class GameStage implements Observer {
 			
 			newStage.close();
 			stage.close();
-			GameStage newGame = new GameStage(stageNum);
+			GameStage newGame = new GameStage(stageNum, language);
 			newGame.createNewGame();
 			
 		});
@@ -1051,6 +1093,32 @@ public class GameStage implements Observer {
 			newStage.close();
 			stage.close();
 		});
+	}
+	
+	private void youWin(Stage stage) {
+		stage.close();
+		Stage newStage = new Stage();
+		BorderPane windowWin = new BorderPane();
+		GridPane grid = new GridPane();
+		grid.setPrefSize(800, 450);
+		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		images.getgameOverbackV().setFitHeight(450);
+		images.getgameOverbackV().setFitWidth(800);
+		
+		grid.add(images.getgameOverbackV(), 0, 0);
+		HBox hb = new HBox();
+		hb.getChildren().add(images.getWinV());
+		hb.setAlignment(Pos.CENTER);
+		grid.getChildren().add(hb);
+		grid.setAlignment(Pos.CENTER);
+		
+		windowWin.setCenter(grid);
+		Scene scene = new Scene(windowWin);
+		newStage.setScene(scene);
+		newStage.show();
+		
+		
 	}
 	
 }

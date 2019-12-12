@@ -61,17 +61,18 @@ public class GameMenu{
 			Stage stageLang = new Stage();
 			HBox hb = new HBox();
 			
-			stageLang.setTitle("Language Setting");
 			BorderPane windowLang = new BorderPane();
 			
 			
 			if(choice.equals("English")) {
+				stageLang.setTitle("Language Setting");
 				languageAll = new Label("Language:");
 				group = new ToggleGroup();
 				English = new RadioButton("English");
 				Chinese = new RadioButton("Chinese");
 			}
 			else {
+				stageLang.setTitle("设置语言");
 				languageAll = new Label("语言:");
 				group = new ToggleGroup();
 				English = new RadioButton("英语");
@@ -117,7 +118,7 @@ public class GameMenu{
 	private void mouseClick(Button now, Stage stage) {
 		now.setOnMouseClicked((event) -> {
 			stage.close();
-			newGame = new GameStage(levelNum);
+			newGame = new GameStage(levelNum, choice);
 			newGame.createNewGame();
 		});
 	}
@@ -127,7 +128,12 @@ public class GameMenu{
 		System.out.println("1");
 		Button text;
 		Button language;
-		stage.setTitle("Tower Defense");
+		if(choice.equals("English")) {
+			stage.setTitle("Protect Earth");
+		}
+		else {
+			stage.setTitle("保卫地球大作战");
+		}
 		GridPane grid = new GridPane();
 //		System.out.println(2);
 		grid = new GridPane();
@@ -198,11 +204,18 @@ public class GameMenu{
 		hb3.getChildren().add(tower.getImg());
 		hb3.getChildren().add(images.getNewbullet());
 		
-		Levels = new Button("Levels");
+		if(choice.equals("English")) {
+			Levels = new Button("Levels");
+		}
+		else {
+			Levels = new Button("关卡");
+		}
+		Levels.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
+		Levels.setStyle("-fx-focus-color: transparent;");
 		
 		hb4.getChildren().add(Levels);
 		
-		vb.getChildren().addAll(hb1,hb2,hb3,hb4);
+		vb.getChildren().addAll(hb1,hb2,hb4, hb3);
 		
 		
 		grid.setAlignment(Pos.CENTER);
@@ -223,10 +236,10 @@ public class GameMenu{
 	private void levelsOnClick(Button levels) {
 		levels.setOnMouseClicked((event) ->{
 			Stage levelS = new Stage();
-			levelS.setTitle("Select Levels");
 			BorderPane windowL = new BorderPane();
 			HBox hb = new HBox();
 			if(choice.equals("English")) {
+				levelS.setTitle("Select Levels");
 				levelsAll = new Label("Levels:");
 				groupLevel = new ToggleGroup();
 				Level1 = new RadioButton("Level1");
@@ -234,6 +247,7 @@ public class GameMenu{
 				Level3 = new RadioButton("Level3");
 			}
 			else {
+				levelS.setTitle("选择关卡");
 				levelsAll = new Label("关卡:");
 				groupLevel = new ToggleGroup();
 				Level1 = new RadioButton("关卡1");

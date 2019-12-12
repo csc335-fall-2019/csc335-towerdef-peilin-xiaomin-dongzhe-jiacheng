@@ -56,7 +56,7 @@ public class TowerDefController {
 	  * This method is used to build the map
 	  */
 	public void buildBasicStage(int stageNum) {
-		Player newPlayer = new Player(20);
+		Player newPlayer = new Player(50);
 		Map newMap = new Map(newPlayer, HEIGHT, WIDTH);
 		if (stageNum == 1) {
 			this.buildFirstPath(newMap);
@@ -150,25 +150,21 @@ public class TowerDefController {
 		this.buildRoad(newMap, start);
 		this.disableEndSurround(newMap, end);
 		this.disablePoint(newMap, newMap.getRoads().size());
-		for (int row = 0; row < HEIGHT; row++) {
-			for (int col = 0; col < WIDTH; col++) {
-				System.out.print(newMap.getGraph()[row][col]);
-			}
-			System.out.println();
-		}
-		
-		for(int i =0;i<10;i++) {
+
+		model.addMonsters(new Monster3());
+		for(int i =0;i<4;i++) {
+			model.addMonsters(new SecondMonster());
 			model.addMonsters(new BasicMonster());
 		}
+		
+		for(int i =0;i<4;i++) {
+			model.addMonsters(new Monster5());
+			model.addMonsters(new Monster4());
+		}
 		for(int i =0;i<3;i++) {
-			model.addMonsters(new SecondMonster());
+			model.addMonsters(new Monster6());
 		}
-		for(int i =0;i<2;i++) {
-			model.addMonsters(new Monster3());
-		}
-		model.addMonsters(new Monster4());
-		model.addMonsters(new Monster5());
-		model.addMonsters(new Monster6());
+		
 	}
 	
 	
@@ -199,25 +195,22 @@ public class TowerDefController {
 		this.buildRoad(newMap, start);
 		this.disableEndSurround(newMap, end);
 		this.disablePoint(newMap, newMap.getRoads().size());
-		for (int row = 0; row < HEIGHT; row++) {
-			for (int col = 0; col < WIDTH; col++) {
-				System.out.print(newMap.getGraph()[row][col]);
-			}
-			System.out.println();
+
+		model.addMonsters(new Monster3());
+		for(int i =0;i<6;i++) {
+			model.addMonsters(new SecondMonster());
+			model.addMonsters(new BasicMonster());
+			model.addMonsters(new Monster5());
 		}
 		
-		for(int i =0;i<10;i++) {
-			model.addMonsters(new BasicMonster());
-		}
-		for(int i =0;i<3;i++) {
-			model.addMonsters(new SecondMonster());
-		}
-		for(int i =0;i<2;i++) {
+		for(int i =0;i<7;i++) {
 			model.addMonsters(new Monster3());
+			model.addMonsters(new Monster5());
+			model.addMonsters(new Monster4());
 		}
-		model.addMonsters(new Monster4());
-		model.addMonsters(new Monster5());
-		model.addMonsters(new Monster6());
+		for(int i =0;i<4;i++) {
+			model.addMonsters(new Monster6());
+		}
 	}
 	
 	
