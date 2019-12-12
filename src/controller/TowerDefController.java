@@ -81,16 +81,12 @@ public class TowerDefController {
 		model.addTowers(new Tower5());
 		
 	}
-<<<<<<< HEAD
+
 /**
  * This is a function to build the first stage
  * @param newMap, the map of the game board
  */
 	public void buildFirstPath(Map newMap) {
-=======
-	
-	private void buildFirstPath(Map newMap) {
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-peilin-xiaomin-dongzhe-jiacheng.git
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -127,16 +123,12 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 
 	}
-<<<<<<< HEAD
+
 /**
  * Build the second stage.
  * @param newMap, the map of the game board
  */
 	public void buildSecondPath(Map newMap) {
-=======
-	
-	private void buildSecondPath(Map newMap) {
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-peilin-xiaomin-dongzhe-jiacheng.git
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -172,16 +164,14 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 	}
 	
-<<<<<<< HEAD
+
 /**
  * The map of the third stage
  * @param newMap, the map of the game board
  */
 	public void buildThirdPath(Map newMap) {
-=======
+
 	
-	private void buildThirdPath(Map newMap) {
->>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-peilin-xiaomin-dongzhe-jiacheng.git
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {  // set the road

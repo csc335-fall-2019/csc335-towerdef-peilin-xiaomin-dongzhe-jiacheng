@@ -14,8 +14,6 @@ public class Tower4 extends Tower {
 		super.setCost(cost);
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
-		super.setImg(new ImageView(new Image("/img/turret2.jpg")));
-		super.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
 	}
 
 }

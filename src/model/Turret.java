@@ -12,8 +12,6 @@ public class Turret extends Tower {
 	private double attackSpeed = 5; // the speed to send bullet
 	public Turret() { //construct the tower
 		super.setCost(cost);
-		super.setImg(new ImageView(new Image("/img/tower2.png")));
-		super.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
 	}

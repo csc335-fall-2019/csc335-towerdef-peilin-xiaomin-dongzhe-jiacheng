@@ -16,8 +16,7 @@ public class BasicTower extends Tower {
 		super.setCost(cost);
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
-		super.setImg(new ImageView(new Image("/img/TOWER.png")));
-		super.setBullet(new ImageView(new Image("/img/bullet.png")));
+		
 	}
 	
 
