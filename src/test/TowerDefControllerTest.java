@@ -1,13 +1,12 @@
-package controller;
+package test;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import controller.TowerDefController;
 import javafx.scene.image.ImageView;
-import model.Map;
-import model.Monster;
-import model.Player;
+
 import model.Point;
 import model.Tower;
 import model.TowerDefModel;
@@ -23,13 +22,9 @@ public class TowerDefControllerTest {
 		
 		Tower tower = new Tower();
 		Point point = new Point(0, 2, false);
-		//ImageView img = new ImageView();
-		//ImageView bulletImg = new ImageView();
 		tower.setAttack(10);
 		tower.setRange(3);
-		//tower.setBullet(bulletImg);
 		tower.setCost(5);
-		//tower.setImg(img);
 		tower.setPoint(point);
 		tower.setSpeed(8.0);
 		tower.addAttackRange(point);
@@ -39,8 +34,6 @@ public class TowerDefControllerTest {
 		controller.buildTower(0, 2, tower);
 		assertFalse(controller.canSetTower(0, 2));
 		controller.sellTower(0, 2);
-		
-
 	}
 	
 	@Test
@@ -51,23 +44,24 @@ public class TowerDefControllerTest {
 		controller.buildBasicStage(2);
 		
 		Tower tower = new Tower();
-		Point point = new Point(1, 5, false);
-		//ImageView img = new ImageView();
-		//ImageView bulletImg = new ImageView();
 		tower.setAttack(10);
 		tower.setRange(3);
-		//tower.setBullet(bulletImg);
 		tower.setCost(5);
-		//tower.setImg(img);
-		tower.setPoint(point);
 		tower.setSpeed(8.0);
-		tower.addAttackRange(point);
 		
 		assertTrue(controller.canBuyTower(tower));
-		assertTrue(controller.canSetTower(1, 5));
-		controller.buildTower(1, 5, tower);
-		assertFalse(controller.canSetTower(1, 5));
-		controller.sellTower(1, 5);
+		for (int i = 0; i < controller.HEIGHT; i++) {
+			for (int j = 0; j < controller.WIDTH; j++) {
+				Point point = new Point(i, j, false);
+				if (controller.canSetTower(i, j)) {
+					controller.buildTower(i, j, tower);
+					tower.setPoint(point);
+					assertFalse(controller.canSetTower(i, j));
+					controller.sellTower(i, j);
+				}
+			}
+		}
+
 	}
 	
 	@Test
@@ -78,25 +72,23 @@ public class TowerDefControllerTest {
 		controller.buildBasicStage(3);
 		
 		Tower tower = new Tower();
-		Point point = new Point(3, 1, false);
-		//ImageView img = new ImageView();
-		//ImageView bulletImg = new ImageView();
 		tower.setAttack(10);
 		tower.setRange(3);
-		//tower.setBullet(bulletImg);
 		tower.setCost(5);
-		//tower.setImg(img);
-		tower.setPoint(point);
 		tower.setSpeed(8.0);
-		tower.addAttackRange(point);
 		
 		assertTrue(controller.canBuyTower(tower));
-		assertTrue(controller.canSetTower(3, 1));
-		controller.buildTower(3, 1, tower);
-		assertFalse(controller.canSetTower(3, 1));
-		controller.sellTower(3, 1);
+		for (int i = 0; i < controller.HEIGHT; i++) {
+			for (int j = 0; j < controller.WIDTH; j++) {
+				Point point = new Point(i, j, false);
+				if (controller.canSetTower(i, j)) {
+					controller.buildTower(i, j, tower);
+					tower.setPoint(point);
+					assertFalse(controller.canSetTower(i, j));
+					controller.sellTower(i, j);
+				}
+			}
+		}
 	}
 	
-	
-
 }

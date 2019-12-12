@@ -53,9 +53,10 @@ public class Point {
 	public void setRoad() {  //set this location to road
 		this.road = true;
 	}
+
 	public boolean canSetTower() { //indicate of this location can put a tower
-		return !road && tower == null; //put when is not road and no tower in the location
-		}
+		return !disable && !road && tower == null; //put when is not road and no tower in the location
+	}
 	public void setTower(Tower tower) {
 		this.tower = tower; // set the tower at the location
 	}
@@ -125,9 +126,9 @@ public class Point {
 
 	
 //	public String toString() {
-//		if(start) return "s"+ " `(" + x + "," + y + ")";
-//		if(end) return "e" + " `(" + x + "," + y + ")";
-//		if (road) return "-" + " `(" + x + "," + y + ")";
-//		return "0" + " `(" + x + "," + y + ")";
+//		if(start) return "s" +disable + " `(" + x + "," + y + ")";
+//		if(end) return "e" +disable+ " `(" + x + "," + y + ")";
+//		if (road) return "-" +disable+ " `(" + x + "," + y + ")";
+//		return "0" +disable+ " `(" + x + "," + y + ")";
 //	}
 }
