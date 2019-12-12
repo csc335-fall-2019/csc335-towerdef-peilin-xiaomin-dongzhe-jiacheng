@@ -230,7 +230,7 @@ public class GameStage implements Observer {
 		
 		grid = new GridPane();
 		grid.setPrefSize(520, 350);
-		grid.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, null, null)));
+		grid.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		setGridPane(grid);
 		
 		grid2 = new GridPane();
