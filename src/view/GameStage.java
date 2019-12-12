@@ -1068,7 +1068,13 @@ public class GameStage implements Observer {
 		no.setToggleGroup(groupN);
 		HBox hb = new HBox();
 		hb.getChildren().addAll(moveOn, yes, no);
-		windowNext.setCenter(hb);
+		
+		GridPane grid = new GridPane();
+		grid.add(hb, 0, 0);
+		grid.setAlignment(Pos.CENTER);
+		grid.setPrefSize(300, 150);
+		
+		windowNext.setCenter(grid);
 		
 		Scene scene = new Scene(windowNext);
 		newStage.setScene(scene);
