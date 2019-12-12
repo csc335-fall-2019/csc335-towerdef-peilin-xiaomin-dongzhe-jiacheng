@@ -1,4 +1,4 @@
-package model;
+package test;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,23 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import javafx.scene.image.ImageView;
+import model.BasicMonster;
+import model.BasicTower;
+import model.Map;
+import model.Monster;
+import model.Monster3;
+import model.Monster4;
+import model.Monster5;
+import model.Monster6;
+import model.Player;
+import model.Point;
+import model.SecondMonster;
+import model.Tower;
+import model.Tower3;
+import model.Tower4;
+import model.Tower5;
+import model.TowerDefModel;
+import model.Turret;
 
 public class TowerDefModelTest {
 	
