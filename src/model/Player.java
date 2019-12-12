@@ -1,5 +1,16 @@
 package model;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, Player.java
+ * 
+ * purpose: 
+ */
+
 public class Player {
 	protected int health;
 	protected int money;

@@ -8,7 +8,8 @@ package view;
  * CSC 335, Fall 2019
  * team project, GameStage.java
  * 
- * purpose: define main game stage
+ * purpose: define main game stage which allow menu stage to launch it and set up
+ * 			all of the game features for the game interface.
  */
 
 import java.util.ArrayList;
@@ -463,6 +464,7 @@ public class GameStage implements Observer {
 		
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				start.setDisable(true);
 				gameThread.start();			
 			}
 		});

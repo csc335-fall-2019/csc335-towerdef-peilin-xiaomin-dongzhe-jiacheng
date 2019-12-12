@@ -9,7 +9,9 @@ package model;
  * team project, TowerDefModel.java
  * 
  * purpose: this is the towerDefModel which defines the model for this project
- * 			and 
+ * 			and set up the setTower, sellTower method and lossHealth method 
+ * 			which send message to the GUI to change the corresponding
+ * 			properties of the game
  */
 
 import java.util.ArrayList;

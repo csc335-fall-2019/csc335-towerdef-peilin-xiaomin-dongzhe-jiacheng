@@ -1,5 +1,16 @@
 package test;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, TowerDefModelTest.java
+ * 
+ * purpose: this is our model test method which test the all of our
+ * 			models for this project
+ */
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -23,6 +34,7 @@ import model.Tower;
 import model.Tower3;
 import model.Tower4;
 import model.Tower5;
+import model.Tower6;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.Turret;
@@ -216,7 +228,12 @@ public class TowerDefModelTest {
 	@Test
 	public void testTower5() {
 		Tower tower = new Tower5();
-	}	
+	}
+	
+	@Test
+	public void testTower6() {
+		Tower tower = new Tower6();
+	}
 	
 	@Test
 	public void testBasicMonster() {

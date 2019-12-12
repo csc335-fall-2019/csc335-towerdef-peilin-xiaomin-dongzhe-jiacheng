@@ -1,5 +1,17 @@
 package view;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, View.java
+ * 
+ * purpose: this is the View class which launched by Tower Defense main GUI
+ * 			and it will launch the game menu immediately
+ */
+
 import javafx.application.Application;
 
 import javafx.scene.Scene;

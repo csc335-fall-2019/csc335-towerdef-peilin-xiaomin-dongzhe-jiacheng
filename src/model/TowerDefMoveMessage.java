@@ -1,5 +1,16 @@
 package model;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, TowerDefMoveMessage.java
+ * 
+ * purpose: 
+ */
+
 import java.io.Serializable;
 
 public class TowerDefMoveMessage implements Serializable {

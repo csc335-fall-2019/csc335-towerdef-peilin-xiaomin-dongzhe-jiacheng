@@ -1,5 +1,16 @@
 package model;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, Tower6.java
+ * 
+ * purpose: 
+ */
+
 public class Tower6 extends Tower{
 	
 	private int cost = 135;

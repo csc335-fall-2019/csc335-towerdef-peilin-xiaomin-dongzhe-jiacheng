@@ -1,5 +1,16 @@
 package model;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, Tower3.java
+ * 
+ * purpose: 
+ */
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

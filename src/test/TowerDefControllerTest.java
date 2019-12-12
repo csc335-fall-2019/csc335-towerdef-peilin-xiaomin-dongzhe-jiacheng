@@ -1,5 +1,17 @@
 package test;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, TowerDefControllerTest.java
+ * 
+ * purpose: this is our controller test method which test the 
+ * 			controller class for this project
+ */
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;

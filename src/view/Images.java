@@ -1,4 +1,16 @@
 package view;
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * CSC 335, Fall 2019
+ * team project, Images.java
+ * 
+ * purpose: this is Images class which just for our different stage to
+ * 			retrieve the pictures easily
+ */
+
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
