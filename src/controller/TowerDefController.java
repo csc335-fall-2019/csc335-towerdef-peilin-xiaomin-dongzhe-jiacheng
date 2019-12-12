@@ -23,6 +23,7 @@ import model.Tower;
 import model.Tower3;
 import model.Tower4;
 import model.Tower5;
+import model.Tower6;
 import model.TowerDefModel;
 import model.Turret;
 
@@ -77,6 +78,7 @@ public class TowerDefController {
 		model.addTowers(new Tower3());
 		model.addTowers(new Tower4());
 		model.addTowers(new Tower5());
+		model.addTowers(new Tower6());
 		
 	}
 	

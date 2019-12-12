@@ -66,6 +66,7 @@ import model.Tower;
 import model.Tower3;
 import model.Tower4;
 import model.Tower5;
+import model.Tower6;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
@@ -180,6 +181,10 @@ public class GameStage implements Observer {
 					tower = new Tower5();
 					tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
 					tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
+				}else if (tower instanceof Tower6) {
+					tower = new Tower6();
+					tower.setImg(new ImageView(new Image("/img/turret6.png")));
+					tower.setBullet(new ImageView(new Image("/img/bullet6.png")));
 				}
 				
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
@@ -284,6 +289,7 @@ public class GameStage implements Observer {
 		Tower3 tower3 = new Tower3();
 		Tower4 tower4 = new Tower4();
 		Tower5 tower5 = new Tower5();
+		Tower6 tower6 = new Tower6();
 		firstImg.setImg(new ImageView(new Image("/img/TOWER.png")));
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
@@ -300,6 +306,9 @@ public class GameStage implements Observer {
 		tower5.setImg(new ImageView(new Image("/img/turret3.jpg")));
 		tower5.getImg().setFitHeight(50);
 		tower5.getImg().setFitWidth(50);
+		tower6.setImg(new ImageView(new Image("/img/turret6.png")));
+		tower6.getImg().setFitHeight(50);
+		tower6.getImg().setFitWidth(50);
 		
 		
 		
@@ -323,8 +332,9 @@ public class GameStage implements Observer {
 		grid2.add(tower3.getImg(), 2, 0);
 		grid2.add(tower4.getImg(), 3, 0);
 		grid2.add(tower5.getImg(), 4, 0);
-		grid2.add(images.getSell(), 5, 0);
-		grid2.setHgap(10);
+		grid2.add(tower6.getImg(), 5, 0);
+		grid2.add(images.getSell(), 6, 0);
+		grid2.setHgap(20);
 		
 		
 		doImg(firstImg.getImg(), availTowers.get(0));
@@ -332,6 +342,7 @@ public class GameStage implements Observer {
 		doImg(tower3.getImg(), availTowers.get(2));
 		doImg(tower4.getImg(), availTowers.get(3));
 		doImg(tower5.getImg(), availTowers.get(4));
+		doImg(tower6.getImg(), availTowers.get(5));
 		
 		doImg(images.getSell(), null);
 		
