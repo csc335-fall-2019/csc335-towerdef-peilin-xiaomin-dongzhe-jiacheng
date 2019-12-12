@@ -75,6 +75,7 @@ import model.Tower;
 import model.Tower3;
 import model.Tower4;
 import model.Tower5;
+import model.Tower6;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.Turret;
@@ -87,8 +88,10 @@ public class GameStage implements Observer {
 	private Tower currentTower;
 	private int stageNum;
 
+
 	private ImageView sellImg;
 	private int SLEEP = 1000;
+
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -166,6 +169,9 @@ public class GameStage implements Observer {
 	public void update(Observable o, Object arg) {
 		try {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
+
+			
+
 			Tower tower =msg.getTower();
 			
 			if(tower instanceof BasicTower) {
@@ -188,9 +194,12 @@ public class GameStage implements Observer {
 				tower = new Tower5();
 				tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
 				tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
+			}else if (tower instanceof Tower6) {
+				tower = new Tower6();
+				tower.setImg(new ImageView(new Image("/img/turret6.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet6.png")));
 			}
 			
-			// decided whether it is selling the tower or buying a new tower
 			Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 			if(msg.getMoney()> 0) {
 				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
@@ -219,7 +228,7 @@ public class GameStage implements Observer {
 				BulletsImageView.put(point,bulletImg);
 				//SLEEP = 500;
 			}
-		    changeGold(msg.getMoney());		
+		    changeGold(msg.getMoney());	
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal)); 
@@ -296,6 +305,7 @@ public class GameStage implements Observer {
 		Tower3 tower3 = new Tower3();
 		Tower4 tower4 = new Tower4();
 		Tower5 tower5 = new Tower5();
+		Tower6 tower6 = new Tower6();
 		firstImg.setImg(new ImageView(new Image("/img/TOWER.png")));
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
@@ -312,7 +322,16 @@ public class GameStage implements Observer {
 		tower5.setImg(new ImageView(new Image("/img/turret3.jpg")));
 		tower5.getImg().setFitHeight(50);
 		tower5.getImg().setFitWidth(50);
-
+		tower6.setImg(new ImageView(new Image("/img/turret6.png")));
+		tower6.getImg().setFitHeight(50);
+		tower6.getImg().setFitWidth(50);
+		
+		
+		
+		
+		
+		
+		
 		images.getSell().setFitHeight(50);
 		images.getSell().setFitWidth(50);
 		
@@ -327,8 +346,9 @@ public class GameStage implements Observer {
 		grid2.add(tower3.getImg(), 2, 0);
 		grid2.add(tower4.getImg(), 3, 0);
 		grid2.add(tower5.getImg(), 4, 0);
-		grid2.add(images.getSell(), 5, 0);
-		grid2.setHgap(10);
+		grid2.add(tower6.getImg(), 5, 0);
+		grid2.add(images.getSell(), 6, 0);
+		grid2.setHgap(20);
 		
 		// let the image on the selection bar be able to be selected
 		doImg(firstImg.getImg(), availTowers.get(0));
@@ -336,6 +356,7 @@ public class GameStage implements Observer {
 		doImg(tower3.getImg(), availTowers.get(2));
 		doImg(tower4.getImg(), availTowers.get(3));
 		doImg(tower5.getImg(), availTowers.get(4));
+		doImg(tower6.getImg(), availTowers.get(5));
 		
 		doImg(images.getSell(), null);
 		
@@ -467,7 +488,7 @@ public class GameStage implements Observer {
 		if(monster instanceof BasicMonster) {
 			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
 		}else if (monster instanceof SecondMonster) {
-			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));	
 		}else if(monster instanceof Monster3) {
 			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
 		}else if (monster instanceof Monster4) {
@@ -662,6 +683,7 @@ public class GameStage implements Observer {
 		ImageView img;
 		Timeline time;
 		Monster monster;
+		Point currPoint;
 
 		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) {
 			nextPoint  = road.get(currentRoad+1);

@@ -23,6 +23,7 @@ import model.Tower;
 import model.Tower3;
 import model.Tower4;
 import model.Tower5;
+import model.Tower6;
 import model.TowerDefModel;
 import model.Turret;
 
@@ -74,9 +75,9 @@ public class TowerDefController {
 		model.addTowers(new Tower3());
 		model.addTowers(new Tower4());
 		model.addTowers(new Tower5());
+		model.addTowers(new Tower6());
 		
 	}
-	
 	
 	private void buildFirstPath(Map newMap) {
 		Point start = null;
@@ -241,22 +242,22 @@ public class TowerDefController {
 			if (p.isEnd()) {			
 				return;
 			}
-			if (p.getX() - 1 >= 0 && (!visited[p.getX() - 1][p.getY()])) {
+			if (p.getX() - 1 >= 0 && visited[p.getX() - 1][p.getY()] == false) {
 				availRoad.add(newMap.getGraph()[p.getX() - 1][p.getY()]);
 				visited[p.getX() - 1][p.getY()] = true;
 				continue;
 			}
-			if (p.getX() + 1 < HEIGHT && (!visited[p.getX() + 1][p.getY()])) {
+			if (p.getX() + 1 < HEIGHT && visited[p.getX() + 1][p.getY()] == false) {
 				availRoad.add(newMap.getGraph()[p.getX() + 1][p.getY()]);
 				visited[p.getX() + 1][p.getY()] = true;
 				continue;
 			}
-			if (p.getY() - 1 >=0 && (!visited[p.getX()][p.getY() - 1])) {
+			if (p.getY() - 1 >=0 && visited[p.getX()][p.getY() - 1] == false) {
 				availRoad.add(newMap.getGraph()[p.getX()][p.getY() - 1]);
 				visited[p.getX()][p.getY() - 1] = true;
 				continue;
 			}
-			if (p.getY() + 1 < WIDTH && (!visited[p.getX()][p.getY() + 1])) {
+			if (p.getY() + 1 < WIDTH && visited[p.getX()][p.getY() + 1] == false) {
 				availRoad.add(newMap.getGraph()[p.getX()][p.getY() + 1]);
 				visited[p.getX()][p.getY() + 1] = true;
 				continue;
@@ -290,10 +291,9 @@ public class TowerDefController {
 	 * on the map
 	 */
 	public void disablePoint(Map newMap, int roadSize) {
-		int maxAvailPoints = Math.min(WIDTH * HEIGHT - MIN_AVAIL_POINT 
-				- roadSize, 2 * roadSize);
-		int random = (int) (Math.random() * ((maxAvailPoints 
-				- MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
+		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - roadSize;
+		// random a number at most with the number of available non-road points minus 5; 
+		int random = (int) (Math.random() * ((maxAvailPoints - MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
 		int disabled = 0;
 		while (disabled < random) {
 			this.disableOnePoint(newMap);
