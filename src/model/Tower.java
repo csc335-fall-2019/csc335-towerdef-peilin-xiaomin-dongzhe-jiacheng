@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javafx.scene.image.ImageView;
 
+
 public abstract class Tower {
 	protected int cost; //value of the tower
 	protected Point point; //a location in the game board
@@ -15,6 +16,7 @@ public abstract class Tower {
 	protected int attack; //damage the tower can cause
 	protected double attackSpeed; //speed to send bullets
 	protected ImageView img;
+
 	private ArrayList<Point> attackRange; // list of locations the bullet can reach
 	
 	public Tower() {
@@ -69,6 +71,7 @@ public abstract class Tower {
 		this.range = range;
 	}
 
+
 	public void setPos(Point point) { //set the location of the tower
 		this.point = point;
 	}
@@ -80,6 +83,4 @@ public abstract class Tower {
 	public void addAttackRange(Point point) { // add a point to the list of location the tower can reach
 		this.attackRange.add(point);
 	}
-	
-	public abstract void setAttackRange(Map map); //
 }

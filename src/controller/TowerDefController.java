@@ -33,14 +33,15 @@ public class TowerDefController {
 	
 	public final int WIDTH = 10;  // this is the size of the game board
 	public final int HEIGHT = 6;
+	public final int MIN_AVAIL_POINT = 5;
 	
 	private TowerDefModel model;
 //	private Player player;
 //	private Map map;
 	//private Point start;
-
-	
 	public Point point;
+	
+	
 	public TowerDefController(TowerDefModel model) {
 		this.model = model;
 	}
@@ -70,20 +71,26 @@ public class TowerDefController {
 		}
 		System.out.println(newMap.getRoads());
 		model.setMap(newMap);
+		this.disablePoint();
+
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
+
 		model.addTowers(new Tower3());
 		model.addTowers(new Tower4());
 		model.addTowers(new Tower5());
 		
-		
-		
 	}
+<<<<<<< HEAD
 /**
  * This is a function to build the first stage
  * @param newMap, the map of the game board
  */
 	public void buildFirstPath(Map newMap) {
+=======
+	
+	private void buildFirstPath(Map newMap) {
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-peilin-xiaomin-dongzhe-jiacheng.git
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -120,11 +127,16 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 
 	}
+<<<<<<< HEAD
 /**
  * Build the second stage.
  * @param newMap, the map of the game board
  */
 	public void buildSecondPath(Map newMap) {
+=======
+	
+	private void buildSecondPath(Map newMap) {
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-peilin-xiaomin-dongzhe-jiacheng.git
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
@@ -160,11 +172,16 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 	}
 	
+<<<<<<< HEAD
 /**
  * The map of the third stage
  * @param newMap, the map of the game board
  */
 	public void buildThirdPath(Map newMap) {
+=======
+	
+	private void buildThirdPath(Map newMap) {
+>>>>>>> branch 'master' of https://github.com/csc335-fall-2019/csc335-towerdef-peilin-xiaomin-dongzhe-jiacheng.git
 		Point start = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {  // set the road
@@ -291,6 +308,37 @@ public class TowerDefController {
 	public void sellTower(int x, int y) {
 		System.out.println("sell");
 		model.sellTower(x, y); // to sell the tower
+	}
+	
+	
+
+	public void disablePoint() {
+		ArrayList<Point> road = this.getModel().getMap().getRoads();
+		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size();
+		// random a number at most with the number of available non-road points minus 5; 
+		int random = (int) (Math.random() * ((maxAvailPoints - MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
+		int disabled = 0;
+		while (disabled < random) {
+			this.disableOnePoint();
+			disabled++;
+		}
+	}
+	
+	/**
+	 * helper method for disablePoint method, this function will disable
+	 * one random point, which is not disabled and not a road.
+	 * 
+	 */
+	private void disableOnePoint() {
+		int randX = (int) (Math.random() * HEIGHT);
+		int randY = (int) (Math.random() * WIDTH);
+		Point randPoint = model.getMap().getGraph()[randX][randY];
+		while (randPoint.isdisabled() && randPoint.isRoad()) {
+			randX = (int) (Math.random() * HEIGHT);
+			randY = (int) (Math.random() * WIDTH);
+			randPoint = model.getMap().getGraph()[randX][randY];
+		}
+		randPoint.setDisable();
 	}
 	
 }

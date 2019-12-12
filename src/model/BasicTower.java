@@ -14,12 +14,13 @@ public class BasicTower extends Tower {
 	private double attackSpeed = 1; //the speed of sending bullet
 	public BasicTower() {  // extend from the tower class
 		super.setCost(cost);
-		super.setImg(new ImageView(new Image("/img/TOWER.png")));
-		super.setBullet(new ImageView(new Image("/img/bullet.png")));
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
+		super.setImg(new ImageView(new Image("/img/TOWER.png")));
+		super.setBullet(new ImageView(new Image("/img/bullet.png")));
 	}
 	
+
 	public void setAttackRange(Map map) { // set the range of the bullet to send, only send to road
 		int x = this.getPoint().getX();
 		int y = this.getPoint().getY();

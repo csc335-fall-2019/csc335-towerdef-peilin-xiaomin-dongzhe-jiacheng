@@ -6,6 +6,7 @@ package model;
 import java.util.ArrayList;
 
 public class Point {
+
 	private int x; //x-value of the game board
 	private int y; //y-value of the game board
 	private boolean road; // indicate if the location is the road
@@ -14,13 +15,17 @@ public class Point {
 	private ArrayList<Monster> monsters = new ArrayList<Monster>(); // list to store monsters
 	private boolean start = false; 
 	private boolean end = false;
+
 	private ArrayList<Point> adjacentPoints = new ArrayList<Point>(); // list to store neiborgh locations
+
+	private boolean disable = false;
 	
 	public Point(int x,int y,boolean isRoad) {  //construct a locate
 		this.x = x;
 		this.y = y;
 		this.road = isRoad;
 	}
+
 	public void pass() {
 		isPass = true;
 	}
@@ -28,17 +33,22 @@ public class Point {
 		return isPass;
 	}
 	public int getX() { //get method return the x-value of the location
+
 		return x;
 	}
 	public int getY() { //get method return the y-value of the location
 		return y;
+
 	}
 	
 	public boolean isRoad() { //return if the location is road
 		return road;
 	}
-	
-	//public ArrayList<Point> getAdjacentPoints
+
+
+	public boolean isdisabled() {
+		return disable;
+	}
 	
 	public void setRoad() {  //set this location to road
 		this.road = true;
@@ -49,12 +59,15 @@ public class Point {
 	public void setTower(Tower tower) {
 		this.tower = tower; // set the tower at the location
 	}
+
 	public boolean hasTower() { // return if the location has a tower
 		return tower != null;
 	}
+
 	public void setMonster(Monster monster) { //set the monster at this location
 		monsters.add(monster); 
 	}
+
 	public Tower getTower() { //get method, return the tower at the location
 		return tower;
 	}
@@ -74,6 +87,8 @@ public class Point {
 		}
 	}
 	public void clearMonster(Monster monster) { // to delete the monster from game board, when monster reach the end
+
+	
 		for(Monster monsterIn:monsters) {
 			if(monster.getHealth() == monsterIn.getHealth()) {
 				monsters.remove(monsterIn);
@@ -81,15 +96,23 @@ public class Point {
 			}
 		}
 	}
+
 	public void setStart() { // set the location be the beginning of road
+
 		start = true;
 	}
 	public void setEnd() { // set the location be the end of the road
 		end = true;
 	}
+
 	public boolean isStart() { // return if the location is the beginning of road
 		return start;
 	}
+	
+	public void setDisable() {
+		this.disable = true;
+	}
+
 	public boolean isEnd() { // check if the location is the end of road
 		return end;
 	}
@@ -99,4 +122,12 @@ public class Point {
 		if (road) return "-" + " `(" + x + "," + y + ")";
 		return "0" + " `(" + x + "," + y + ")";
 	}
+
+	
+//	public String toString() {
+//		if(start) return "s"+ " `(" + x + "," + y + ")";
+//		if(end) return "e" + " `(" + x + "," + y + ")";
+//		if (road) return "-" + " `(" + x + "," + y + ")";
+//		return "0" + " `(" + x + "," + y + ")";
+//	}
 }

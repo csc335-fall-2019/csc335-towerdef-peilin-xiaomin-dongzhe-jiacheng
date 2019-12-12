@@ -45,9 +45,11 @@ public class TowerDefModel extends Observable {
  * @param col, the position in the game board
  */
 	public void setTower(Tower tower, int row, int col) {
+
 		tower.setPoint(this.map.getGraph()[row][col]); // put the tower in a location point
-		tower.setAttackRange(this.map);
+		
 		this.map.getGraph()[row][col].setTower(tower); // put the tower in the map
+
 		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,-tower.getCost());
 		
 		setChanged();
@@ -81,7 +83,4 @@ public class TowerDefModel extends Observable {
         notifyObservers(1);
 	}
 	
-	public void monsterMove(int xPos, int yPos, int preX, int preY) {
-		
-	}
 }

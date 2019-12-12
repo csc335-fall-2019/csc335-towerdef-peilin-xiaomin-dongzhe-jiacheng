@@ -6,6 +6,7 @@ package model;
 import javafx.scene.image.ImageView;
 
 public class Monster {
+
 	protected int gold;// the value of the monster, when kill
 	protected double speed; // the speed of the monster moves
 	
@@ -19,11 +20,13 @@ public class Monster {
 	public Monster() {
 		
 	}
-	public Monster(int gold,int speed,int health, int lossHealth) { // construct the monster
+
+	public Monster(int gold,double d,double e, int lossHealth) { // construct the monster
+
+	
 		this.gold =gold;
-		this.speed = speed;
-		
-		this.health = health;
+		this.speed = d;
+		this.health = e;
 		this.lossHealth = lossHealth;
 	}
 	public int lossPlayerHealth() { //a get method return the damage this monster caused
@@ -47,8 +50,9 @@ public class Monster {
 	public Point getPoint() { // return the location 
 		return point;
 	}
-	public void setHealth(int health) { //set the damage of the monster can take
-		this.health = health;
+
+	public void setHealth(double d) { //set the damage of the monster can take
+		this.health = d;
 	}
 	public void healthLoss(double health) { // reset the life of player after a monster hit
 		this.health -= health;

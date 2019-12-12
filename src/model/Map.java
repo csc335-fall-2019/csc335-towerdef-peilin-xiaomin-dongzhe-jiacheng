@@ -6,13 +6,14 @@ package model;
 import java.util.ArrayList;
 
 public class Map {
+
 	private Player player; //user player
 	private Point[][] graph; // the game board graph
 	private ArrayList<Point> road; // a list to store all the road point
 //	private int health;
 	
 
-	
+
 	public Map(Player player,int height,int width) { // construct the map class
 		graph = new Point[height][width]; // game board
 		road = new ArrayList<Point>();  // list of road points
@@ -35,6 +36,7 @@ public class Map {
 	public void update(int x, int y,Point point) { //make a location to be a point
 		graph[x][y] = point;
 	}
+
 	public String toString() { // print the game board as 2d list
 		String str = "";
 		for(int i =0;i<graph.length;i++) {
@@ -45,5 +47,21 @@ public class Map {
 		}
 		return str;
 	}
+	
+	public void setPointDisable(Point point) {
+		this.graph[point.getX()][point.getY()].setDisable();
+	}
+	
+	
+//	public String toString() {
+//		String str = "";
+//		for(int i =0;i<graph.length;i++) {
+//			for(int j = 0;j<graph[i].length;j++) {
+//				str += graph[i][j];
+//			}
+//			str+="\n";
+//		}
+//		return str;
+//	}
 	
 }
