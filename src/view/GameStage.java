@@ -519,17 +519,22 @@ public class GameStage implements Observer {
 			
 			
 			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
-				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
-					attackLeft();
-				}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
-					attackRight();
-				}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
-					attackUp();
-				}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
-					attackDown();
-				}else {
+				try {
+					if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
+						attackLeft();
+					}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
+						attackRight();
+					}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
+						attackUp();
+					}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
+						attackDown();
+					}else {
+						img.setVisible(false);
+					}
+				}catch (Exception e) {
 					img.setVisible(false);
 				}
+				
 			}
 			
 			if(count >=RECTSIZE) {
