@@ -20,6 +20,9 @@ import model.Player;
 import model.Point;
 import model.SecondMonster;
 import model.Tower;
+import model.Tower3;
+import model.Tower4;
+import model.Tower5;
 import model.TowerDefModel;
 import model.Turret;
 
@@ -67,8 +70,14 @@ public class TowerDefController {
 		System.out.println(newMap.getRoads());
 		model.setMap(newMap);
 		this.disablePoint();
+
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
+
+		model.addTowers(new Tower3());
+		model.addTowers(new Tower4());
+		model.addTowers(new Tower5());
+		
 	}
 	
 	private void buildFirstPath(Map newMap) {
@@ -252,6 +261,7 @@ public class TowerDefController {
 	}
 	
 	
+
 	public void disablePoint() {
 		ArrayList<Point> road = this.getModel().getMap().getRoads();
 		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size() - 4;

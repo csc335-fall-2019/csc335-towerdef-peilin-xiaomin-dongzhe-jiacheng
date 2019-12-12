@@ -41,6 +41,13 @@ public class GameMenu{
 	private ToggleGroup group;
 	private RadioButton English;
 	private RadioButton Chinese;
+	private ToggleGroup groupLevel;
+	private Label levelsAll;
+	private RadioButton Level1;
+	private RadioButton Level2;
+	private RadioButton Level3;
+	private Button Levels;
+	private int levelNum = 1;
 	public GameMenu(Stage stage, BorderPane window) {
 		images = new Images();
 		basicStage(stage, window,choice);
@@ -69,7 +76,7 @@ public class GameMenu{
 				group = new ToggleGroup();
 				English = new RadioButton("英语");
 				Chinese = new RadioButton("中文");
-			}
+			} 
 			
 			
 			English.setToggleGroup(group);
@@ -110,47 +117,9 @@ public class GameMenu{
 	private void mouseClick(Button now, Stage stage) {
 		now.setOnMouseClicked((event) -> {
 			stage.close();
-			newGame = new GameStage(3);
-			newGame.createNewGame(stage);
+			newGame = new GameStage(levelNum);
+			newGame.createNewGame();
 		});
-		
-//		now.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-//
-//			@Override
-//			public void handle(MouseEvent event) {
-//				// TODO Auto-generated method stub
-//				now.setFitHeight(200);
-//				now.setFitWidth(400);
-//				
-//			}
-//			
-//		});
-
-
-//		
-//		now.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//
-//			@Override
-//			public void handle(MouseEvent event) {
-//				// TODO Auto-generated method stub
-//				
-//				stage.close();
-//				newGame.createNewGame(stage);
-//				
-//			}
-//			
-//		});
-//		
-//		now.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-//
-//			@Override
-//			public void handle(MouseEvent event) {
-//				// TODO Auto-generated method stub
-//				now.setFitHeight(150);
-//				now.setFitWidth(300);
-//			}
-//			
-//		});
 	}
 	
 	
@@ -158,7 +127,6 @@ public class GameMenu{
 		System.out.println("1");
 		Button text;
 		Button language;
-		ImageView now = new ImageView();
 		stage.setTitle("Tower Defense");
 		GridPane grid = new GridPane();
 //		System.out.println(2);
@@ -197,7 +165,6 @@ public class GameMenu{
 		if(choice.equals("English")) {
 			text = new Button("NEW GAME");
 			language = new Button("Language");
-			now = images.getnewGameV();
 		}
 		else {
 			System.out.println("Chinese");
@@ -213,10 +180,13 @@ public class GameMenu{
 		language.setFont(Font.font("Verdana", FontWeight.BOLD, 45));
 		language.setStyle("-fx-focus-color: transparent;");
 		
+		
+		
 		VBox vb = new VBox();
 		HBox hb1 = new HBox();
 		HBox hb2 = new HBox();
 		HBox hb3 = new HBox();
+		HBox hb4 = new HBox();
 		
 		hb1.getChildren().add(text);
 		hb1.setAlignment(Pos.CENTER);
@@ -227,8 +197,11 @@ public class GameMenu{
 		hb3.getChildren().add(tower.getImg());
 		hb3.getChildren().add(images.getNewbullet());
 		
+		Levels = new Button("Levels");
 		
-		vb.getChildren().addAll(hb1,hb2,hb3);
+		hb4.getChildren().add(Levels);
+		
+		vb.getChildren().addAll(hb1,hb2,hb3,hb4);
 		
 		
 		grid.setAlignment(Pos.CENTER);
@@ -239,10 +212,71 @@ public class GameMenu{
 		
 		mouseClick(text,stage);
 		languageClick(language, stage);
+		levelsOnClick(Levels);
 		
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	private void levelsOnClick(Button levels) {
+		levels.setOnMouseClicked((event) ->{
+			Stage levelS = new Stage();
+			levelS.setTitle("Select Levels");
+			BorderPane windowL = new BorderPane();
+			HBox hb = new HBox();
+			if(choice.equals("English")) {
+				levelsAll = new Label("Levels:");
+				groupLevel = new ToggleGroup();
+				Level1 = new RadioButton("Level1");
+				Level2 = new RadioButton("Level2");
+				Level3 = new RadioButton("Level3");
+			}
+			else {
+				levelsAll = new Label("关卡:");
+				groupLevel = new ToggleGroup();
+				Level1 = new RadioButton("关卡1");
+				Level2 = new RadioButton("关卡2");
+				Level3 = new RadioButton("关卡3");
+			} 
+			Level1.setToggleGroup(groupLevel);
+			Level2.setToggleGroup(groupLevel);
+			Level3.setToggleGroup(groupLevel);
+			
+			Level1.setOnAction((event1) ->{
+				levelNum = 1;
+			});
+			
+			Level2.setOnAction((event2) ->{
+				levelNum = 2;
+			});
+			
+			Level3.setOnAction((event3) ->{
+				levelNum = 3;
+			});
+			
+			
+			
+			
+			hb.getChildren().addAll(levelsAll, Level1, Level2, Level3);
+			
+			VBox vb = new VBox();
+			
+			Button OK = new Button("OK");
+			vb.getChildren().addAll(hb,OK);
+			
+			windowL.setCenter(vb);
+			Scene scene = new Scene(windowL, 300, 150);
+			levelS.setScene(scene);
+			levelS.show();
+			
+			OK.setOnMouseClicked((event2)->{
+				levelS.close();
+			});
+			
+			
+			
+		});
 	}
 	
 }

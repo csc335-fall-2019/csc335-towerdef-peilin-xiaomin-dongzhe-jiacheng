@@ -11,6 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -54,9 +55,17 @@ import javafx.util.Duration;
 import model.BasicMonster;
 import model.BasicTower;
 import model.Monster;
+import model.Monster3;
+import model.Monster4;
+import model.Monster5;
+import model.Monster6;
 import model.Player;
 import model.Point;
+import model.SecondMonster;
 import model.Tower;
+import model.Tower3;
+import model.Tower4;
+import model.Tower5;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
 import model.TowerMessage;
@@ -82,29 +91,23 @@ public class GameStage implements Observer {
 	private Label goldL;
 	private HBox hb;
 	private HBox hb2;
-//	private Image sell;
-//	private Image health;
-//	private ImageView healthImg;
+
 	private Label number;
 	private Label healL;
 	private int heal;
-//	private Image gold;
-//	private ImageView goldImg;
+
 	private Label number2;
 	private GridPane grid2;
 	private GridPane grid3;
-	//private int getRoad = 0;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
-//	private Label currName;
-//	private String towername;
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
 	private Stage stage; 
 
 	private VBox vb;
-	//private GameStage2 level2;
+	private boolean isPause = false;
 	private ArrayList<Timeline> monstersTimeline;
 	
 
@@ -119,9 +122,14 @@ public class GameStage implements Observer {
 	// private ImageView[][] images;
 	private GridPane grid4;
 	private HBox hbGrid;
+	//private int stageNum;
+	
+	
 	
 	
 	public GameStage(int stageNum) {
+		this.stage = new Stage();
+
 		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
@@ -150,7 +158,20 @@ public class GameStage implements Observer {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
 			if (msg instanceof TowerMessage) {
 
-				Tower tower = (Tower) msg.getObj();;
+				Tower tower =msg.getTower();
+				
+				if(tower instanceof BasicTower) {
+					tower = new BasicTower();
+				}else if (tower instanceof Turret) {
+					tower = new Turret();
+				}else if(tower instanceof Tower3) {
+					tower = new Tower3();
+				}else if(tower instanceof Tower4) {
+					tower = new Tower4();
+				}else if (tower instanceof Tower5) {
+					tower = new Tower5();
+				}
+				
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 				if(msg.getMoney()> 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
@@ -166,12 +187,11 @@ public class GameStage implements Observer {
 				}
 				else if(msg.getMoney()< 0) {
 					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
-					Image bImg = new Image("/img/bullet1.JPG");
-					ImageView bulletImg = new ImageView(bImg);
+					ImageView bulletImg = tower.getBullet();
 					bulletImg.setFitHeight((int) RECTSIZE / 4);
 					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(5),move);
+					BulletHandler move = new BulletHandler(bulletImg,point,tower);
+					KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
 					Timeline BulletTimeline = new Timeline(BulletKey);
 					BulletTimeline.setAutoReverse(true);
 					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -191,12 +211,12 @@ public class GameStage implements Observer {
 			}
 		}
 		
-		
 	}
 	
-	public void createNewGame(Stage stageA) {
+
+	public void createNewGame() {
 //		Stage stage = new Stage();
-		stage = stageA;
+//		stage = stageA;
 		stage.setTitle("Tower Defense");
 		
 		BorderPane window = new BorderPane();
@@ -247,11 +267,31 @@ public class GameStage implements Observer {
 
 		BasicTower firstImg = new BasicTower();
 		Turret secondImg = new Turret();
+		Tower3 tower3 = new Tower3();
+		Tower4 tower4 = new Tower4();
+		Tower5 tower5 = new Tower5();
+		
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
 			
 		secondImg.getImg().setFitHeight(50);
 		secondImg.getImg().setFitWidth(50);
+	
+		
+		tower3.getImg().setFitHeight(50);
+		tower3.getImg().setFitWidth(50);
+		
+		tower4.getImg().setFitHeight(50);
+		tower4.getImg().setFitWidth(50);
+		
+		tower5.getImg().setFitHeight(50);
+		tower5.getImg().setFitWidth(50);
+		
+		
+		
+		
+		
+		
 		
 		
 		images.getSell().setFitHeight(50);
@@ -266,12 +306,19 @@ public class GameStage implements Observer {
 
 		grid2.add(firstImg.getImg(),0,0);
 		grid2.add(secondImg.getImg(), 1, 0);
-		grid2.add(images.getSell(), 2, 0);
+		grid2.add(tower3.getImg(), 2, 0);
+		grid2.add(tower4.getImg(), 3, 0);
+		grid2.add(tower5.getImg(), 4, 0);
+		grid2.add(images.getSell(), 5, 0);
 		grid2.setHgap(10);
 		
 		
 		doImg(firstImg.getImg(), availTowers.get(0));
 		doImg(secondImg.getImg(), availTowers.get(1));
+		doImg(tower3.getImg(), availTowers.get(2));
+		doImg(tower4.getImg(), availTowers.get(3));
+		doImg(tower5.getImg(), availTowers.get(4));
+		
 		doImg(images.getSell(), null);
 		
 		images.getPauseV().setFitHeight(80);
@@ -306,7 +353,7 @@ public class GameStage implements Observer {
 		hb4.getChildren().add(vbTime);
 		
 		
-	
+		
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.add(hb3, 2, 0);
@@ -315,26 +362,42 @@ public class GameStage implements Observer {
 		
 		hbGrid.getChildren().addAll(grid3,grid4);
 
-
+		//images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
-				deadMonsters = 0; 
+				deadMonsters = 0;
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
-					//System.out.println(1);
-					createMonster(monsters.get(count), stageA);
-					count++;
+
+					if(isPause) {
+						pause();
+					}
 					try {
+						createMonster(monsters.get(count), stage);
+						count++;
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					
+					
+					
 				}
 			}
+			private void pause() {
+				synchronized (this) {
+		            try {
+		                wait();
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		        }
+			}
 		};
+		doPause(images.getPauseV());
 		
+		//
 		MenuBar menuBar = new MenuBar();
 		Menu menu = new Menu("File"); 
 		MenuItem newgame = new MenuItem("New Game");
@@ -365,6 +428,7 @@ public class GameStage implements Observer {
 			public void handle(ActionEvent event) {
 				gameThread.start();
 				
+				
 			}
 		});
 		
@@ -385,6 +449,19 @@ public class GameStage implements Observer {
 
 	
 	private void createMonster(Monster monster, Stage stage) {
+		if(monster instanceof BasicMonster) {
+			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
+		}else if (monster instanceof SecondMonster) {
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+		}else if(monster instanceof Monster3) {
+			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
+		}else if (monster instanceof Monster4) {
+			monster.setImg(new ImageView(new Image("/img/enemy4.gif")));
+		}else if (monster instanceof Monster5) {
+			monster.setImg(new ImageView(new Image("/img/enemy5.gif")));
+		}else if(monster instanceof Monster6) {
+			monster.setImg(new ImageView(new Image("/img/enemy6.gif")));
+		}
 		
 		ImageView monsterImg = monster.getImg();
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
@@ -409,11 +486,13 @@ public class GameStage implements Observer {
 		Point point;
 		int count = 0 ;
 		Timeline time;
-		public BulletHandler(ImageView imgView,Point point) {
+		Tower tower;
+		public BulletHandler(ImageView imgView,Point point,Tower tower) {
 			img = imgView;
 			this.point = point;
 			img.setTranslateX(point.getY()*RECTSIZE+RECTSIZE/8);
 			img.setTranslateY(point.getX()*RECTSIZE);
+			this.tower = tower;
 		}
 		public void addTimeline(Timeline timeline) {
 			time = timeline;
@@ -432,42 +511,19 @@ public class GameStage implements Observer {
 				time.stop();
 			}
 			
-			if(moveLeft()) {
+			
+			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.1);
-					img.setTranslateX(img.getTranslateX()-2.0);
+					attackLeft();
+				}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
+					attackRight();
+				}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
+					attackUp();
+				}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
+					attackDown();
 				}else {
 					img.setVisible(false);
 				}
-				
-			}else if(moveRight()) {
-				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.1);
-					img.setTranslateX(img.getTranslateX()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
-			}else if (moveUp()) {
-				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.1);
-					img.setTranslateY(img.getTranslateY()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-	
-			}else if(moveDown()) {
-				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.1);
-					img.setTranslateY(img.getTranslateY()-2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
 			}
 			
 			if(count >=RECTSIZE) {
@@ -478,8 +534,37 @@ public class GameStage implements Observer {
 			grid.getChildren().add(img);
 			count++;
 		}
-		public void sell() {
-			img.setVisible(false);
+		
+		private void attackLeft() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateX(img.getTranslateX()-2.0);
+			
+			
+		}
+		
+		private void attackRight() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateX(img.getTranslateX()+2.0);
+		
+			
+		}
+		private void attackUp() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateY(img.getTranslateY()+2.0);
+			
+		}
+		private void attackDown() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateY(img.getTranslateY()-2.0);
+			
 		}
 		private boolean moveDown() {
 			try {
@@ -532,6 +617,7 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			//System.out.println(1000);
+			
 			if(one.isSelected()){
 				time.setRate(1.0);
 			} else if(two.isSelected()){
@@ -551,7 +637,15 @@ public class GameStage implements Observer {
 					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 //					rectangle.setFill(new ImagePattern(images.getHomeend()));
 					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-						System.out.println("you win");
+						if(stageNum < 3) {
+							stageNum++;			
+							askNext();
+	
+						}
+						else {
+							stage.close();
+							System.out.println("you win");
+						}
 					}
 				}
 //				setHome(road.get(currentRoad), images.getHomeend());
@@ -572,7 +666,17 @@ public class GameStage implements Observer {
 				img.setVisible(false);
 				
 				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-					System.out.println("you win");
+					if(stageNum < 3) {
+						stageNum++;
+						
+						askNext();
+						
+						
+					}
+					else {
+						stage.close();
+						System.out.println("you win");
+					}
 					
 //					stage.close();
 //					level2.createLevel2();
@@ -646,12 +750,6 @@ public class GameStage implements Observer {
 	}
 	
 
-
-	
-	
-		
-		
-
 	
 	
 	/**
@@ -701,22 +799,47 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+				if(isPause) {
+					isPause = false;
+					synchronized (gameThread) {
+			            try {
+			                gameThread.notify();
+			            } catch(Exception e) {	
+			            }
+			        }
+					
+				}else {
+					isPause = true;
+				}
+				
+				if(isPause) {
+					for(Timeline monster:monstersTimeline) {
+						monster.stop();
+					}
+					if(!BulletsTimeline.isEmpty()) {
+						for(Timeline bullet:BulletsTimeline.values()) {
+							bullet.stop();
+						}
+					}
+					
+				}else {
+					for(Timeline monster:monstersTimeline) {
+						monster.play();
+					}
+					if(!BulletsTimeline.isEmpty()) {
+						for(Timeline bullet:BulletsTimeline.values()) {
+							bullet.play();
+						}
+					}
+					
+				}
+				
 				
 				
 			}
 			
 		});
 	}
-	
-	
-	private void doTime(RadioButton button) {
-		button.setOnMouseClicked((eventE)->{
-			
-		});
-	}
-	
-	
-	
 	
 	
 	private void doImg(ImageView image, Tower currTower) {
@@ -905,8 +1028,44 @@ public class GameStage implements Observer {
 		Scene scene = new Scene(window);
 		newStage.setScene(scene);
 		newStage.show();
-		
-		
+
 		
 	}
+	
+	
+	private void askNext() {
+		
+		Stage newStage = new Stage();
+		BorderPane windowNext = new BorderPane();
+		Label moveOn = new Label("DO YOU WANT TO CONTIUNE?");
+		ToggleGroup groupN = new ToggleGroup();
+		RadioButton yes = new RadioButton("YES");
+		RadioButton no = new RadioButton("NO");
+		yes.setToggleGroup(groupN);
+		no.setToggleGroup(groupN);
+		HBox hb = new HBox();
+		hb.getChildren().addAll(moveOn, yes, no);
+		windowNext.setCenter(hb);
+		
+		Scene scene = new Scene(windowNext);
+		newStage.setScene(scene);
+		newStage.show();
+		
+		yes.setOnMouseClicked((eventY) -> {
+			
+			newStage.close();
+			stage.close();
+			GameStage newGame = new GameStage(stageNum);
+			newGame.createNewGame();
+			
+		});
+		
+		no.setOnMouseClicked((eventNo) -> {
+			
+			newStage.close();
+			stage.close();
+		});
+	
+	}
+	
 }
