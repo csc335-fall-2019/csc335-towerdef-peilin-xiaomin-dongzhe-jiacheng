@@ -11,6 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -53,10 +54,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.BasicMonster;
 import model.BasicTower;
-import model.Images;
 import model.Monster;
+import model.Monster3;
+import model.Monster4;
+import model.Monster5;
+import model.Monster6;
 import model.Player;
 import model.Point;
+import model.SecondMonster;
 import model.Tower;
 import model.Tower3;
 import model.Tower4;
@@ -72,6 +77,7 @@ public class GameStage implements Observer {
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
+	private int stageNum;
 
 	private ImageView sellImg;
 	private int monsterLeft = 1;
@@ -85,29 +91,23 @@ public class GameStage implements Observer {
 	private Label goldL;
 	private HBox hb;
 	private HBox hb2;
-//	private Image sell;
-//	private Image health;
-//	private ImageView healthImg;
+
 	private Label number;
 	private Label healL;
 	private int heal;
-//	private Image gold;
-//	private ImageView goldImg;
+
 	private Label number2;
 	private GridPane grid2;
 	private GridPane grid3;
-	//private int getRoad = 0;
 	private ArrayList<Point> road;
 	private ArrayList<Monster> monsters;
-//	private Label currName;
-//	private String towername;
 	private HashMap<Point,Timeline> BulletsTimeline;
 	private HashMap<Point,ImageView> BulletsImageView;
 	private Images images;
 	private Stage stage; 
 
 	private VBox vb;
-	//private GameStage2 level2;
+	private boolean isPause = false;
 	private ArrayList<Timeline> monstersTimeline;
 	
 
@@ -121,15 +121,17 @@ public class GameStage implements Observer {
 	private int deadMonsters;
 	// private ImageView[][] images;
 	private GridPane grid4;
+	
 	private HBox hbGrid;
-	private int stageNum;
 	private String language;
+
 	
 	
 	
 	public GameStage(int stageNum, String choice) {
 		this.language = choice;
 		this.stage = new Stage();
+
 		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
@@ -210,7 +212,6 @@ public class GameStage implements Observer {
 				gameOver(stage);
 			}
 		}
-		
 		
 	}
 	
@@ -359,7 +360,7 @@ public class GameStage implements Observer {
 		hb4.getChildren().add(vbTime);
 		
 		
-	
+		
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.add(hb3, 2, 0);
@@ -368,25 +369,40 @@ public class GameStage implements Observer {
 		
 		hbGrid.getChildren().addAll(grid3,grid4);
 
-
+		//images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
-				deadMonsters = 0; 
+				deadMonsters = 0;
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
-					//System.out.println(1);
-					createMonster(monsters.get(count), stage);
-					count++;
+
+					if(isPause) {
+						pause();
+					}
 					try {
+						createMonster(monsters.get(count), stage);
+						count++;
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					
+					
+					
 				}
 			}
+			private void pause() {
+				synchronized (this) {
+		            try {
+		                wait();
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		        }
+			}
 		};
+		doPause(images.getPauseV());
 		
 		
 		MenuBar menuBar = new MenuBar();
@@ -419,6 +435,7 @@ public class GameStage implements Observer {
 			public void handle(ActionEvent event) {
 				gameThread.start();
 				
+				
 			}
 		});
 		
@@ -439,6 +456,19 @@ public class GameStage implements Observer {
 
 	
 	private void createMonster(Monster monster, Stage stage) {
+		if(monster instanceof BasicMonster) {
+			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
+		}else if (monster instanceof SecondMonster) {
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+		}else if(monster instanceof Monster3) {
+			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
+		}else if (monster instanceof Monster4) {
+			monster.setImg(new ImageView(new Image("/img/enemy4.gif")));
+		}else if (monster instanceof Monster5) {
+			monster.setImg(new ImageView(new Image("/img/enemy5.gif")));
+		}else if(monster instanceof Monster6) {
+			monster.setImg(new ImageView(new Image("/img/enemy6.gif")));
+		}
 		
 		ImageView monsterImg = monster.getImg();
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
@@ -487,42 +517,20 @@ public class GameStage implements Observer {
 			if(heal == 0) {
 				time.stop();
 			}
-			if(moveLeft()) {
+			
+			
+			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateX(img.getTranslateX()-2.0);
+					attackLeft();
+				}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
+					attackRight();
+				}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
+					attackUp();
+				}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
+					attackDown();
 				}else {
 					img.setVisible(false);
 				}
-				
-			} else if(moveRight()) {
-				if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateX(img.getTranslateX()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
-			}else if (moveUp()) {
-				if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateY(img.getTranslateY()+2.0);
-				}else {
-					img.setVisible(false);
-				}
-	
-			}else if(moveDown()) {
-				if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
-					img.setVisible(true);
-					model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
-					img.setTranslateY(img.getTranslateY()-2.0);
-				}else {
-					img.setVisible(false);
-				}
-				
 			}
 			
 			if(count >=RECTSIZE) {
@@ -533,8 +541,37 @@ public class GameStage implements Observer {
 			grid.getChildren().add(img);
 			count++;
 		}
-		public void sell() {
-			img.setVisible(false);
+		
+		private void attackLeft() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateX(img.getTranslateX()-2.0);
+			
+			
+		}
+		
+		private void attackRight() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateX(img.getTranslateX()+2.0);
+		
+			
+		}
+		private void attackUp() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateY(img.getTranslateY()+2.0);
+			
+		}
+		private void attackDown() {
+			
+			img.setVisible(true);
+			model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
+			img.setTranslateY(img.getTranslateY()-2.0);
+			
 		}
 		private boolean moveDown() {
 			try {
@@ -588,6 +625,7 @@ public class GameStage implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			//System.out.println(1000);
+			
 			if(one.isSelected()){
 				time.setRate(1.0);
 			} else if(two.isSelected()){
@@ -749,7 +787,7 @@ public class GameStage implements Observer {
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						setHome(rectangle, images.getHome());
+						rectangle.setFill(new ImagePattern(image));
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
@@ -772,17 +810,47 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+				if(isPause) {
+					isPause = false;
+					synchronized (gameThread) {
+			            try {
+			                gameThread.notify();
+			            } catch(Exception e) {	
+			            }
+			        }
+					
+				}else {
+					isPause = true;
+				}
+				
+				if(isPause) {
+					for(Timeline monster:monstersTimeline) {
+						monster.stop();
+					}
+					if(!BulletsTimeline.isEmpty()) {
+						for(Timeline bullet:BulletsTimeline.values()) {
+							bullet.stop();
+						}
+					}
+					
+				}else {
+					for(Timeline monster:monstersTimeline) {
+						monster.play();
+					}
+					if(!BulletsTimeline.isEmpty()) {
+						for(Timeline bullet:BulletsTimeline.values()) {
+							bullet.play();
+						}
+					}
+					
+				}
+				
 				
 				
 			}
 			
 		});
 	}
-	
-	
-	
-	
-	
 	
 	
 	private void doImg(ImageView image, Tower currTower) {
@@ -876,11 +944,28 @@ public class GameStage implements Observer {
 			}
 			
 		});
+		
+		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		ret.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
-	private void setHome(Rectangle ret, Image image) {
-		ret.setFill(new ImagePattern(image));
-	}
 	
 	private void changeGold(int gold) {
 		model.getMap().getPlayer().changeMoney(gold);
@@ -1010,4 +1095,24 @@ public class GameStage implements Observer {
 		});
 	
 	}
+	
+	private void youWin(Stage stage) {
+		stage.close();
+		Stage newStage = new Stage();
+		BorderPane windowWin = new BorderPane();
+		GridPane grid = new GridPane();
+		grid.setPrefSize(800, 450);
+		grid.setBackground(new Background(new BackgroundImage(images.getgameOverback(), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+				,BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		images.getgameOverbackV().setFitHeight(450);
+		images.getgameOverbackV().setFitWidth(800);
+		
+		grid.add(images.getgameOverbackV(), 0, 0);
+		HBox hb = new HBox();
+		hb.getChildren().add(images.getOver());
+		hb.setAlignment(Pos.CENTER);
+		grid.getChildren().add(hb);
+		grid.setAlignment(Pos.CENTER);
+	}
+	
 }

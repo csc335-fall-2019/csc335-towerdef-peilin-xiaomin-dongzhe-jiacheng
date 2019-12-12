@@ -5,21 +5,19 @@ import javafx.scene.image.ImageView;
 public class Monster {
 	protected int gold;
 	protected double speed;
-	
 	protected int lossHealth;
-	
 	protected double health;
-	private Point point;
-	private ImageView img;
+	protected Point point;
+	protected ImageView img;
 
 	//protected boolean dead = false;
 	public Monster() {
 		
 	}
-	public Monster(int gold,int speed,int health, int lossHealth) {
+	
+	public Monster(int gold,double speed,double health, int lossHealth) {
 		this.gold =gold;
 		this.speed = speed;
-		
 		this.health = health;
 		this.lossHealth = lossHealth;
 	}
@@ -44,7 +42,7 @@ public class Monster {
 	public Point getPoint() {
 		return point;
 	}
-	public void setHealth(int health) {
+	public void setHealth(double health) {
 		this.health = health;
 	}
 	public void healthLoss(double health) {

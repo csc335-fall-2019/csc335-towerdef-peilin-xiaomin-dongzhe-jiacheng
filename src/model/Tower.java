@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javafx.scene.image.ImageView;
 
-public abstract class Tower {
+public class Tower {
 	protected int cost;
 	protected Point point;
 	protected int range;
@@ -12,7 +12,7 @@ public abstract class Tower {
 	protected int attack;
 	protected double attackSpeed;
 	protected ImageView img;
-	private ArrayList<Point> attackRange;
+	protected ArrayList<Point> attackRange;
 	
 	public Tower() {
 		attackRange = new ArrayList<Point>();
@@ -66,10 +66,6 @@ public abstract class Tower {
 		this.range = range;
 	}
 
-	public void setPos(Point point) {
-		this.point = point;
-	}
-	
 	public void setImg(ImageView img) {
 		this.img = img;
 	}
@@ -77,6 +73,4 @@ public abstract class Tower {
 	public void addAttackRange(Point point) {
 		this.attackRange.add(point);
 	}
-	
-	public abstract void setAttackRange(Map map);
 }
