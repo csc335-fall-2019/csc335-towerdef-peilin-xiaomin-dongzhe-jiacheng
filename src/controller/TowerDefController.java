@@ -32,7 +32,7 @@ public class TowerDefController {
 	
 	public final int WIDTH = 10;
 	public final int HEIGHT = 6;
-	public final int MIN_AVAIL_POINT = 5;
+	public final int MIN_AVAIL_POINT = 8;
 	
 	private TowerDefModel model;
 //	private Player player;
@@ -70,11 +70,8 @@ public class TowerDefController {
 		}
 		System.out.println(newMap.getRoads());
 		model.setMap(newMap);
-		this.disablePoint();
-
 		model.addTowers(new BasicTower());
 		model.addTowers(new Turret());
-
 		model.addTowers(new Tower3());
 		model.addTowers(new Tower4());
 		model.addTowers(new Tower5());
@@ -84,6 +81,7 @@ public class TowerDefController {
 	
 	private void buildFirstPath(Map newMap) {
 		Point start = null;
+		Point end = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
@@ -99,11 +97,20 @@ public class TowerDefController {
 				}
 				if (row == 4 && col == 0) {
 					point.setEnd();
+					end = point;
 				}
 				newMap.update(row, col, point);
 			}
 		}
 		this.buildRoad(newMap, start);
+		this.disableEndSurround(newMap, end);
+		for (int row = 0; row < HEIGHT; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				System.out.print(newMap.getGraph()[row][col]);
+			}
+			System.out.println();
+		}
+			
 		for(int i =0;i<10;i++) {
 			model.addMonsters(new BasicMonster());
 		}
@@ -121,6 +128,7 @@ public class TowerDefController {
 	
 	private void buildSecondPath(Map newMap) {
 		Point start = null;
+		Point end = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
@@ -136,11 +144,15 @@ public class TowerDefController {
 				}
 				if (row == 4 && col == 9) {
 					point.setEnd();
+					end = point;
 				}
 				newMap.update(row, col, point);
 			}
 		}
 		this.buildRoad(newMap, start);
+		this.disableEndSurround(newMap, end);
+		this.disablePoint(newMap, newMap.getRoads().size());
+
 		model.addMonsters(new Monster3());
 		for(int i =0;i<4;i++) {
 			model.addMonsters(new SecondMonster());
@@ -160,6 +172,7 @@ public class TowerDefController {
 	
 	private void buildThirdPath(Map newMap) {
 		Point start = null;
+		Point end = null;
 		for (int row = 0; row < HEIGHT; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				point = new Point(row, col, false);
@@ -176,11 +189,15 @@ public class TowerDefController {
 				}
 				if (row == 0 && col == 9) {
 					point.setEnd();
+					end = point;
 				}
 				newMap.update(row, col, point);
 			}
 		}
 		this.buildRoad(newMap, start);
+		this.disableEndSurround(newMap, end);
+		this.disablePoint(newMap, newMap.getRoads().size());
+
 		model.addMonsters(new Monster3());
 		for(int i =0;i<6;i++) {
 			model.addMonsters(new SecondMonster());
@@ -246,7 +263,6 @@ public class TowerDefController {
 				continue;
 			}
 		}
-		
 	}
 	
 	public boolean canBuyTower(Tower tower) {
@@ -269,33 +285,74 @@ public class TowerDefController {
 	
 	
 
-	public void disablePoint() {
-		ArrayList<Point> road = this.getModel().getMap().getRoads();
-		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size();
+	/**
+	 * this method will disable random number of points and at each time it
+	 * will call the help method disableOnePoint to disable one random point
+	 * on the map
+	 */
+	public void disablePoint(Map newMap, int roadSize) {
+		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - roadSize;
 		// random a number at most with the number of available non-road points minus 5; 
 		int random = (int) (Math.random() * ((maxAvailPoints - MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
 		int disabled = 0;
 		while (disabled < random) {
-			this.disableOnePoint();
+			this.disableOnePoint(newMap);
 			disabled++;
 		}
 	}
+	
+	
 	
 	/**
 	 * helper method for disablePoint method, this function will disable
 	 * one random point, which is not disabled and not a road.
 	 * 
 	 */
-	private void disableOnePoint() {
+	private void disableOnePoint(Map newMap) {
 		int randX = (int) (Math.random() * HEIGHT);
 		int randY = (int) (Math.random() * WIDTH);
-		Point randPoint = model.getMap().getGraph()[randX][randY];
-		while (randPoint.isdisabled() && randPoint.isRoad()) {
+		Point randPoint = newMap.getGraph()[randX][randY];
+		while (randPoint.isdisabled() || randPoint.isRoad()) {
 			randX = (int) (Math.random() * HEIGHT);
 			randY = (int) (Math.random() * WIDTH);
-			randPoint = model.getMap().getGraph()[randX][randY];
+			randPoint = newMap.getGraph()[randX][randY];
 		}
 		randPoint.setDisable();
 	}
 	
+	/**
+	 * this will disable the surround points of the end point after
+	 * the road of the map has been build
+	 * @param end is the end point object
+	 */
+	public void disableEndSurround(Map newMap, Point end) {
+		int endX = end.getX();
+		int endY = end.getY();
+		System.out.println(endX + "," + endY);
+		if (endX - 1 >= 0) {
+			Point endLeft = newMap.getGraph()[endX-1][endY];
+			if ((!endLeft.isRoad()) && (!endLeft.isdisabled())) {
+				endLeft.setDisable();
+			}
+		}
+		if (endX + 1 < HEIGHT) {
+			Point endRight = newMap.getGraph()[endX+1][endY];
+			if ((!endRight.isRoad()) && (!endRight.isdisabled())) {
+				endRight.setDisable();
+			}
+		}
+		
+		if (endY - 1 >= 0) {
+			Point endUp = newMap.getGraph()[endX][endY-1];
+			if ((!endUp.isRoad()) && (!endUp.isdisabled())) {
+				endUp.setDisable();
+			}
+		}
+		if (endY + 1 < WIDTH) {
+			Point endDown = newMap.getGraph()[endX][endY+1];
+			if ((!endDown.isRoad()) && (!endDown.isdisabled())) {
+				endDown.setDisable();
+			}
+		}
+	}
 }

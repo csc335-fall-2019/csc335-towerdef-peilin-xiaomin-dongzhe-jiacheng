@@ -69,7 +69,6 @@ import model.Tower5;
 import model.Tower6;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
-import model.TowerMessage;
 import model.Turret;
 
 public class GameStage implements Observer {
@@ -157,66 +156,69 @@ public class GameStage implements Observer {
 		// TODO Auto-generated method stub
 		try {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
-			if (msg instanceof TowerMessage) {
 
-				Tower tower =msg.getTower();
-				
-				if(tower instanceof BasicTower) {
-					tower = new BasicTower();
-					tower.setImg(new ImageView(new Image("/img/TOWER.png")));
-					tower.setBullet(new ImageView(new Image("/img/bullet.png")));
-				}else if (tower instanceof Turret) {
-					tower = new Turret();
-					tower.setImg(new ImageView(new Image("/img/tower2.png")));
-					tower.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
-				}else if(tower instanceof Tower3) {
-					tower = new Tower3();
-					tower.setImg(new ImageView(new Image("/img/turret1.jpg")));
-					tower.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
-				}else if(tower instanceof Tower4) {
-					tower = new Tower4();
-					tower.setImg(new ImageView(new Image("/img/turret2.jpg")));
-					tower.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
-				}else if (tower instanceof Tower5) {
-					tower = new Tower5();
-					tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
-					tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
-				}else if (tower instanceof Tower6) {
-					tower = new Tower6();
-					tower.setImg(new ImageView(new Image("/img/turret6.png")));
-					tower.setBullet(new ImageView(new Image("/img/bullet6.png")));
-				}
-				
-				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
-				if(msg.getMoney()> 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
-					Timeline BulletTime = BulletsTimeline.get(point);
-					ImageView img = BulletsImageView.get(point);
-					BulletTime.stop();
-					BulletTime = null;
-					img.setVisible(false);
-					img = null;
-					BulletsTimeline.remove(point);
-					BulletsImageView.remove(point);
-				}
-				else if(msg.getMoney()< 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
-					ImageView bulletImg = tower.getBullet();
-					bulletImg.setFitHeight((int) RECTSIZE / 4);
-					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point,tower);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
-					Timeline BulletTimeline = new Timeline(BulletKey);
-					BulletTimeline.setAutoReverse(true);
-					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
-					move.addTimeline(BulletTimeline);
-					BulletTimeline.play();
-					BulletsTimeline.put(point, BulletTimeline);
-					BulletsImageView.put(point,bulletImg);
-					//SLEEP = 500;
-				}
-			    changeGold(msg.getMoney());
+			
+
+			Tower tower =msg.getTower();
+			
+			if(tower instanceof BasicTower) {
+				tower = new BasicTower();
+				tower.setImg(new ImageView(new Image("/img/TOWER.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet.png")));
+			}else if (tower instanceof Turret) {
+				tower = new Turret();
+				tower.setImg(new ImageView(new Image("/img/tower2.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
+			}else if(tower instanceof Tower3) {
+				tower = new Tower3();
+				tower.setImg(new ImageView(new Image("/img/turret1.jpg")));
+				tower.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
+			}else if(tower instanceof Tower4) {
+				tower = new Tower4();
+				tower.setImg(new ImageView(new Image("/img/turret2.jpg")));
+				tower.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
+			}else if (tower instanceof Tower5) {
+				tower = new Tower5();
+				tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
+				tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
+			}else if (tower instanceof Tower6) {
+				tower = new Tower6();
+				tower.setImg(new ImageView(new Image("/img/turret6.png")));
+				tower.setBullet(new ImageView(new Image("/img/bullet6.png")));
 			}
+			
+				
+
+			
+			Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
+			if(msg.getMoney()> 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
+				Timeline BulletTime = BulletsTimeline.get(point);
+				ImageView img = BulletsImageView.get(point);
+				BulletTime.stop();
+				BulletTime = null;
+				img.setVisible(false);
+				img = null;
+				BulletsTimeline.remove(point);
+				BulletsImageView.remove(point);
+			}
+			else if(msg.getMoney()< 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
+				ImageView bulletImg = tower.getBullet();
+				bulletImg.setFitHeight((int) RECTSIZE / 4);
+				bulletImg.setFitWidth((int) RECTSIZE / 4);
+				BulletHandler move = new BulletHandler(bulletImg,point,tower);
+				KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
+				Timeline BulletTimeline = new Timeline(BulletKey);
+				BulletTimeline.setAutoReverse(true);
+				BulletTimeline.setCycleCount(Timeline.INDEFINITE);
+				move.addTimeline(BulletTimeline);
+				BulletTimeline.play();
+				BulletsTimeline.put(point, BulletTimeline);
+				BulletsImageView.put(point,bulletImg);
+				//SLEEP = 500;
+			}
+		    changeGold(msg.getMoney());	
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal)); 
@@ -477,7 +479,7 @@ public class GameStage implements Observer {
 		if(monster instanceof BasicMonster) {
 			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
 		}else if (monster instanceof SecondMonster) {
-			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));
+			monster.setImg(new ImageView(new Image("/img/enemy2.gif")));	
 		}else if(monster instanceof Monster3) {
 			monster.setImg(new ImageView(new Image("/img/enemy3.gif")));
 		}else if (monster instanceof Monster4) {
@@ -789,7 +791,6 @@ public class GameStage implements Observer {
 					
 					rectangle.setFill(new ImagePattern(images.getRoad2()));
 				
-
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
@@ -799,9 +800,16 @@ public class GameStage implements Observer {
 						rectangle.setFill(new ImagePattern(image));
 					}
 				}else {
-					ImagePattern img = new ImagePattern(images.getgameOverback());
+					ImagePattern img = null;
+					if (currentPoint.isdisabled()) {
+						img = new ImagePattern(new Image("/img/obstacle.png"));
+					}
+					else {
+						img = new ImagePattern(images.getgameOverback());
+						
+					}
 					rectangle.setFill(img);
-					doRectangle(rectangle, img );
+					doRectangle(rectangle, img, i, j);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
@@ -915,40 +923,34 @@ public class GameStage implements Observer {
 	}
 	
 	
-	private void doRectangle(Rectangle ret, ImagePattern img) {
+	private void doRectangle(Rectangle ret, ImagePattern img, int x, int y) {
+		
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
 				if(img != roadPattern) {
 					
-					int x = 0, y = 0;
-					for (int i = 0; i < controller.HEIGHT; i++) {
-						for (int j = 0; j < controller.WIDTH; j++) {
-							if (rectangles[i][j].equals(ret)) {
-								x = i;
-								y = j;
-							}
-						}
-					}
 					if(current == images.getSell()) {
 						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 							controller.sellTower(x, y);
 							current = null;
 						}
-						//ret.setFill(Color.GREEN);
+						
 					}
-					else if (controller.canSetTower(x,y) && currentTower != null) {
-						controller.buildTower(x, y, currentTower);
-						current = null;
-						currentTower = null;
-						//ret.setFill(new ImagePattern(current.getImage()));
-					}
+					else {
+						//System.out.println("here, "+ controller.canSetTower(x, y));
+						if (controller.canSetTower(x,y) && currentTower != null) {
+							controller.buildTower(x, y, currentTower);
+							current = null;
+							currentTower = null;
+						}
+					}	
 				}
 			}
 			
+
 		});
 		
 		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -956,7 +958,9 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
+				if (controller.canSetTower(x,y)) {
+					
+				}
 			}
 			
 		});
@@ -966,7 +970,9 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
+				if (controller.canSetTower(x,y)) {
+					
+				}
 			}
 			
 		});
@@ -1068,7 +1074,6 @@ public class GameStage implements Observer {
 	
 	
 	private void askNext() {
-		
 		Stage newStage = new Stage();
 		BorderPane windowNext = new BorderPane();
 		Label moveOn = new Label("DO YOU WANT TO CONTIUNE?");
@@ -1105,7 +1110,6 @@ public class GameStage implements Observer {
 			newStage.close();
 			stage.close();
 		});
-	
 	}
 	
 	private void youWin(Stage stage) {
