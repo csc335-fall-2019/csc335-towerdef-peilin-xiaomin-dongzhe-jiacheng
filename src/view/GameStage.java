@@ -1,5 +1,14 @@
 package view;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * 
+ * purpose:
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
