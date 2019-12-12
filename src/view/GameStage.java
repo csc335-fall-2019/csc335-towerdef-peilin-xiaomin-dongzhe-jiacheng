@@ -160,14 +160,24 @@ public class GameStage implements Observer {
 				
 				if(tower instanceof BasicTower) {
 					tower = new BasicTower();
+					tower.setImg(new ImageView(new Image("/img/TOWER.png")));
+					tower.setBullet(new ImageView(new Image("/img/bullet.png")));
 				}else if (tower instanceof Turret) {
 					tower = new Turret();
+					tower.setImg(new ImageView(new Image("/img/tower2.png")));
+					tower.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
 				}else if(tower instanceof Tower3) {
 					tower = new Tower3();
+					tower.setImg(new ImageView(new Image("/img/turret1.jpg")));
+					tower.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
 				}else if(tower instanceof Tower4) {
 					tower = new Tower4();
+					tower.setImg(new ImageView(new Image("/img/turret2.jpg")));
+					tower.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
 				}else if (tower instanceof Tower5) {
 					tower = new Tower5();
+					tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
+					tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
 				}
 				
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
@@ -178,7 +188,6 @@ public class GameStage implements Observer {
 					BulletTime.stop();
 					BulletTime = null;
 					img.setVisible(false);
-			     
 					img = null;
 					BulletsTimeline.remove(point);
 					BulletsImageView.remove(point);
@@ -268,20 +277,20 @@ public class GameStage implements Observer {
 		Tower3 tower3 = new Tower3();
 		Tower4 tower4 = new Tower4();
 		Tower5 tower5 = new Tower5();
-		
+		firstImg.setImg(new ImageView(new Image("/img/TOWER.png")));
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
-			
+		secondImg.setImg(new ImageView(new Image("/img/tower2.png")));
 		secondImg.getImg().setFitHeight(50);
 		secondImg.getImg().setFitWidth(50);
 	
-		
+		tower3.setImg(new ImageView(new Image("/img/turret1.jpg")));
 		tower3.getImg().setFitHeight(50);
 		tower3.getImg().setFitWidth(50);
-		
+		tower4.setImg(new ImageView(new Image("/img/turret2.jpg")));
 		tower4.getImg().setFitHeight(50);
 		tower4.getImg().setFitWidth(50);
-		
+		tower5.setImg(new ImageView(new Image("/img/turret3.jpg")));
 		tower5.getImg().setFitHeight(50);
 		tower5.getImg().setFitWidth(50);
 		
