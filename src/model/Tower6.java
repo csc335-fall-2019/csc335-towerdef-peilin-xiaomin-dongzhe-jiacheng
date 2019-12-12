@@ -8,7 +8,7 @@ package model;
  * CSC 335, Fall 2019
  * team project, Tower6.java
  * 
- * purpose: 
+ * purpose: this is one type of tower, with it's own attributes.
  */
 
 public class Tower6 extends Tower{

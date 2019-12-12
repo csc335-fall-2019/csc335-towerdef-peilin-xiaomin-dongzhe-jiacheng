@@ -13,10 +13,6 @@ package view;
 
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,7 +22,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -64,7 +59,11 @@ public class GameMenu{
 		basicStage(stage, window,choice);
 		
 	}
-	
+	/**
+	 * This class is an additional feature that we add, we can select language.
+	 * @param language , a button 
+	 * @param stage , the current stage
+	 */
 	private void languageClick(Button language, Stage stage) {
 		// TODO Auto-generated method stub
 		language.setOnMouseClicked((event) -> {
@@ -124,7 +123,11 @@ public class GameMenu{
 		
 	}
 	
-
+/**
+ * event handler to define the mouse click event for now button
+ * @param now
+ * @param stage
+ */
 	private void mouseClick(Button now, Stage stage) {
 		now.setOnMouseClicked((event) -> {
 			stage.close();
@@ -133,7 +136,12 @@ public class GameMenu{
 		});
 	}
 	
-	
+	/**
+	 * This function is to construct the welcome home stage
+	 * @param stage, a stage
+	 * @param window, a window
+	 * @param lang, the language option
+	 */
 	private void basicStage(Stage stage, BorderPane window, String lang) {
 		System.out.println("1");
 		Button text;
@@ -242,7 +250,11 @@ public class GameMenu{
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+	/**
+	 * This is function is to select level.
+	 * @param levels, a button.
+	 */
+
 	private void levelsOnClick(Button levels) {
 		levels.setOnMouseClicked((event) ->{
 			Stage levelS = new Stage();

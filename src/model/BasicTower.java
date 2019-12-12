@@ -8,13 +8,10 @@ package model;
  * CSC 335, Fall 2019
  * team project, BasicTower.java
  * 
- * purpose: 
+ * purpose: this is one type of tower, with it's own attributes.
  */
 
-import java.util.ArrayList;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class BasicTower extends Tower {
 	private int cost =10;

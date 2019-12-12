@@ -16,21 +16,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.TimeUnit;
 
 import controller.TowerDefController;
 import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
-import javafx.animation.PauseTransition;
+
 import javafx.animation.Timeline;
-import javafx.application.Platform;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -48,16 +43,14 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -71,7 +64,6 @@ import model.Monster3;
 import model.Monster4;
 import model.Monster5;
 import model.Monster6;
-import model.Player;
 import model.Point;
 import model.SecondMonster;
 import model.Tower;

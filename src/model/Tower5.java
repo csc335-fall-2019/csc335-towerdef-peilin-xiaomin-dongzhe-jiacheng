@@ -8,11 +8,8 @@ package model;
  * CSC 335, Fall 2019
  * team project, Tower5.java
  * 
- * purpose: 
+ * purpose: this is one type of tower, with it's own attributes.
  */
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Tower5 extends Tower {
 	private int cost =25;

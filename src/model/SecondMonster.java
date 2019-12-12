@@ -1,3 +1,4 @@
+
 package model;
 
 /**
@@ -8,11 +9,9 @@ package model;
  * CSC 335, Fall 2019
  * team project, SecondMonster.java
  * 
- * purpose: 
+ * purpose: This is one type of monster with it's own property.
  */
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class SecondMonster extends Monster {
 	private int gold = 6;

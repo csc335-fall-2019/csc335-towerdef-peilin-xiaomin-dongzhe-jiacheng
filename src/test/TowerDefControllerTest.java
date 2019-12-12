@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import controller.TowerDefController;
-import javafx.scene.image.ImageView;
 
 import model.Point;
 import model.Tower;

@@ -8,11 +8,9 @@ package model;
  * CSC 335, Fall 2019
  * team project, Turret.java
  * 
- * purpose: 
+ * purpose: this is one type of tower, with it's own attributes.
  */
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Turret extends Tower {
 	private int cost =20;
