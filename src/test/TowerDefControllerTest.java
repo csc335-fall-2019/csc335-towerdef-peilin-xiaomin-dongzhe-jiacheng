@@ -1,9 +1,10 @@
-package controller;
+package test;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import controller.TowerDefController;
 import javafx.scene.image.ImageView;
 import model.Map;
 import model.Monster;

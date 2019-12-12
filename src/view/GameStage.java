@@ -753,7 +753,6 @@ public class GameStage implements Observer {
 					
 					rectangle.setFill(new ImagePattern(images.getRoad2()));
 				
-
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
@@ -765,7 +764,7 @@ public class GameStage implements Observer {
 				}else {
 					ImagePattern img = new ImagePattern(images.getgameOverback());
 					rectangle.setFill(img);
-					doRectangle(rectangle, img );
+					doRectangle(rectangle, img, i, j);
 				}
 				this.rectangles[i][j] = rectangle;
 				grid.add(rectangle, j, i);
@@ -879,40 +878,43 @@ public class GameStage implements Observer {
 	}
 	
 	
-	private void doRectangle(Rectangle ret, ImagePattern img) {
+	private void doRectangle(Rectangle ret, ImagePattern img, int x, int y) {
+		
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
 				if(img != roadPattern) {
 					
-					int x = 0, y = 0;
-					for (int i = 0; i < controller.HEIGHT; i++) {
-						for (int j = 0; j < controller.WIDTH; j++) {
-							if (rectangles[i][j].equals(ret)) {
-								x = i;
-								y = j;
-							}
-						}
-					}
+//					int x = 0, y = 0;
+//					for (int i = 0; i < controller.HEIGHT; i++) {
+//						for (int j = 0; j < controller.WIDTH; j++) {
+//							if (rectangles[i][j].equals(ret)) {
+//								x = i;
+//								y = j;
+//							}
+//						}
+//					}
 					if(current == images.getSell()) {
 						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 							controller.sellTower(x, y);
 							current = null;
 						}
-						//ret.setFill(Color.GREEN);
+						
 					}
-					else if (controller.canSetTower(x,y) && currentTower != null) {
-						controller.buildTower(x, y, currentTower);
-						current = null;
-						currentTower = null;
-						//ret.setFill(new ImagePattern(current.getImage()));
-					}
+					else {
+						//System.out.println("here, "+ controller.canSetTower(x, y));
+						if (controller.canSetTower(x,y) && currentTower != null) {
+							controller.buildTower(x, y, currentTower);
+							current = null;
+							currentTower = null;
+						}
+					}	
 				}
 			}
 			
+
 		});
 		
 		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -920,7 +922,9 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
+				if (controller.canSetTower(x,y)) {
+					
+				}
 			}
 			
 		});
@@ -930,7 +934,9 @@ public class GameStage implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				
+				if (controller.canSetTower(x,y)) {
+					
+				}
 			}
 			
 		});
@@ -1015,7 +1021,6 @@ public class GameStage implements Observer {
 	
 	
 	private void askNext() {
-		
 		Stage newStage = new Stage();
 		BorderPane windowNext = new BorderPane();
 		Label moveOn = new Label("DO YOU WANT TO CONTIUNE?");
@@ -1046,7 +1051,6 @@ public class GameStage implements Observer {
 			newStage.close();
 			stage.close();
 		});
-	
 	}
 	
 }
