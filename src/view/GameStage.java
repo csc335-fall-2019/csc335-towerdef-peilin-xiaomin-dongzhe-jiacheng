@@ -72,7 +72,7 @@ import model.TowerMessage;
 import model.Turret;
 
 public class GameStage implements Observer {
-	
+	private int count = 0;
 	public final double RECTSIZE = 70.0f;
 	private GridPane grid;
 	private ImageView current;
@@ -80,7 +80,6 @@ public class GameStage implements Observer {
 	private int stageNum;
 
 	private ImageView sellImg;
-	private int monsterLeft = 1;
 	private int SLEEP = 2000;
 	private Thread gameThread;
 
@@ -118,7 +117,6 @@ public class GameStage implements Observer {
 	private RadioButton two;
 	private RadioButton one;
 
-	private int deadMonsters;
 	// private ImageView[][] images;
 	private GridPane grid4;
 	
@@ -164,14 +162,24 @@ public class GameStage implements Observer {
 				
 				if(tower instanceof BasicTower) {
 					tower = new BasicTower();
+					tower.setImg(new ImageView(new Image("/img/TOWER.png")));
+					tower.setBullet(new ImageView(new Image("/img/bullet.png")));
 				}else if (tower instanceof Turret) {
 					tower = new Turret();
+					tower.setImg(new ImageView(new Image("/img/tower2.png")));
+					tower.setBullet(new ImageView(new Image("/img/bullet1.jpg")));
 				}else if(tower instanceof Tower3) {
 					tower = new Tower3();
+					tower.setImg(new ImageView(new Image("/img/turret1.jpg")));
+					tower.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
 				}else if(tower instanceof Tower4) {
 					tower = new Tower4();
+					tower.setImg(new ImageView(new Image("/img/turret2.jpg")));
+					tower.setBullet(new ImageView(new Image("/img/bullet3.jpg")));
 				}else if (tower instanceof Tower5) {
 					tower = new Tower5();
+					tower.setImg(new ImageView(new Image("/img/turret3.jpg")));
+					tower.setBullet(new ImageView(new Image("/img/bullet4.jpg")));
 				}
 				
 				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
@@ -182,7 +190,6 @@ public class GameStage implements Observer {
 					BulletTime.stop();
 					BulletTime = null;
 					img.setVisible(false);
-			     
 					img = null;
 					BulletsTimeline.remove(point);
 					BulletsImageView.remove(point);
@@ -277,20 +284,20 @@ public class GameStage implements Observer {
 		Tower3 tower3 = new Tower3();
 		Tower4 tower4 = new Tower4();
 		Tower5 tower5 = new Tower5();
-		
+		firstImg.setImg(new ImageView(new Image("/img/TOWER.png")));
 		firstImg.getImg().setFitHeight(50);
 		firstImg.getImg().setFitWidth(50);
-			
+		secondImg.setImg(new ImageView(new Image("/img/tower2.png")));
 		secondImg.getImg().setFitHeight(50);
 		secondImg.getImg().setFitWidth(50);
 	
-		
+		tower3.setImg(new ImageView(new Image("/img/turret1.jpg")));
 		tower3.getImg().setFitHeight(50);
 		tower3.getImg().setFitWidth(50);
-		
+		tower4.setImg(new ImageView(new Image("/img/turret2.jpg")));
 		tower4.getImg().setFitHeight(50);
 		tower4.getImg().setFitWidth(50);
-		
+		tower5.setImg(new ImageView(new Image("/img/turret3.jpg")));
 		tower5.getImg().setFitHeight(50);
 		tower5.getImg().setFitWidth(50);
 		
@@ -371,9 +378,8 @@ public class GameStage implements Observer {
 
 		//images.getPauseV().setDisable(true);
 		gameThread = new Thread() {
-			int count = 0;
+
 			public void run() {
-				deadMonsters = 0;
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 
 					if(isPause) {
@@ -479,8 +485,8 @@ public class GameStage implements Observer {
 		monsterTimeline.setAutoReverse(false);
 		monsterTimeline.setCycleCount(Timeline.INDEFINITE);
 		move.addTimeline(monsterTimeline);
-		monsterTimeline.play();
 		monstersTimeline.add(monsterTimeline);
+		monsterTimeline.play();
 
 		
 	}
@@ -520,17 +526,22 @@ public class GameStage implements Observer {
 			
 			
 			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
-				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
-					attackLeft();
-				}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
-					attackRight();
-				}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
-					attackUp();
-				}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
-					attackDown();
-				}else {
+				try {
+					if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
+						attackLeft();
+					}else if(model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().size()!=0){
+						attackRight();
+					}else if(model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().size()!=0) {
+						attackUp();
+					}else if(model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().size()!=0) {
+						attackDown();
+					}else {
+						img.setVisible(false);
+					}
+				}catch (Exception e) {
 					img.setVisible(false);
 				}
+				
 			}
 			
 			if(count >=RECTSIZE) {
@@ -637,46 +648,18 @@ public class GameStage implements Observer {
 				time.stop();
 				monstersTimeline.remove(time);
 				img.setVisible(false);
-				currPoint = road.get(currentRoad);
-//				images.getHomeV().setVisible(false);
-				if(currPoint.isEnd()) {
-					deadMonsters++;
-					System.out.println(nextPoint.getX()+" "+nextPoint.getY());
-					System.out.println("getend");
-					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
-//					rectangle.setFill(new ImagePattern(images.getHomeend()));
-				
-				}
-//				setHome(road.get(currentRoad), images.getHomeend());
-				
+				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 				model.lossHealth(monster);
-				
-				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-					if(stageNum < 3) {
-						stageNum++;			
-						askNext();
-
-					}
-					else {
-						stage.close();
-						System.out.println("you win");
-					}
-				}
-				//time.setRate(value);
-				//System.out.println(1);
-			}else if(heal == 0){
-				monstersTimeline.remove(time);
+		
 
 			}else if(monster.dead()){
 				changeGold(monster.getGold());
 				time.stop();
-				deadMonsters++; 
-				monsterLeft++;
+				monstersTimeline.remove(time);
 				road.get(currentRoad).clearMonster(monster);
-				time.stop();
 				img.setVisible(false);
-				
-				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+	
+				if(count != 0&&monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
 					if(stageNum < 3) {
 						stageNum++;
 						
@@ -688,10 +671,7 @@ public class GameStage implements Observer {
 						stage.close();
 						System.out.println("you win");
 					}
-					
-//					stage.close();
-//					level2.createLevel2();
-					
+			
 				}
 
 			}else {
@@ -787,7 +767,7 @@ public class GameStage implements Observer {
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						rectangle.setFill(new ImagePattern(image));
+						rectangle.setFill(new ImagePattern(images.getHome()));
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));

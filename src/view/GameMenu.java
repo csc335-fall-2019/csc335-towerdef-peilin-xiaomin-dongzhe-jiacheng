@@ -164,6 +164,7 @@ public class GameMenu{
 //		Image image3 = new Image("/img/TOWER.png");
 //		ImageView img3 = new ImageView(image3);
 		tower = new BasicTower();
+		tower.setImg(new ImageView(new Image("/img/TOWER.png")));
 		tower.getImg().setFitHeight(120);
 		tower.getImg().setFitWidth(120);
 		
