@@ -68,7 +68,6 @@ import model.Tower4;
 import model.Tower5;
 import model.TowerDefModel;
 import model.TowerDefMoveMessage;
-import model.TowerMessage;
 import model.Turret;
 
 public class GameStage implements Observer {
@@ -156,53 +155,51 @@ public class GameStage implements Observer {
 		// TODO Auto-generated method stub
 		try {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
-			if (msg instanceof TowerMessage) {
-
-				Tower tower =msg.getTower();
-				
-				if(tower instanceof BasicTower) {
-					tower = new BasicTower();
-				}else if (tower instanceof Turret) {
-					tower = new Turret();
-				}else if(tower instanceof Tower3) {
-					tower = new Tower3();
-				}else if(tower instanceof Tower4) {
-					tower = new Tower4();
-				}else if (tower instanceof Tower5) {
-					tower = new Tower5();
-				}
-				
-				Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
-				if(msg.getMoney()> 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
-					Timeline BulletTime = BulletsTimeline.get(point);
-					ImageView img = BulletsImageView.get(point);
-					BulletTime.stop();
-					BulletTime = null;
-					img.setVisible(false);
-			     
-					img = null;
-					BulletsTimeline.remove(point);
-					BulletsImageView.remove(point);
-				}
-				else if(msg.getMoney()< 0) {
-					rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
-					ImageView bulletImg = tower.getBullet();
-					bulletImg.setFitHeight((int) RECTSIZE / 4);
-					bulletImg.setFitWidth((int) RECTSIZE / 4);
-					BulletHandler move = new BulletHandler(bulletImg,point,tower);
-					KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
-					Timeline BulletTimeline = new Timeline(BulletKey);
-					BulletTimeline.setAutoReverse(true);
-					BulletTimeline.setCycleCount(Timeline.INDEFINITE);
-					move.addTimeline(BulletTimeline);
-					BulletTimeline.play();
-					BulletsTimeline.put(point, BulletTimeline);
-					BulletsImageView.put(point,bulletImg);
-					//SLEEP = 500;
-				}
-			    changeGold(msg.getMoney());
+			Tower tower =msg.getTower();
+			
+			if(tower instanceof BasicTower) {
+				tower = new BasicTower();
+			}else if (tower instanceof Turret) {
+				tower = new Turret();
+			}else if(tower instanceof Tower3) {
+				tower = new Tower3();
+			}else if(tower instanceof Tower4) {
+				tower = new Tower4();
+			}else if (tower instanceof Tower5) {
+				tower = new Tower5();
 			}
+			
+			Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
+			if(msg.getMoney()> 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(images.getgameOverback()));
+				Timeline BulletTime = BulletsTimeline.get(point);
+				ImageView img = BulletsImageView.get(point);
+				BulletTime.stop();
+				BulletTime = null;
+				img.setVisible(false);
+		     
+				img = null;
+				BulletsTimeline.remove(point);
+				BulletsImageView.remove(point);
+			}
+			else if(msg.getMoney()< 0) {
+				rectangles[msg.getRow()][msg.getColumn()].setFill(new ImagePattern(current.getImage()));
+				ImageView bulletImg = tower.getBullet();
+				bulletImg.setFitHeight((int) RECTSIZE / 4);
+				bulletImg.setFitWidth((int) RECTSIZE / 4);
+				BulletHandler move = new BulletHandler(bulletImg,point,tower);
+				KeyFrame BulletKey = new KeyFrame(Duration.millis(5*tower.getSpeed()),move);
+				Timeline BulletTimeline = new Timeline(BulletKey);
+				BulletTimeline.setAutoReverse(true);
+				BulletTimeline.setCycleCount(Timeline.INDEFINITE);
+				move.addTimeline(BulletTimeline);
+				BulletTimeline.play();
+				BulletsTimeline.put(point, BulletTimeline);
+				BulletsImageView.put(point,bulletImg);
+				//SLEEP = 500;
+			}
+		    changeGold(msg.getMoney());
+			
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal)); 
@@ -781,7 +778,14 @@ public class GameStage implements Observer {
 						rectangle.setFill(new ImagePattern(image));
 					}
 				}else {
-					ImagePattern img = new ImagePattern(images.getgameOverback());
+					ImagePattern img = null;
+					if (currentPoint.isdisabled()) {
+						img = new ImagePattern(new Image("/img/obstacle.png"));
+					}
+					else {
+						img = new ImagePattern(images.getgameOverback());
+						
+					}
 					rectangle.setFill(img);
 					doRectangle(rectangle, img, i, j);
 				}
@@ -906,15 +910,6 @@ public class GameStage implements Observer {
 				ImagePattern roadPattern = new ImagePattern(images.getRoad2());
 				if(img != roadPattern) {
 					
-//					int x = 0, y = 0;
-//					for (int i = 0; i < controller.HEIGHT; i++) {
-//						for (int j = 0; j < controller.WIDTH; j++) {
-//							if (rectangles[i][j].equals(ret)) {
-//								x = i;
-//								y = j;
-//							}
-//						}
-//					}
 					if(current == images.getSell()) {
 						if (controller.getModel().getMap().getGraph()[x][y].getTower() != null) {
 							controller.sellTower(x, y);
