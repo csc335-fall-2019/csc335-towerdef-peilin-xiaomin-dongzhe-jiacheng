@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import controller.TowerDefController;
 import javafx.scene.image.ImageView;
 import model.BasicMonster;
 import model.BasicTower;
@@ -23,6 +24,7 @@ import model.Tower3;
 import model.Tower4;
 import model.Tower5;
 import model.TowerDefModel;
+import model.TowerDefMoveMessage;
 import model.Turret;
 
 public class TowerDefModelTest {
@@ -51,12 +53,7 @@ public class TowerDefModelTest {
 		assertEquals(point, tower.getPoint());
 		assertTrue(tower.getAttackRange().contains(point));
 		assertEquals(tower.getSpeed(), 8.0, DELTA);
-		
-//		BasicTower basicTower = new BasicTower();
-//		Turret turret = new Turret();
-//		Tower3 twoer3 = new Tower3();
-//		Tower4 tower4 = new Tower4();
-//		Tower5 tower5 = new Tower5();
+
 	}
 	
 	@Test
@@ -108,19 +105,16 @@ public class TowerDefModelTest {
 		
 		assertFalse(point1.canSetTower());
 		assertTrue(point2.canSetTower());
-		assertTrue(point2.canSetTower());
-		Tower tower1 = new Tower();
-		Tower tower2 = new Tower();
-		point2.setTower(tower1);
-		point3.setTower(tower2);
-		assertFalse(point2.canSetTower());
-		assertFalse(point3.canSetTower());
-		assertEquals(tower1, point2.getTower());
-		assertEquals(tower2, point3.getTower());
-		point2.sellTower();
-		point3.sellTower();
-		assertTrue(point2.canSetTower());
 		assertTrue(point3.canSetTower());
+		point3.setDisable();
+		assertFalse(point3.canSetTower());
+		assertTrue(point3.isdisabled());
+		Tower tower = new Tower();
+		point2.setTower(tower);
+		assertFalse(point2.canSetTower());
+		assertEquals(tower, point2.getTower());
+		point2.sellTower();
+		assertTrue(point2.canSetTower());
 		
 		Monster monster = new Monster();
 		point1.setMonster(monster);
@@ -133,7 +127,8 @@ public class TowerDefModelTest {
 		assertTrue(point1.isStart());
 		assertTrue(point1.isEnd());
 		assertFalse(point2.isStart());
-		assertFalse(point2.isEnd());	
+		assertFalse(point2.isEnd());
+		
 	}
 	 
 	@Test
@@ -162,6 +157,7 @@ public class TowerDefModelTest {
 		assertEquals(new ArrayList<Point>(), map.getRoads());
 		map.addRoad(point);
 		assertEquals(1, map.getRoads().size());
+		map.setPointDisable(point);
 	}
 	
 	@Test
@@ -190,7 +186,12 @@ public class TowerDefModelTest {
 	
 	@Test
 	public void testTowerDefMoveMessage() {
-		
+		Tower tower = new Tower();
+		TowerDefMoveMessage msg = new TowerDefMoveMessage(1,2,tower,10);
+		assertEquals(1, msg.getRow());
+		assertEquals(2, msg.getColumn());
+		assertEquals(tower, msg.getTower());
+		assertEquals(10, msg.getMoney());
 	}
 	
 	@Test

@@ -40,7 +40,7 @@ public class TowerDefModel extends Observable {
 		tower.setPoint(this.map.getGraph()[row][col]);
 		// tower.setAttackRange(this.map);
 		this.map.getGraph()[row][col].setTower(tower);
-		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,-tower.getCost());
+		TowerDefMoveMessage msg = new TowerDefMoveMessage(row, col, tower,-tower.getCost());
 		
 		setChanged();
 		
@@ -53,7 +53,7 @@ public class TowerDefModel extends Observable {
 		tower.setPoint(null);
 		this.map.getGraph()[row][col].sellTower();
 		System.out.println("abc");
-		TowerDefMoveMessage msg = new TowerMessage(row, col, tower,(int)Math.floor(tower.getCost()*0.8));
+		TowerDefMoveMessage msg = new TowerDefMoveMessage(row, col, tower,(int)Math.floor(tower.getCost()*0.8));
 		
 		setChanged();
         notifyObservers(msg);

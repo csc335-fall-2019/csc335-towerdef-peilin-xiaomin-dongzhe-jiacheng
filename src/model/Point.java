@@ -79,10 +79,10 @@ public class Point {
 		this.disable = true;
 	}
 	
-	public String toString() {
-		if(start) return "s" +disable + " `(" + x + "," + y + ")";
-		if(end) return "e" +disable+ " `(" + x + "," + y + ")";
-		if (road) return "-" +disable+ " `(" + x + "," + y + ")";
-		return "0" +disable+ " `(" + x + "," + y + ")";
-	}
+//	public String toString() {
+//		if(start) return "s" +disable + " `(" + x + "," + y + ")";
+//		if(end) return "e" +disable+ " `(" + x + "," + y + ")";
+//		if (road) return "-" +disable+ " `(" + x + "," + y + ")";
+//		return "0" +disable+ " `(" + x + "," + y + ")";
+//	}
 }

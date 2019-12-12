@@ -268,7 +268,6 @@ public class TowerDefController {
 				continue;
 			}
 		}
-		
 	}
 	
 	public boolean canBuyTower(Tower tower) {
