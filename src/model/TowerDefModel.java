@@ -1,3 +1,7 @@
+/**
+ * @author chendongzhe, xiaominzhao, peilin feng, jiacheng he
+ * This is the modle class.
+ */
 package model;
 
 import java.util.ArrayList;
@@ -13,29 +17,54 @@ public class TowerDefModel extends Observable {
 		this.availTowers = new ArrayList<Tower>();
 		this.monsters = new ArrayList<Monster>();
 	}
-	
+	/**
+	 * getter, return the game board as map
+	 * @return, the map
+	 */
 	public Map getMap() {
 		return this.map;
 	}
-	
+	/**
+	 * getter, return all the monsters in the game board
+	 * @return all the monsters in the game board
+	 */
 	public ArrayList<Monster> getMonsters() {
 		return this.monsters;
 	}
+	/**
+	 * add the monster in the game board
+	 * @param the monster
+	 */
 	public void addMonsters(Monster monster) {
 		 monsters.add(monster);
 	}
+	/**
+	 * return the list of towers that are in use
+	 * @return, list of towers that are in use
+	 */
 	public ArrayList<Tower> getAvailTowers() {
 		return this.availTowers;
 	}
-	
+	/**
+	 * add a tower to the game board
+	 * @param tower, the tower obj
+	 */
 	public void addTowers(Tower tower) {
 		this.availTowers.add(tower);
 	}
-	
+	/**
+	 * set the game board map
+	 * @param map, the map obj
+	 */
 	public void setMap(Map map) {
 		this.map = map;
 	}
-	
+	/**
+	 * This function is to buy tower
+	 * @param tower, a tower.
+	 * @param row, the position in the game board
+	 * @param col, the position in the game board
+	 */
 	public void setTower(Tower tower, int row, int col) {
 		tower.setPoint(this.map.getGraph()[row][col]);
 		// tower.setAttackRange(this.map);
@@ -47,7 +76,11 @@ public class TowerDefModel extends Observable {
         notifyObservers(msg);
         System.out.println("Check"+map.getPlayer().getMoney());
 	}
-	
+	/**
+	 * This function is to sell towers
+	 * @param row, the position in the game board
+	 * @param col, the position in the game board
+	 */
 	public void sellTower(int row, int col) {
 		Tower tower = this.map.getGraph()[row][col].getTower();
 		tower.setPoint(null);
@@ -59,7 +92,10 @@ public class TowerDefModel extends Observable {
         notifyObservers(msg);
 	}
 
-
+	/**
+	 * This function is used to minus the life, when monster attack
+	 * @param monster, a type of monster
+	 */
 	public void lossHealth(Monster monster) {
 		map.getPlayer().lossHealth(monster.lossPlayerHealth());
 		setChanged();

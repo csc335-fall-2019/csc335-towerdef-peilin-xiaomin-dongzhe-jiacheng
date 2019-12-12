@@ -1,3 +1,4 @@
+
 package model;
 
 import java.io.Serializable;
@@ -14,19 +15,31 @@ public class TowerDefMoveMessage implements Serializable {
 		this.tower = tower;
 		this.money = money;
 	}
-	
+	/**
+	 * get the row of the position
+	 * @return, the row of the position 
+	 */
     public int getRow() {
 		return row;  	
     }
-
+/**
+ * get the column of the position 
+ * return col position 
+ */
     public int getColumn() {
     	return col;
     }
-    
+    /**
+     * get the tower at the location
+     * @return the tower obj
+     */
     public Tower getTower() {
 		return tower;  	
     }
-    
+    /**
+     * return the money
+     * @return an integer that is the value of the tower
+     */
     public int getMoney() {
     	return money;
     }

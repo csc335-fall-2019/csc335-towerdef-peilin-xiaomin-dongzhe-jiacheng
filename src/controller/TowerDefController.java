@@ -78,7 +78,10 @@ public class TowerDefController {
 		model.addTowers(new Tower6());
 		
 	}
-	
+	/**
+	 * This is a function to build the first stage
+	 * @param newMap, the map of the game board
+	 */
 	private void buildFirstPath(Map newMap) {
 		Point start = null;
 		Point end = null;
@@ -125,7 +128,10 @@ public class TowerDefController {
 		model.addMonsters(new Monster6());
 
 	}
-	
+	/**
+	 * Build the second stage.
+	 * @param newMap, the map of the game board
+	 */
 	private void buildSecondPath(Map newMap) {
 		Point start = null;
 		Point end = null;
@@ -168,7 +174,10 @@ public class TowerDefController {
 		}
 		
 	}
-	
+	/**
+	 * The map of the third stage
+	 * @param newMap, the map of the game board
+	 */
 	
 	private void buildThirdPath(Map newMap) {
 		Point start = null;
@@ -215,7 +224,11 @@ public class TowerDefController {
 		}
 	}
 	
-	
+	/**
+	 * Find the road, build with point as map
+	 * @param newMap, the map of the game board
+	 * @param start, the beginning of the road
+	 */
 	public void buildRoad(Map newMap, Point start) {
 		int x = start.getX();
 		int y = start.getY();
@@ -264,19 +277,40 @@ public class TowerDefController {
 			}
 		}
 	}
-	
+	/**
+	 * This function is to return the ability to buy tower
+	 * @param tower, a specified tower.
+	 * @return a boolean, if the player can buy the tower.
+	 */
 	public boolean canBuyTower(Tower tower) {
 		return model.getMap().getPlayer().canBuyTower(tower.getCost());
 	}
+	/**
+	 * This function is to return the ability to put a tower in a location
+	 * @param x, the x-value of the point.
+	 * @param y, the y- value of the point.
+	 * @return , boolean the ability to put the tower in that location 
+	 */
 	public boolean canSetTower(int x,int y) {
 		return model.getMap().getGraph()[x][y].canSetTower();
 	}
 	
+	/**
+	 * 
+	 * @param x, the x-value of the point.
+	 * @param y, the y-value of the point.
+	 * @param tower, a specified tower.
+	 */
 	public void buildTower(int x,int y,Tower tower) {		
 		model.setTower(tower, x, y);
 	}
 	
 
+/**
+ * This function is to sell the Tower.
+ * @param x, x-value of the current location.
+ * @param y, y-value of the current location
+ */
 	
 	public void sellTower(int x, int y) {
 		System.out.println("sell");
@@ -306,6 +340,7 @@ public class TowerDefController {
 	/**
 	 * helper method for disablePoint method, this function will disable
 	 * one random point, which is not disabled and not a road.
+	 * @param Map, a map with points.
 	 * 
 	 */
 	private void disableOnePoint(Map newMap) {

@@ -1,3 +1,7 @@
+/**
+ * @author chendongzhe, xiaomin zhao, jiacheng he, peilin feng 
+ * this is one type of tower, with it's own attributes.
+ */
 package model;
 
 public class Tower6 extends Tower{

@@ -1,4 +1,7 @@
-
+/**
+ * @author chendongzhe Xiaomin Zhao, Peilin Feng, Jiacheng He
+ * This project is to write a tower defense game. 
+ */
 import javafx.application.Application;
 import view.View;
 
