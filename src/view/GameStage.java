@@ -204,7 +204,7 @@ public class GameStage implements Observer {
 		} catch (Exception e) {
 			heal = model.getMap().getPlayer().getHealth();
 			healL.setText(String.valueOf(heal)); 
-			if(heal == 0) {
+			if(heal <= 0) {
 				gameOver(stage);
 			}
 		}
