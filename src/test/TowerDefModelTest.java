@@ -140,8 +140,7 @@ public class TowerDefModelTest {
 		assertTrue(player.canBuyTower(10));
 		
 		assertEquals(50-3, player.getHealth());
-		assertEquals(100+20-5, player.getMoney());
-		assertFalse(player.canBuyTower(200));
+		assertEquals(75+20-5, player.getMoney());
 	}
 	
 	@Test

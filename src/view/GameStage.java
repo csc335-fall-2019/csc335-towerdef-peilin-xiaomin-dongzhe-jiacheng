@@ -1,5 +1,14 @@
 package view;
 
+/**
+ * @author Peilin Feng
+ * @author Xiaomin Zhao
+ * @author Dongzhe Chen
+ * @author Jiacheng He
+ * 
+ * purpose:
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -79,8 +88,10 @@ public class GameStage implements Observer {
 	private Tower currentTower;
 	private int stageNum;
 
+
 	private ImageView sellImg;
 	private int SLEEP = 1000;
+
 	private Thread gameThread;
 
 	private Rectangle[][] rectangles;
@@ -117,14 +128,11 @@ public class GameStage implements Observer {
 	private RadioButton two;
 	private RadioButton one;
 
-	// private ImageView[][] images;
 	private GridPane grid4;
 	
 	private HBox hbGrid;
 	private String language;
 
-	
-	
 	
 	public GameStage(int stageNum, String choice) {
 		this.language = choice;
@@ -151,9 +159,14 @@ public class GameStage implements Observer {
 		monstersTimeline = new ArrayList<Timeline>();
 	}
 	
+	/**
+	 * this is update method which let the model send a tower message tell
+	 * the GUI to build a new tower or sell an exist tower
+	 * and this method will enable the tower's bullet function immediately
+	 * after it created.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		try {
 			TowerDefMoveMessage msg = (TowerDefMoveMessage) arg;
 
@@ -186,9 +199,6 @@ public class GameStage implements Observer {
 				tower.setImg(new ImageView(new Image("/img/turret6.png")));
 				tower.setBullet(new ImageView(new Image("/img/bullet6.png")));
 			}
-			
-				
-
 			
 			Point point = model.getMap().getGraph()[msg.getRow()][msg.getColumn()];
 			if(msg.getMoney()> 0) {
@@ -230,9 +240,13 @@ public class GameStage implements Observer {
 	}
 	
 
+	/**
+	 * this method create the new Game stage with language setting and basic
+	 * game interface. it also create a menu bar to control the game start or
+	 * exit. And we set up a game thread to control the monster wave.
+	 */
 	public void createNewGame() {
-//		Stage stage = new Stage();
-//		stage = stageA;
+		// enable different language label
 		if(language.equals("English")) {
 			stage.setTitle("Protect Earth");
 		}
@@ -242,33 +256,34 @@ public class GameStage implements Observer {
 		
 		BorderPane window = new BorderPane();
 		
+		// grid will contain the main game interface
 		grid = new GridPane();
 		grid.setPrefSize(520, 350);
 		grid.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		setGridPane(grid);
 		
+		// grid2 contain all of the available tower images and sell image as
+		// a seleciton bar which let the user can buy and sell towers
 		grid2 = new GridPane();
 		grid2.setPrefSize(520, 75);
 		grid2.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
-		
-		
+		// grid3 contain all health and gold infomation of the current player
 		grid3 = new GridPane();
 		grid3.setPrefSize(520, 30);
 		grid3.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
+		// grid4 contain the pause and fast forward button enable the player
+		// to pause and make 2X speed of the game
 		grid4 = new GridPane();
 		grid4.setPrefSize(180, 50);
 		grid4.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		
 		ArrayList<Tower> availTowers = controller.getModel().getAvailTowers();
 
-		
-		
 		number = new Label("X");
 		number.setTextFill(Color.ORANGE);
 		number.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		
 		
 		heal = model.getMap().getPlayer().getHealth();
 		healL = new Label(String.valueOf(heal));
@@ -279,13 +294,12 @@ public class GameStage implements Observer {
 		number2.setTextFill(Color.ORANGE);
 		number2.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
 		
-		
 		totalGold = model.getMap().getPlayer().getMoney();
 		goldL = new Label(String.valueOf(totalGold));
 		goldL.setTextFill(Color.ORANGE);
 		goldL.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-
-
+		
+		// add all of our tower into selection bar
 		BasicTower firstImg = new BasicTower();
 		Turret secondImg = new Turret();
 		Tower3 tower3 = new Tower3();
@@ -318,7 +332,6 @@ public class GameStage implements Observer {
 		
 		
 		
-		
 		images.getSell().setFitHeight(50);
 		images.getSell().setFitWidth(50);
 		
@@ -328,7 +341,6 @@ public class GameStage implements Observer {
 		images.getGold().setFitHeight(50);
 		images.getGold().setFitWidth(50);
 		
-
 		grid2.add(firstImg.getImg(),0,0);
 		grid2.add(secondImg.getImg(), 1, 0);
 		grid2.add(tower3.getImg(), 2, 0);
@@ -338,7 +350,7 @@ public class GameStage implements Observer {
 		grid2.add(images.getSell(), 6, 0);
 		grid2.setHgap(20);
 		
-		
+		// let the image on the selection bar be able to be selected
 		doImg(firstImg.getImg(), availTowers.get(0));
 		doImg(secondImg.getImg(), availTowers.get(1));
 		doImg(tower3.getImg(), availTowers.get(2));
@@ -351,6 +363,7 @@ public class GameStage implements Observer {
 		images.getPauseV().setFitHeight(80);
 		images.getPauseV().setFitWidth(100);
 		
+		// set up fast foward function for the game interface
 		group = new ToggleGroup();
 		one = new RadioButton("X1");
 		two = new RadioButton("X2");
@@ -379,8 +392,6 @@ public class GameStage implements Observer {
 		hb4.getChildren().add(images.getPauseV());
 		hb4.getChildren().add(vbTime);
 		
-		
-		
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.add(hb3, 2, 0);
@@ -389,9 +400,8 @@ public class GameStage implements Observer {
 		
 		hbGrid.getChildren().addAll(grid3,grid4);
 
-		//images.getPauseV().setDisable(true);
+		// gameThread which control the monster waves of the game and pause
 		gameThread = new Thread() {
-
 			public void run() {
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 
@@ -401,17 +411,16 @@ public class GameStage implements Observer {
 					createMonster(monsters.get(count), stage);
 					count++;
 					try {
-						
 						Thread.sleep(SLEEP);
 						//System.out.println(count);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					
-					
-					
 				}
 			}
+			
+			// enable pause function for the game
 			private void pause() {
 				synchronized (this) {
 		            try {
@@ -424,10 +433,11 @@ public class GameStage implements Observer {
 		};
 		doPause(images.getPauseV());
 		
-		
+		// create menu bar which let the player could control when to start
+		// the game or exit, the start menu will start the game to allow the
+		// monster waves starts and the exit menu will just exit the game
 		MenuBar menuBar = new MenuBar();
 		Menu menu;
-		MenuItem newgame;
 		MenuItem start;
 		MenuItem exit;
 		if(language.equals("English")) {
@@ -442,8 +452,6 @@ public class GameStage implements Observer {
 		}
 		menu.getItems().addAll(start, exit);  // add menu bar and menu items
 		menuBar.getMenus().add(menu);
-
-		
 		
 		exit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -453,9 +461,7 @@ public class GameStage implements Observer {
 		
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				gameThread.start();
-				
-				
+				gameThread.start();			
 			}
 		});
 		
@@ -468,13 +474,16 @@ public class GameStage implements Observer {
 		
 		Scene scene = new Scene(window);
 		stage.setScene(scene);
-		stage.show();
-		
-		
+		stage.show();	
 	}
 
-
-	
+	/**
+	 * this is a helper method which create one monster on stage in thread
+	 * and it will let the monster automatically start to move along the road
+	 * 
+	 * @param monster is a single monster class
+	 * @param stage is the current game stage
+	 */
 	private void createMonster(Monster monster, Stage stage) {
 		if(monster instanceof BasicMonster) {
 			monster.setImg(new ImageView(new Image("/img/giphy.gif")));
@@ -489,7 +498,7 @@ public class GameStage implements Observer {
 		}else if(monster instanceof Monster6) {
 			monster.setImg(new ImageView(new Image("/img/enemy6.gif")));
 		}
-		
+
 		ImageView monsterImg = monster.getImg();
 		monsterImg.setFitHeight((int) RECTSIZE / 2);
 		monsterImg.setFitWidth((int) RECTSIZE / 2);
@@ -501,14 +510,14 @@ public class GameStage implements Observer {
 		move.addTimeline(monsterTimeline);
 		monstersTimeline.add(monsterTimeline);
 		monsterTimeline.play();
-
-		
 	}
 
-
+	/**
+	 * here defines the private BulletHandler class which enable the tower's
+	 * bullet function and animation. And it will automatically decided the
+	 * attack direction for the tower depends on where the monster is
+	 */
 	private class BulletHandler implements EventHandler<ActionEvent>{
-
-		
 		ImageView img;
 		Point point;
 		int Bcount = 0 ;
@@ -521,13 +530,21 @@ public class GameStage implements Observer {
 			img.setTranslateY(point.getX()*RECTSIZE);
 			this.tower = tower;
 		}
+		
+		/**
+		 * this method simply add the timeline into this class
+		 * @param timeline is a Timeline object of a bulletTimeline
+		 */
 		public void addTimeline(Timeline timeline) {
 			time = timeline;
-			
 		}
+		
+		/**
+		 * this handle method handle the bullet attack direction and the animation
+		 * of the bullet
+		 */
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub]
 			if(one.isSelected()){
 				time.setRate(1.0);
 			} else if(two.isSelected()){
@@ -537,7 +554,6 @@ public class GameStage implements Observer {
 			if(heal == 0) {
 				time.stop();
 			}
-			
 			
 			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
 				try {
@@ -567,37 +583,50 @@ public class GameStage implements Observer {
 			Bcount++;
 		}
 		
+		/**
+		 * this method will set bullet attack monster at tower's left and
+		 * reduce the monster's health
+		 */
 		private void attackLeft() {
-			
 			img.setVisible(true);
 			model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 			img.setTranslateX(img.getTranslateX()-2.0);
-			
-			
 		}
 		
+		/**
+		 * this method will set bullet attack monster at tower's right and
+		 * reduce the monster's health
+		 */
 		private void attackRight() {
-			
 			img.setVisible(true);
 			model.getMap().getGraph()[point.getX()][point.getY()+1].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 			img.setTranslateX(img.getTranslateX()+2.0);
-		
-			
 		}
+		
+		/**
+		 * tthis method will set bullet attack monster at tower's up and
+		 * reduce the monster's health
+		 */
 		private void attackUp() {
-			
 			img.setVisible(true);
 			model.getMap().getGraph()[point.getX()+1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 			img.setTranslateY(img.getTranslateY()+2.0);
-			
 		}
+		
+		/**
+		 * this method will set bullet attack monster at tower's down and 
+		 * reduce the monster's health
+		 */
 		private void attackDown() {
-			
 			img.setVisible(true);
 			model.getMap().getGraph()[point.getX()-1][point.getY()].getMonster().get(0).healthLoss(0.03*tower.getAttack());
 			img.setTranslateY(img.getTranslateY()-2.0);
-			
 		}
+		
+		/**
+		 * this method will check if the point on tower's down direction is
+		 * a road or not
+		 */
 		private boolean moveDown() {
 			try {
 				return model.getMap().getGraph()[point.getX()-1][point.getY()].isRoad();
@@ -605,6 +634,11 @@ public class GameStage implements Observer {
 				return false;
 			}
 		}
+		
+		/**
+		 * this method will check if the point on tower's up direction is
+		 * a road or not
+		 */
 		private boolean moveUp() {
 			try {
 				return model.getMap().getGraph()[point.getX()+1][point.getY()].isRoad();
@@ -612,6 +646,11 @@ public class GameStage implements Observer {
 				return false;
 			}
 		}
+		
+		/**
+		 * this method will check if the point on tower's right direction is
+		 * a road or not
+		 */
 		private boolean moveRight() {
 			try {
 				return model.getMap().getGraph()[point.getX()][point.getY()+1].isRoad();
@@ -620,6 +659,10 @@ public class GameStage implements Observer {
 			}
 		}
 		
+		/**
+		 * this method will check if the point on tower's left direction is
+		 * a road or not
+		 */
 		private boolean moveLeft() {
 			try {
 				return model.getMap().getGraph()[point.getX()][point.getY()-1].isRoad();
@@ -629,6 +672,10 @@ public class GameStage implements Observer {
 		}
 	}
 
+	/**
+	 * here defines the private MonsterHandler class which handle how the
+	 * monster moves on the game interface
+	 */
 	private class MonsterHandler implements EventHandler<ActionEvent> {
 		int currentRoad = 0;
 		double mcount = 0.0 ;
@@ -637,7 +684,7 @@ public class GameStage implements Observer {
 		Timeline time;
 		Monster monster;
 		Point currPoint;
-//		private Rectangle[][] rectangles;
+
 		public MonsterHandler(ImageView monsterImg,Monster monster, Stage stage) {
 			nextPoint  = road.get(currentRoad+1);
 			this.img = monsterImg;
@@ -647,6 +694,12 @@ public class GameStage implements Observer {
 			road.get(currentRoad).setMonster(monster);
 		}
 		
+		/**
+		 * this handle method will define how the monster moves on the game
+		 * stage and decided monster move direction and speed.
+		 * it also check if monster dead or not, if dead it will remove monster
+		 * image from the game stage
+		 */
 		@Override
 		public void handle(ActionEvent event) {
 			//System.out.println(1000);
@@ -731,9 +784,19 @@ public class GameStage implements Observer {
 			grid.getChildren().add(img);
 			mcount++;
 		}
+		
+		/**
+		 * this method simply add the timeline into this class
+		 * @param timeline is a Timeline object of a MonsterTimeline
+		 */		
 		public void addTimeline(Timeline time) {
 			this.time = time;
 		}
+		
+		/**
+		 * this method will decide if monster will move to left based on road
+		 * @return a boolean value tell us if it will move to left or not
+		 */
 		private boolean moveLeft() {
 			Point point = road.get(currentRoad);
 			if(point.getX() == nextPoint.getX() && point.getY() > nextPoint.getY()) {
@@ -742,6 +805,11 @@ public class GameStage implements Observer {
 			
 			return point.equals(nextPoint);
 		}
+		
+		/**
+		 * this method will decide if monster will move to right based on road
+		 * @return a boolean value tell us if it will move to left or not
+		 */
 		private boolean moveRight() {
 			Point point = road.get(currentRoad);
 			if(point.getX() == nextPoint.getX() && point.getY() < nextPoint.getY()) {
@@ -750,6 +818,11 @@ public class GameStage implements Observer {
 			
 			return point.equals(nextPoint);
 		}
+		
+		/**
+		 * this method will decide if monster will move to up based on road
+		 * @return a boolean value tell us if it will move to left or not
+		 */
 		private boolean moveUp() {
 			Point point = road.get(currentRoad);
 			if(point.getY() == nextPoint.getY() && point.getX() < nextPoint.getX()) {
@@ -758,6 +831,11 @@ public class GameStage implements Observer {
 			
 			return point.equals(nextPoint);
 		}
+		
+		/**
+		 * this method will decide if monster will move to down based on road
+		 * @return a boolean value tell us if it will move to left or not
+		 */
 		private boolean moveDown() {
 			Point point = road.get(currentRoad);
 			if(point.getY() == nextPoint.getY() && point.getX() > nextPoint.getX()) {
@@ -766,14 +844,13 @@ public class GameStage implements Observer {
 			
 			return point.equals(nextPoint);
 		}
-	}
-	
-
-	
+	}	
 	
 	/**
-	 * this class is used to draw circles
-	 * @param pane is the gridpane object.
+	 * this method is used to draw the main grid pane and build the basic game
+	 * sense fill with rectangle objects and set background image based on it is
+	 * a start, end, road or other place.
+	 * @param grid is the grid pane that represent the 
 	 */
 	public void setGridPane(GridPane grid) {
 		Point point;
@@ -817,13 +894,15 @@ public class GameStage implements Observer {
 		}
 	}
 	
-	
+	/**
+	 * this pause method enable the pause function with the "pause" image
+	 * on the graph
+	 * @param image is the "pause" image on the game interface
+	 */
 	private void doPause(ImageView image) {
 		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
 				if(isPause) {
 					isPause = false;
 					synchronized (gameThread) {
@@ -832,7 +911,6 @@ public class GameStage implements Observer {
 			            } catch(Exception e) {	
 			            }
 			        }
-					
 				}else {
 					isPause = true;
 				}
@@ -846,7 +924,6 @@ public class GameStage implements Observer {
 							bullet.stop();
 						}
 					}
-					
 				}else {
 					for(Timeline monster:monstersTimeline) {
 						monster.play();
@@ -856,24 +933,22 @@ public class GameStage implements Observer {
 							bullet.play();
 						}
 					}
-					
-				}
-				
-				
-				
+				}	
 			}
-			
 		});
 	}
 	
-	
+	/**
+	 * this method will enable the mouse event for images on the selection bar
+	 * which let the player could buy and sell towers
+	 * @param image is the tower image or sell image on the selection bar
+	 * @param currTower is the current tower that the mouse currently selected
+	 */
 	private void doImg(ImageView image, Tower currTower) {
-		
+		// handle the mouse_entered event
 		image.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub 
 				if ((image == images.getSell() && currTower == null)
 					|| controller.canBuyTower(currTower)) {
 					image.setFitHeight(65);
@@ -884,26 +959,23 @@ public class GameStage implements Observer {
 					else {
 						Tooltip.install(image, new Tooltip("$" + currTower.getCost()));						
 					}
-				}
-
-				
+				}	
 			}
-			
 		});
 		
+		// handle the mouse_exited event
 		image.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
 				image.setFitHeight(50);
 				image.setFitWidth(50);
 			}
-			
 		});
 		
+		// this method handle the mouse_clicked event which let the tower image
+		// or sell image on the selection bar could be selected and memorized 
+		// by the program.
 		image.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
@@ -916,13 +988,19 @@ public class GameStage implements Observer {
 				else {
 					System.out.println("not changed");
 				}
-			}
-			
+			}	
 		});
-		
 	}
 	
-	
+	/**
+	 * this method will allow the rectangle on the game interface be able to
+	 * be clicked to set tower and sell existing towers
+	 * @param ret is the current selected rectangle object
+	 * @param img is a ImagePatter class represent 
+	 * 			the current image on the rectangle
+	 * @param x is the current selected rectangle's x position
+	 * @param y is the current selected rectangle's y position
+	 */
 	private void doRectangle(Rectangle ret, ImagePattern img, int x, int y) {
 		
 		ret.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -949,36 +1027,14 @@ public class GameStage implements Observer {
 					}	
 				}
 			}
-			
-
-		});
-		
-		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				if (controller.canSetTower(x,y)) {
-					
-				}
-			}
-			
-		});
-		
-		ret.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				if (controller.canSetTower(x,y)) {
-					
-				}
-			}
-			
 		});
 	}
 	
-	
+	/**
+	 * this method will change the gold shown on the screen with the input
+	 * value
+	 * @param gold is the current value of gold that player has
+	 */
 	private void changeGold(int gold) {
 		model.getMap().getPlayer().changeMoney(gold);
 		totalGold = model.getMap().getPlayer().getMoney();
@@ -998,8 +1054,13 @@ public class GameStage implements Observer {
 		grid3.add(hb, 0, 0);
 		grid3.add(hb2, 1, 0);
 		grid3.setHgap(30);
-		
 	}
+	
+	/**
+	 * this method will decide whether the game is over and show a game over
+	 * screen for the player
+	 * @param stage
+	 */
 	private void gameOver(Stage stage) {
 		Stage newStage = new Stage();
 		stage.close();
@@ -1024,12 +1085,10 @@ public class GameStage implements Observer {
 		grid.getChildren().add(hb);
 		grid.setAlignment(Pos.CENTER);
 		
-		
 		MenuBar menuBar = new MenuBar();
 		Menu menu;
 		MenuItem newgame;
 		MenuItem exit;
-		
 		
 		if(language.equals("English")) {
 			menu = new Menu("File"); 
@@ -1068,11 +1127,13 @@ public class GameStage implements Observer {
 		Scene scene = new Scene(window);
 		newStage.setScene(scene);
 		newStage.show();
-
-		
 	}
 	
-	
+	/**
+	 * this method define a new pop-up windows for the user when the user
+	 * wins the game and it allows the user to select whether it want to
+	 * continue or not 
+	 */
 	private void askNext() {
 		Stage newStage = new Stage();
 		BorderPane windowNext = new BorderPane();
@@ -1104,7 +1165,6 @@ public class GameStage implements Observer {
 			newGame.createNewGame();
 			
 		});
-		
 		no.setOnMouseClicked((eventNo) -> {
 			
 			newStage.close();
@@ -1112,6 +1172,11 @@ public class GameStage implements Observer {
 		});
 	}
 	
+	/**
+	 * this method defines the action for the event when the player wins
+	 * the game
+	 * @param stage is the game stage
+	 */
 	private void youWin(Stage stage) {
 		stage.close();
 		Stage newStage = new Stage();
@@ -1134,8 +1199,5 @@ public class GameStage implements Observer {
 		Scene scene = new Scene(windowWin);
 		newStage.setScene(scene);
 		newStage.show();
-		
-		
 	}
-	
 }
