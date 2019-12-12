@@ -79,7 +79,7 @@ public class GameStage implements Observer {
 	private Tower currentTower;
 	private int stageNum;
 
-	private ImageView sellImg;
+
 	private int SLEEP = 2000;
 	private Thread gameThread;
 
@@ -105,7 +105,7 @@ public class GameStage implements Observer {
 	private Images images;
 	private Stage stage; 
 
-	private VBox vb;
+
 	private boolean isPause = false;
 	private ArrayList<Timeline> monstersTimeline;
 	
