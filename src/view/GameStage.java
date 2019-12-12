@@ -650,6 +650,17 @@ public class GameStage implements Observer {
 				img.setVisible(false);
 				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
 				model.lossHealth(monster);
+				if(count > 0&&monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
+					if(stageNum < 3) {
+						stageNum++;
+						askNext();	
+					}
+					else {
+						stage.close();
+						System.out.println("you win");
+					}
+	
+				}
 		
 
 			}else if(monster.dead()){
@@ -659,19 +670,16 @@ public class GameStage implements Observer {
 				road.get(currentRoad).clearMonster(monster);
 				img.setVisible(false);
 	
-				if(count != 0&&monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
+				if(count > 0&&monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
 					if(stageNum < 3) {
 						stageNum++;
-						
-						askNext();
-						
-						
+						askNext();	
 					}
 					else {
 						stage.close();
 						System.out.println("you win");
 					}
-			
+	
 				}
 
 			}else {
