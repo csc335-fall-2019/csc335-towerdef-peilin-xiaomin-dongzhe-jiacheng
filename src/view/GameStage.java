@@ -80,7 +80,6 @@ public class GameStage implements Observer {
 	private Tower currentTower;
 
 	private ImageView sellImg;
-	private int monsterLeft = 1;
 	private int SLEEP = 2000;
 	private Thread gameThread;
 
@@ -118,7 +117,6 @@ public class GameStage implements Observer {
 	private RadioButton two;
 	private RadioButton one;
 
-	private int deadMonsters;
 	// private ImageView[][] images;
 	private GridPane grid4;
 	private HBox hbGrid;
@@ -364,7 +362,6 @@ public class GameStage implements Observer {
 		gameThread = new Thread() {
 			int count = 0;
 			public void run() {
-				deadMonsters = 0;
 				while(count<monsters.size()&& model.getMap().getPlayer().getHealth() > 0 ) {
 
 					if(isPause) {
@@ -470,8 +467,8 @@ public class GameStage implements Observer {
 		monsterTimeline.setAutoReverse(false);
 		monsterTimeline.setCycleCount(Timeline.INDEFINITE);
 		move.addTimeline(monsterTimeline);
-		monsterTimeline.play();
 		monstersTimeline.add(monsterTimeline);
+		monsterTimeline.play();
 
 		
 	}
@@ -629,43 +626,16 @@ public class GameStage implements Observer {
 				time.stop();
 				monstersTimeline.remove(time);
 				img.setVisible(false);
-//				images.getHomeV().setVisible(false);
-				if(nextPoint.isEnd()) {
-					deadMonsters++;
-					System.out.println(nextPoint.getX()+" "+nextPoint.getY());
-					System.out.println("getend");
-					rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));
-//					rectangle.setFill(new ImagePattern(images.getHomeend()));
-					if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
-						if(stageNum < 3) {
-							stageNum++;			
-							askNext();
-	
-						}
-						else {
-							stage.close();
-							System.out.println("you win");
-						}
-					}
-				}
-//				setHome(road.get(currentRoad), images.getHomeend());
-				
+				rectangles[nextPoint.getX()][nextPoint.getY()].setFill(new ImagePattern(images.getHomeend()));				
 				model.lossHealth(monster);
-				//time.setRate(value);
-				//System.out.println(1);
-			}else if(heal == 0){
-				monstersTimeline.remove(time);
-
 			}else if(monster.dead()){
 				changeGold(monster.getGold());
 				time.stop();
-				deadMonsters++; 
-				monsterLeft++;
+				monstersTimeline.remove(time);
 				road.get(currentRoad).clearMonster(monster);
-				time.stop();
 				img.setVisible(false);
 				
-				if(deadMonsters == monsters.size() && model.getMap().getPlayer().getHealth() > 0) {
+				if(monstersTimeline.isEmpty() && model.getMap().getPlayer().getHealth() > 0) {
 					if(stageNum < 3) {
 						stageNum++;
 						
@@ -677,10 +647,7 @@ public class GameStage implements Observer {
 						stage.close();
 						System.out.println("you win");
 					}
-					
-//					stage.close();
-//					level2.createLevel2();
-					
+			
 				}
 
 			}else {
