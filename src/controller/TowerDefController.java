@@ -324,13 +324,12 @@ public class TowerDefController {
 		model.sellTower(x, y);
 	}
 	
-
 	/**
 	 * this method will disable random number of points and at each time it
 	 * will call the help method disableOnePoint to disable one random point
 	 * on the map
-	 * @param a newMap
-	 * @param a intger roadsize
+	 * @param newMap is new map object
+	 * @param roadSize is a integer value
 	 */
 	public void disablePoint(Map newMap, int roadSize) {
 		int maxAvailPoints = Math.min(WIDTH * HEIGHT - MIN_AVAIL_POINT - roadSize, roadSize * 2);
