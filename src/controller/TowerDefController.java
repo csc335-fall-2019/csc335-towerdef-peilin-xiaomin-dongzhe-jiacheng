@@ -28,7 +28,7 @@ public class TowerDefController {
 	
 	public final int WIDTH = 10;
 	public final int HEIGHT = 6;
-	public final int MIN_AVAIL_POINT = 5;
+	public final int MIN_AVAIL_POINT = 8;
 	
 	private TowerDefModel model;
 //	private Player player;
@@ -254,7 +254,7 @@ public class TowerDefController {
 	
 	public void disablePoint() {
 		ArrayList<Point> road = this.getModel().getMap().getRoads();
-		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size();
+		int maxAvailPoints = WIDTH * HEIGHT - MIN_AVAIL_POINT - road.size() - 4;
 		// random a number at most with the number of available non-road points minus 5; 
 		int random = (int) (Math.random() * ((maxAvailPoints - MIN_AVAIL_POINT) + 1)) + MIN_AVAIL_POINT;
 		int disabled = 0;
@@ -262,6 +262,12 @@ public class TowerDefController {
 			this.disableOnePoint();
 			disabled++;
 		}
+	}
+	
+	public void disableEndSurround(Point end) {
+		int endX = end.getX();
+		int endY = end.getY();
+		
 	}
 	
 	/**
@@ -280,5 +286,4 @@ public class TowerDefController {
 		}
 		randPoint.setDisable();
 	}
-	
 }
