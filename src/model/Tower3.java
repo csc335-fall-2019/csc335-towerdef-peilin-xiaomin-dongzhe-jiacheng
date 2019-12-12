@@ -9,15 +9,11 @@ public class Tower3 extends Tower {
 	private double attackSpeed = 0.9;
 	public Tower3() {
 		super.setCost(cost);
-		super.setImg(new ImageView(new Image("/img/turret1.jpg")));
-		super.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
 		super.setAttack(attack);
 		super.setSpeed(attackSpeed);
+		super.setImg(new ImageView(new Image("/img/turret1.jpg")));
+		super.setBullet(new ImageView(new Image("/img/bullet2.jpeg")));
 	}
-	@Override
-	public void setAttackRange(Map map) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

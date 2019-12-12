@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,12 +48,6 @@ public class Images {
 		
 		pause = new Image("/img/pause.png");
 		pauseV = new ImageView(pause);
-		
-		
-		
-		
-		
-		
 	}
 	
 	public Image getPause() {

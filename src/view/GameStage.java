@@ -54,7 +54,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.BasicMonster;
 import model.BasicTower;
-import model.Images;
 import model.Monster;
 import model.Monster3;
 import model.Monster4;
@@ -78,6 +77,7 @@ public class GameStage implements Observer {
 	private GridPane grid;
 	private ImageView current;
 	private Tower currentTower;
+	private int stageNum;
 
 	private ImageView sellImg;
 	private int SLEEP = 2000;
@@ -120,12 +120,14 @@ public class GameStage implements Observer {
 	// private ImageView[][] images;
 	private GridPane grid4;
 	private HBox hbGrid;
-	private int stageNum;
+	//private int stageNum;
+	
 	
 	
 	
 	public GameStage(int stageNum) {
 		this.stage = new Stage();
+
 		this.stageNum = stageNum;
 		this.model = new TowerDefModel();
 		this.controller = new TowerDefController(model);
@@ -507,8 +509,6 @@ public class GameStage implements Observer {
 			}
 			
 			
-			
-			
 			if(moveLeft() || moveRight() || moveUp()||moveDown()) {
 				if(model.getMap().getGraph()[point.getX()][point.getY()-1].getMonster().size()!=0) {
 					attackLeft();
@@ -743,7 +743,7 @@ public class GameStage implements Observer {
 					point = model.getMap().getGraph()[i][j];
 					if(point.isEnd()) {
 						System.out.println("end");
-						setHome(rectangle, images.getHome());
+						rectangle.setFill(new ImagePattern(image));
 					}
 					if (point.isStart()) {
 						rectangle.setFill(new ImagePattern(image));
@@ -900,11 +900,28 @@ public class GameStage implements Observer {
 			}
 			
 		});
+		
+		ret.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		ret.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
-	private void setHome(Rectangle ret, Image image) {
-		ret.setFill(new ImagePattern(image));
-	}
 	
 	private void changeGold(int gold) {
 		model.getMap().getPlayer().changeMoney(gold);
